@@ -51,6 +51,11 @@ public class Player : MonoBehaviour {
             GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
             canJump = false;
         }
+        else if (Input.acceleration.normalized.y < -0.5f && canJump)
+        {
+            GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
+            canJump = false;
+        }
 
         velocity += accelerometerValue.x * Time.deltaTime;
         velocity *= 0.97f;

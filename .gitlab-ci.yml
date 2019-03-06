@@ -1,0 +1,34 @@
+image: "gableroux/unity3d:2018.1.2f1-android"
+
+stages:
+  - verify
+  - init
+  - build
+
+before_script:
+  - chmod a+x ./CI/verify.sh
+  - chmod a+x ./CI/install.sh
+  - chmod a+x ./CI/build.sh
+
+verifySettings:
+  stage: verify
+  script:
+    - ./CI/verify.sh
+
+initUnity:
+  stage: init
+  script:
+    - ./CI/install.sh
+
+build:
+  tags: 
+    - shared
+    - linux
+  stage: build
+  script:
+    - ./CI/build.sh
+  artifacts:
+    paths:
+    - ./Builds/
+  only:
+    - master

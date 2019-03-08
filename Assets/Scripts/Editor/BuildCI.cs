@@ -1,17 +1,24 @@
 ﻿using UnityEditor;
+using UnityEditor.Build.Reporting;
 using System;
+using UnityEngine;
+using System.IO;
 
 public class BuildCI {
     public static void PerformBuild()
     {
         string[] args = Environment.GetCommandLineArgs(); 
+        Debug.Log($"Executing build, {DateTime.Now} {args[1]}");
         string[] scenes = { "Assets/Scenes/SampleScene.unity" };
-        BuildPipeline.BuildPlayer(new BuildPlayerOptions()
+        BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions()
         {
-            locationPathName = args[0] + "/out.apk",
+            locationPathName = Path.Combine(args[1], "out.apk"),
             target = BuildTarget.Android,
             scenes = scenes,
-            options = BuildOptions.AcceptExternalModificationsToPlayer
+            options = BuildOptions.StrictMode
         });
+
+
+        if(report.summary.result != BuildResult.Succeeded) EditorApplication.Exit(1);
     }
 }

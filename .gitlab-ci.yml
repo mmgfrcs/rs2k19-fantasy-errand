@@ -27,6 +27,7 @@ buildRemoteAndroid:
     - shared
     - linux
   stage: build
+  allow_failure: true
   before_script: 
     - chmod a+x ./CI/unity-before-script.sh && ./CI/unity-before-script.sh
   script:
@@ -44,6 +45,8 @@ buildLocalAndroid:
   stage: build
   script:
     - .\CI\buildLocal.bat
+  after_script:
+    - clear.bat
   artifacts:
     paths:
     - ./Builds/

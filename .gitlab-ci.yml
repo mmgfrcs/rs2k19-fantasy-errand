@@ -8,7 +8,7 @@ stages:
 verifySettings:
   stage: pre-verify
   tags:
-    - raspberry-pi
+    - rasp-ci
   script:
     - chmod a+x ./CI/verify.sh
     - ./CI/verify.sh
@@ -16,7 +16,7 @@ verifySettings:
 verifyFolders:
   stage: pre-verify
   tags:
-    - raspberry-pi
+    - rasp-ci
   script:
     - chmod a+x ./CI/verifystruct.sh
     - ./CI/verifystruct.sh
@@ -43,7 +43,7 @@ buildLocalAndroid:
     - VR-Win
   stage: build
   script:
-    - ./CI/build.sh
+    - .\CI\buildLocal.bat
   artifacts:
     paths:
     - ./Builds/

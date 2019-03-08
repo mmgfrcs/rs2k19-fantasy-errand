@@ -1,35 +1,46 @@
-image: "gableroux/unity3d:2018.1.2f1-android"
-
 stages:
-  - init
-  - verify
+  - pre-verify
+  - test
   - build
-
-before_script:
-  - chmod a+x ./CI/verifystruct.sh
-  - chmod a+x ./CI/verify.sh
-  - chmod a+x ./CI/install.sh
-  - chmod a+x ./CI/build.sh
+  - post-verify
+  - deploy
 
 verifySettings:
-  stage: verify
+  stage: pre-verify
+  tags:
+    - raspberry-pi
   script:
+    - chmod a+x ./CI/verify.sh
     - ./CI/verify.sh
 
 verifyFolders:
-  stage: verify
+  stage: pre-verify
+  tags:
+    - raspberry-pi
   script:
+    - chmod a+x ./CI/verifystruct.sh
     - ./CI/verifystruct.sh
 
-initUnity:
-  stage: init
-  script:
-    - ./CI/install.sh
-
-buildAndroid:
+buildRemoteAndroid:
+  image: "gableroux/unity3d:2018.1.2f1-android"
   tags: 
     - shared
     - linux
+  stage: build
+  before_script: 
+    - chmod a+x ./CI/unity-before-script.sh && ./CI/unity-before-script.sh
+  script:
+    - chmod a+x ./CI/build.sh
+    - ./CI/build.sh
+  artifacts:
+    paths:
+    - ./Builds/
+  only:
+    - master
+
+buildLocalAndroid:
+  tags: 
+    - VR-Win
   stage: build
   script:
     - ./CI/build.sh

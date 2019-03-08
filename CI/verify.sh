@@ -17,13 +17,16 @@ grep -Fq "m_EditorVersion: 2018.1.1f1" "./ProjectSettings/ProjectVersion.txt"
 echo "Editor version verified"
 echo "Verifying Assets folder structure"
 cd ./Assets/
-files=(Imports Materials Sprites Scripts Scenes StreamingAssets)
-for f in *; do
+files=(Imports/ Materials/ Sprites/ Scripts/ Scenes/ StreamingAssets/)
+for f in $("ls -d */"); do
     found=0
     for g in "${files[@]}" ; do
         [ "$f" = "$g" ] && found=1
     done
-    [ "$found" = 0 ] && exit 1
+    if "$found" = 0 then
+        echo "Unexpected $f. Verification failed"
+        exit 1
+    fi
 done
 echo "Folder Structure verified"
 echo "Verification Complete"

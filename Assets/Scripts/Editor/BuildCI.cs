@@ -10,15 +10,14 @@ public class BuildCI {
         string[] args = Environment.GetCommandLineArgs(); 
         Debug.Log($"Executing build, {DateTime.Now} {args[1]}");
         string[] scenes = { "Assets/Scenes/SampleScene.unity" };
+        //EditorPrefs.SetString("AndroidSdkRoot", value);
         BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions()
         {
             locationPathName = Path.Combine(args[1], "out.apk"),
-            target = BuildTarget.Android,
             scenes = scenes,
             options = BuildOptions.StrictMode
         });
-
-
+        
         if(report.summary.result != BuildResult.Succeeded) EditorApplication.Exit(1);
     }
 }

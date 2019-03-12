@@ -45,8 +45,6 @@ buildLocalAndroid:
   stage: build
   script:
     - .\CI\buildLocal.bat
-  after_script:
-    - clear.bat
   artifacts:
     paths:
     - ./Builds/

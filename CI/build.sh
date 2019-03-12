@@ -6,12 +6,17 @@ echo "Building for Android"
 export BUILD_PATH=./Builds/Android/
 mkdir -p $BUILD_PATH
 
+# sudo apt-get -qq update
+# wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O sdk-tools
+# unzip sdk-tools
+# ./tools/bin/sdkmanager "build-tools;28.0.3" "platform-tools" "platforms;android-24" --verbose --install
+# yes | ./tools/bin/sdkmanager --licenses
+
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
   -projectPath $(pwd) \
   -quit \
   -batchmode \
-  -buildTarget Android \
-  -executeMethod BuildCI.PerformBuild $BUILD_PATH \
+  -buildLinux32Player $BUILD_PATH \
   -logFile
 
 UNITY_EXIT_CODE=$?

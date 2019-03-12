@@ -7,12 +7,15 @@ using FantomLib;
 public class Player : MonoBehaviour {
     public float speed;
     public TextMeshProUGUI sensText;
+    public TextMeshProUGUI scoreText;
 
     [Header("Motion Configuration")]
     public float sidestepSpeedThreshold = 1f;
     public float jumpSpeedThreshold = 1f;
+    public float slideSpeedThreshold = 1f;
     public float turnThreshold = 4f;
 
+    float score;
     EmotionManager emotionManager;
     bool canJump = false;
     Vector2 moveDir = new Vector2(0, 1); //Move Direction: X -> X actual, Y -> Z actual
@@ -20,8 +23,10 @@ public class Player : MonoBehaviour {
     //Motion related variables
     //Sidestep/Jump
     Vector3 accelerometerValue;
-    float velocity = 0; //TODO: use same variable to track Y
-    bool recordMotion = true;
+    float velocityX = 0; //TODO: use same variable to track Y
+    float velocityY = 0;
+    bool recordSlide = true;
+    bool recordSidestep = true;
 
     //Turn
     float currentRate;
@@ -45,40 +50,48 @@ public class Player : MonoBehaviour {
         //Camera.main.transform.rotation = Input.gyro.attitude;
         //speed += rate * emotionManager.HappyRatio * Time.deltaTime;
         //speed -= rate * emotionManager.DisgustRatio * Time.deltaTime;
+
         transform.Translate(new Vector3(moveDir.x, 0, moveDir.y) * speed * Time.deltaTime);
-        if (Input.acceleration.normalized.y > 0.5f && canJump)
+
+        score += new Vector3(moveDir.x, 0, moveDir.y).magnitude * speed * Time.deltaTime;
+        scoreText.text = score.ToString("n0");
+        velocityY += accelerometerValue.y * Time.deltaTime;
+        velocityY *= 0.97f;
+
+        if (velocityY > jumpSpeedThreshold && canJump)
         {
             GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
             canJump = false;
+            recordSlide = false;
         }
-        else if (Input.acceleration.normalized.y < -0.5f && canJump)
+        else if (velocityY < -jumpSpeedThreshold && recordSlide)
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
-            canJump = false;
+            transform.localScale = new Vector3(1, 1, 1);
+            StartCoroutine(SlideTime());
         }
 
-        velocity += accelerometerValue.x * Time.deltaTime;
-        velocity *= 0.97f;
+        velocityX += accelerometerValue.x * Time.deltaTime;
+        velocityX *= 0.97f;
 
-        sensText.text = $"Vel: {velocity.ToString("n2")} m/s\nRot Speed: {currentRate}";
+        sensText.text = $"Vel: ({velocityX}, {velocityY}) m/s\nPos {transform.position}, Scale {transform.localScale}\nJump: {canJump}, Slide: {recordSlide}, Turn: {recordTurn}, Sidestep: {recordSidestep}";
 
-        if (recordMotion)
+        if (recordSidestep)
         {
             //Check slide direction from velocity. Also check if the player object is on the edge of the lane
-            if (velocity > sidestepSpeedThreshold && transform.localPosition.x < 2)
+            if (velocityX > sidestepSpeedThreshold && transform.localPosition.x < 2)
             {
                 Debug.Log("Slide Right!");
                 transform.localPosition = new Vector3(transform.localPosition.x + 2, transform.localPosition.y, transform.localPosition.z);
-                recordMotion = false;
+                recordSidestep = false;
             }
-            else if (velocity < -sidestepSpeedThreshold && transform.localPosition.x > -2)
+            else if (velocityX < -sidestepSpeedThreshold && transform.localPosition.x > -2)
             {
                 Debug.Log("Slide Left!");
                 transform.localPosition = new Vector3(transform.localPosition.x - 2, transform.localPosition.y, transform.localPosition.z);
-                recordMotion = false;
+                recordSidestep = false;
             }
         }
-        else if (velocity < 0.05f && velocity > -0.05f) recordMotion = true;
+        else if (velocityX < 0.05f && velocityX > -0.05f) recordSidestep = true;
 
         currentRate = Mathf.Lerp(currentRate, -Input.gyro.rotationRateUnbiased.y, 0.6f);
 
@@ -118,8 +131,23 @@ public class Player : MonoBehaviour {
         accelerometerValue = new Vector3(x, y, z);
     }
 
+    IEnumerator SlideTime()
+    {
+        recordSlide = false;
+        canJump = false;
+        yield return new WaitForSeconds(1f);
+        transform.localScale = new Vector3(1, 2, 1);
+        recordSlide = true;
+        canJump = true;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        canJump = true;
+        if(collision.collider.gameObject.tag != "Wall")
+        {
+            recordSlide = true;
+            canJump = true;
+        }
+
     }
 }

@@ -1,9 +1,9 @@
 set "BUILD_PATH=%cd%\Builds\Android\"
-mkdir -p %BUILD_PATH% || goto CRITICAL_ERROR
+mkdir -p %BUILD_PATH%
 
 echo Building for Android locally on %cd%, Build Path is on %BUILD_PATH%
 
-Unity %BUILD_PATH% -projectPath %cd% -quit -batchmode -nographics -buildTarget Android -executeMethod BuildCI.PerformBuild -logFile %cd%\log || goto :CRITICAL_ERROR
+Unity %BUILD_PATH% -projectPath %cd% -quit -batchmode -nographics -buildTarget Android -executeMethod BuildCI.PerformBuild -logFile %cd%\log || goto CRITICAL_ERROR
 
 IF ERRORLEVEL 2 goto ERR_TWO
 IF ERRORLEVEL 1 goto ERR_ONE

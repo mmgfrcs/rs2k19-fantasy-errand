@@ -14,8 +14,7 @@ public class BuildCI {
         BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions()
         {
             locationPathName = Path.Combine(args[1], "out.apk"),
-            scenes = scenes,
-            options = BuildOptions.StrictMode
+            scenes = scenes
         });
         
         if(report.summary.result != BuildResult.Succeeded) EditorApplication.Exit(1);

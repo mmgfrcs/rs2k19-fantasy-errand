@@ -16,7 +16,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -projectPath $(pwd) \
   -quit \
   -batchmode \
-  -buildWindows64Player $BUILD_PATH \
+  -buildWindows32Player $BUILD_PATH \
   -logFile
 
 UNITY_EXIT_CODE=$?

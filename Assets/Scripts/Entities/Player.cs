@@ -10,7 +10,8 @@ namespace FantasyErrand.Entities
     {
         public float speed;
 
-        [Header("Motion Configuration")]
+        [Header("Motion Configuration"), SerializeField]
+        private bool controlActive;
         public float sidestepSpeedThreshold = 1f;
         public float jumpSpeedThreshold = 1f;
         public float slideSpeedThreshold = 1f;
@@ -18,7 +19,12 @@ namespace FantasyErrand.Entities
 
         EmotionManager emotionManager;
 
-        Vector2 moveDir = new Vector2(0, 1); //Move Direction: X -> X actual, Y -> Z actual
+        /// <summary>
+        /// Can the player be controlled by motion controls?
+        /// </summary>
+        public bool IsControlActive { get { return controlActive; } internal set { controlActive = value; } }
+
+        //Vector2 moveDir = new Vector2(0, 1); //Move Direction: X -> X actual, Y -> Z actual
 
         //Motion related variables
         //Sidestep/Jump/Slide
@@ -31,7 +37,6 @@ namespace FantasyErrand.Entities
 
         //Turn
         float currentRate;
-        float startingAngle;
         bool canTurn = true;
 
         // Use this for initialization
@@ -40,8 +45,7 @@ namespace FantasyErrand.Entities
             emotionManager = FindObjectOfType<EmotionManager>();
             Input.gyro.updateInterval = 0.1f;
             Input.gyro.enabled = true;
-
-            startingAngle = GetDeviceYAngle();
+            
             //if(!AndroidPlugin.IsSupportedSensor(SensorType.Accelerometer)) Quit
         }
 
@@ -55,11 +59,16 @@ namespace FantasyErrand.Entities
 
             transform.Translate(transform.forward * speed * Time.deltaTime);
 
-            ProcessControls();
+            if (IsControlActive)
+            {
+                speed += Time.deltaTime;
+                ProcessControls();
+            }
+
         }
 
         /// <summary>
-        /// Process player controls
+        /// Process player motion controls
         /// </summary>
         void ProcessControls()
         {

@@ -44,6 +44,7 @@ buildLocalAndroid:
     - VR-Win
   stage: build
   script:
+    - set PATH=%PATH%;F:\Apps\Game-App Development\Unity 2018.1.1f3x64\Editor
     - .\CI\buildLocal.bat
   artifacts:
     paths:

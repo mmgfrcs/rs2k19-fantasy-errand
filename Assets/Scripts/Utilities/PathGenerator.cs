@@ -10,14 +10,15 @@ public enum PatternType
 
 public class PathGenerator : MonoBehaviour {
 
-    public Player player;
-    public List<Pattern> patterns = new List<Pattern>();
+    List<Pattern> patterns = new List<Pattern>();
     
     public GameObject startPrefab, straightPrefab, junctionPrefab, leftCornerPrefab, rightCornerPrefab;
     public float[] probabilityRatios = new float[5];
 
     public int patternToGenerate = 10;
     public int minStraights = 4;
+    
+    public float tileScale;
 
     public UnityEngine.UI.Text text;
 
@@ -34,7 +35,7 @@ public class PathGenerator : MonoBehaviour {
         {
             if (isStart && i < 2)
             {
-                Instantiate(startPrefab, new Vector3(startPos.x, -0.05f, startPos.z), Quaternion.identity);
+                Instantiate(startPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
                 patterns.Add(new Pattern() { type = PatternType.Straight, position = new Vector3(startPos.x, 0, startPos.z) });
             }
             else
@@ -45,26 +46,30 @@ public class PathGenerator : MonoBehaviour {
                     int rnd = MathRand.WeightedPick(probabilityRatios);
                     if (rnd <= 1)
                     {
-                        GameObject obj = Instantiate(straightPrefab, new Vector3(startPos.x, -0.05f, startPos.z), Quaternion.identity);
+                        GameObject obj = Instantiate(straightPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                         patterns.Add(new Pattern() { type = PatternType.Straight, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
                     }
                     else if (rnd == 2)
                     {
-                        GameObject obj = Instantiate(leftCornerPrefab, new Vector3(startPos.x, -0.05f, startPos.z), Quaternion.identity);
+                        GameObject obj = Instantiate(leftCornerPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                         StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(-90, Vector3.up) * moveDir), Quaternion.AngleAxis(-90, Vector3.up) * moveDir, minStraights));
                         patterns.Add(new Pattern() { type = PatternType.LeftCorner, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
                         break;
                     }
                     else if (rnd == 3)
                     {
-                        GameObject obj = Instantiate(rightCornerPrefab, new Vector3(startPos.x, -0.05f, startPos.z), Quaternion.identity);
+                        GameObject obj = Instantiate(rightCornerPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                         StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(90, Vector3.up) * moveDir), Quaternion.AngleAxis(90, Vector3.up) * moveDir, minStraights));
                         patterns.Add(new Pattern() { type = PatternType.RightCorner, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
                         break;
                     }
                     else if(rnd == 4)
                     {
-                        GameObject obj = Instantiate(junctionPrefab, new Vector3(startPos.x, -0.05f, startPos.z), Quaternion.identity);
+                        GameObject obj = Instantiate(junctionPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                         StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(-90, Vector3.up) * moveDir), Quaternion.AngleAxis(-90, Vector3.up) * moveDir, minStraights));
                         StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(90, Vector3.up) * moveDir), Quaternion.AngleAxis(90, Vector3.up) * moveDir, minStraights));
                         patterns.Add(new Pattern() { type = PatternType.Junction, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
@@ -73,13 +78,22 @@ public class PathGenerator : MonoBehaviour {
                 }
                 else
                 {
-                    Instantiate(straightPrefab, new Vector3(startPos.x, -0.05f, startPos.z), Quaternion.identity);
+                    GameObject obj = Instantiate(straightPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                    obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                     straights--;
                 }
             }
             startPos += moveDir;
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    Quaternion MoveDirToRotation(Vector3 moveDir)
+    {
+        if (moveDir == Vector3.left) return Quaternion.AngleAxis(-90, Vector3.up);
+        else if (moveDir == Vector3.right) return Quaternion.AngleAxis(90, Vector3.up);
+        else if (moveDir == Vector3.back) return Quaternion.AngleAxis(180, Vector3.up);
+        else return Quaternion.identity;
     }
 
     Vector3 RotateVector(Vector3 original, Vector3 direction)

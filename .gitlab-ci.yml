@@ -22,7 +22,7 @@ verifyFolders:
     - ./CI/verifystruct.sh
 
 buildRemoteAndroid:
-  image: "gableroux/unity3d:2018.1.2f1-android"
+  image: "gableroux/unity3d:2018.1.2f1-windows"
   tags: 
     - shared
     - linux

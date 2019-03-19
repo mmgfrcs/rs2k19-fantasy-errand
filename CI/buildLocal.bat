@@ -30,7 +30,7 @@ echo Batch Error
 exit 1
 
 :END
-type "%cd%\log"
-cd "%BUILD_PATH%" || goto :CRITICAL_ERROR
-echo Checking built APK
-IF not exist "%cd%\out.apk" exit 1
+REM type "%cd%\log"
+REM cd "%BUILD_PATH%" || goto :CRITICAL_ERROR
+REM echo Checking built APK
+REM IF not exist "%cd%\out.apk" exit 1

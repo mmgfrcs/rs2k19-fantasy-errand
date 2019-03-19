@@ -8,7 +8,6 @@ namespace FantasyErrand.Entities
 {
     public class Player : MonoBehaviour
     {
-        public float speed;
 
         [Header("Motion Configuration"), SerializeField]
         private bool controlActive;
@@ -18,6 +17,11 @@ namespace FantasyErrand.Entities
         public float turnThreshold = 4f;
 
         EmotionManager emotionManager;
+
+        internal float speed;
+
+
+        public event System.Action<Collision> OnCollision;
 
         /// <summary>
         /// Can the player be controlled by motion controls?
@@ -61,7 +65,6 @@ namespace FantasyErrand.Entities
 
             if (IsControlActive)
             {
-                speed += Time.deltaTime;
                 ProcessControls();
             }
 
@@ -161,11 +164,12 @@ namespace FantasyErrand.Entities
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.gameObject.tag != "Wall")
+            if (collision.collider.gameObject.tag == "Floor")
             {
                 canSlide = true;
                 canJump = true;
             }
+            else OnCollision?.Invoke(collision);
 
         }
     }

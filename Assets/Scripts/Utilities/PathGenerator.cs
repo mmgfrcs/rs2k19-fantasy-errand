@@ -35,8 +35,10 @@ public class PathGenerator : MonoBehaviour {
         {
             if (isStart && i < 2)
             {
-                Instantiate(startPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                GameObject obj = Instantiate(startPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                 patterns.Add(new Pattern() { type = PatternType.Straight, position = new Vector3(startPos.x, 0, startPos.z) });
+                
             }
             else
             {
@@ -54,7 +56,7 @@ public class PathGenerator : MonoBehaviour {
                     {
                         GameObject obj = Instantiate(leftCornerPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
                         obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
-                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(-90, Vector3.up) * moveDir), Quaternion.AngleAxis(-90, Vector3.up) * moveDir, minStraights));
+                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(-90, Vector3.up) * moveDir * tileScale), Quaternion.AngleAxis(-90, Vector3.up) * moveDir, minStraights));
                         patterns.Add(new Pattern() { type = PatternType.LeftCorner, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
                         break;
                     }
@@ -62,7 +64,7 @@ public class PathGenerator : MonoBehaviour {
                     {
                         GameObject obj = Instantiate(rightCornerPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
                         obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
-                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(90, Vector3.up) * moveDir), Quaternion.AngleAxis(90, Vector3.up) * moveDir, minStraights));
+                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(90, Vector3.up) * moveDir* tileScale), Quaternion.AngleAxis(90, Vector3.up) * moveDir, minStraights));
                         patterns.Add(new Pattern() { type = PatternType.RightCorner, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
                         break;
                     }
@@ -70,8 +72,8 @@ public class PathGenerator : MonoBehaviour {
                     {
                         GameObject obj = Instantiate(junctionPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
                         obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
-                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(-90, Vector3.up) * moveDir), Quaternion.AngleAxis(-90, Vector3.up) * moveDir, minStraights));
-                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(90, Vector3.up) * moveDir), Quaternion.AngleAxis(90, Vector3.up) * moveDir, minStraights));
+                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(-90, Vector3.up) * moveDir* tileScale), Quaternion.AngleAxis(-90, Vector3.up) * moveDir, minStraights));
+                        StartCoroutine(Generate(n - (i + 1), false, startPos += (Quaternion.AngleAxis(90, Vector3.up) * moveDir* tileScale), Quaternion.AngleAxis(90, Vector3.up) * moveDir, minStraights));
                         patterns.Add(new Pattern() { type = PatternType.Junction, position = new Vector3(startPos.x, 0, startPos.z), obj = obj });
                         break;
                     }
@@ -83,8 +85,8 @@ public class PathGenerator : MonoBehaviour {
                     straights--;
                 }
             }
-            startPos += moveDir;
-            yield return new WaitForEndOfFrame();
+            startPos += moveDir *tileScale;
+            yield return new WaitForSeconds(1f);
         }
     }
 

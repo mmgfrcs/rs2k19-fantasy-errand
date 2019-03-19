@@ -35,7 +35,8 @@ public class PathGenerator : MonoBehaviour {
         {
             if (isStart && i < 2)
             {
-                Instantiate(startPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                GameObject obj = Instantiate(startPrefab, new Vector3(startPos.x, -0.05f, startPos.z), MoveDirToRotation(moveDir));
+                obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.localScale.y / -2f, obj.transform.position.z);
                 patterns.Add(new Pattern() { type = PatternType.Straight, position = new Vector3(startPos.x, 0, startPos.z) });
             }
             else

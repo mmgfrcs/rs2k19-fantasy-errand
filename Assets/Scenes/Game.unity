@@ -3733,56 +3733,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.078284726, y: -0.000000029802322, z: -0.0071214437}
     m_Extent: {x: 0.15224674, y: 0.25733742, z: 0.24485284}
   m_DirtyAABB: 0
---- !u!1001 &947414323
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4712148163994124, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4014499842467474, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4538395818483010, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 2526d4bc954e8a84d83e5a0458af7c8d, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1003912671
 GameObject:
   m_ObjectHideFlags: 0
@@ -3998,7 +3948,7 @@ MonoBehaviour:
     type: 2}
   straightPrefab: {fileID: 1290383576474644, guid: 79f57d43b6d8f654b8477b37c3b583b9,
     type: 2}
-  junctionPrefab: {fileID: 1271489576203714, guid: 2526d4bc954e8a84d83e5a0458af7c8d,
+  junctionPrefab: {fileID: 1168399928904732, guid: 2526d4bc954e8a84d83e5a0458af7c8d,
     type: 2}
   leftCornerPrefab: {fileID: 1332097979238476, guid: a41dce653ae301749a3f5f69ba003e4f,
     type: 2}

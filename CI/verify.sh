@@ -18,7 +18,7 @@ grep -Fq "m_EditorVersion: 2018.1.1f1" "./ProjectSettings/ProjectVersion.txt"
 echo " > Editor version verified"
 echo "Verifying Assets folder structure"
 cd ./Assets/
-files=(Imports/ Materials/ Models/ Sprites/ Scripts/ Scenes/ StreamingAssets/ Prefabs/ Animations/ Audio/ Textures/ Profiles/ Models/)
+files=(Imports/ Materials/ Models/ Sprites/ Scripts/ Scenes/ StreamingAssets/ Prefabs/ Animations/ Audio/ Textures/ Profiles/ Models/ Resources/)
 for f in $(ls -d */); do
     found=0
     for g in "${files[@]}" ; do

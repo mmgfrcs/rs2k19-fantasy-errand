@@ -18,11 +18,12 @@ namespace FantasyErrand
         public GameUIManager UIManager;
         public float startSpeed;
         public AnimationCurve speedGraph;
+        public int startingMultiplier = 10;
 
         public float Score { get; private set; }
         public float Distance { get; private set; }
         public float Currency { get; private set; }
-        public int Multiplier { get; private set; } = 10;
+        public int Multiplier { get; private set; }
         public bool IsGameRunning { get; private set; }
         public bool IsRollingStart { get; private set; }
 
@@ -36,6 +37,7 @@ namespace FantasyErrand
         public void Start()
         {
             //Setup game
+            Multiplier = startingMultiplier;
             Application.targetFrameRate = 60;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             StartGame();
@@ -94,7 +96,7 @@ namespace FantasyErrand
             }
             else if (!IsGameRunning && Input.GetMouseButtonDown(0)) StartGame();
             
-            scoreText.text = Score.ToString("n0");
+            if(scoreText != null) scoreText.text = Score.ToString("n0");
         }
     }
 

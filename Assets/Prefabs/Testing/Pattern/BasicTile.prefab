@@ -24,10 +24,10 @@ GameObject:
   - component: {fileID: 65911273589142028}
   m_Layer: 0
   m_Name: CubeM
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1156173525743596
 GameObject:
@@ -42,10 +42,10 @@ GameObject:
   - component: {fileID: 65119543657924744}
   m_Layer: 0
   m_Name: BorderR
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1290383576474644
 GameObject:
@@ -60,7 +60,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1765555172665262
 GameObject:
@@ -75,10 +75,10 @@ GameObject:
   - component: {fileID: 65703756387537076}
   m_Layer: 0
   m_Name: BorderL
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4589884114723808
 Transform:

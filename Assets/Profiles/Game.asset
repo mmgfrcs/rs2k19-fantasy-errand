@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Name: Game
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 114471450329703348}
   - {fileID: 114329623063796182}
   - {fileID: 114492150419063512}
 --- !u!114 &114329623063796182
@@ -29,13 +28,13 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   intensity:
     overrideState: 1
     value: 1
   threshold:
-    overrideState: 0
-    value: 1
+    overrideState: 1
+    value: 0.7
   softKnee:
     overrideState: 0
     value: 0.5
@@ -46,14 +45,14 @@ MonoBehaviour:
     overrideState: 0
     value: 7
   anamorphicRatio:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 0.2
   color:
     overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1
   dirtTexture:
     overrideState: 0
     value: {fileID: 0}
@@ -61,27 +60,6 @@ MonoBehaviour:
   dirtIntensity:
     overrideState: 0
     value: 0
---- !u!114 &114471450329703348
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
-  m_Name: MotionBlur
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  shutterAngle:
-    overrideState: 1
-    value: 210
-  sampleCount:
-    overrideState: 1
-    value: 8
 --- !u!114 &114492150419063512
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -133,11 +111,11 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 10
   tint:
     overrideState: 0
-    value: 0
+    value: -4
   colorFilter:
     overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
@@ -146,16 +124,16 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 20
+    value: 25
   brightness:
     overrideState: 1
-    value: -15
+    value: -20
   postExposure:
     overrideState: 0
     value: 0
   contrast:
     overrideState: 1
-    value: 30
+    value: 50
   mixerRedOutRedIn:
     overrideState: 0
     value: 100

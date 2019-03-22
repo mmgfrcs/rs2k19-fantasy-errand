@@ -1,14 +1,12 @@
 trap "echo ' > Verification failed'" ERR
 echo "===Start Verifying Files in Folders==="
 
-echo "Verifying Animations folder"
-
-find "./Unity/Research/Assets/Animations" -depth -type f  | wc -l
+echo "Verifying Animations folder. $(find "./Assets/Animations" -depth -type f  | wc -l) file(s) found."
 
 OIFS="$IFS"
 IFS=$'\n'
 files=(meta anim controller)
-for f in $(find "./Animations" -depth -print); do
+for f in $(find "./Assets/Animations" -depth -print); do
     if [ -f "$f" ]; then
         found=0
         for g in "${files[@]}" ; do

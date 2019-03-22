@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using FantomLib;
+using DG.Tweening;
 
 namespace FantasyErrand.Entities
 {
     public class Player : MonoBehaviour
     {
-        public float speed;
-
         [Header("Motion Configuration"), SerializeField]
         private bool controlActive;
         public float sidestepSpeedThreshold = 1f;
@@ -18,6 +17,12 @@ namespace FantasyErrand.Entities
         public float turnThreshold = 4f;
 
         EmotionManager emotionManager;
+
+        internal float speed;
+
+        public delegate void TurnEventDelegate(int direction);
+        public event System.Action<Collision> OnCollision;
+        public event TurnEventDelegate OnTurn;
 
         /// <summary>
         /// Can the player be controlled by motion controls?
@@ -31,13 +36,15 @@ namespace FantasyErrand.Entities
         Vector3 accelerometerValue;
         float velocityX = 0;
         float velocityY = 0;
-        bool canJump = false;
+        bool canJump = true;
         bool canSlide = true;
         bool canSidestep = true;
 
         //Turn
         float currentRate;
         bool canTurn = true;
+
+        int lane = 0;
 
         // Use this for initialization
         void Start()
@@ -48,6 +55,7 @@ namespace FantasyErrand.Entities
             
             //if(!AndroidPlugin.IsSupportedSensor(SensorType.Accelerometer)) Quit
         }
+
 
         // Update is called once per frame
         void Update()
@@ -61,14 +69,50 @@ namespace FantasyErrand.Entities
 
             if (IsControlActive)
             {
-                speed += Time.deltaTime;
-                ProcessControls();
+                ProcessKeyControls();
             }
 
         }
 
         /// <summary>
-        /// Process player motion controls
+        /// Process player Keyboard controls (Editor and Windows Test build only!). Not for use together with <see cref="Player.ProcessControls"/>
+        /// </summary>
+        void ProcessKeyControls()
+        {
+            //Check for Y acceleration, then find the speed by adding it by the acceleration. Multiply by 0.97 to decay it
+            velocityY += accelerometerValue.y * Time.deltaTime;
+            velocityY *= 0.97f;
+
+            if (Input.GetKeyDown(KeyCode.W) && canJump) //If Y velocity reaches the high threshold, provided it can jump...
+            {
+                //Jump and disable player's capability to jump and slide while on air
+                GetComponent<Rigidbody>().isKinematic = false;
+                GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
+                canJump = false;
+                canSlide = false;
+            }
+            else if (Input.GetKeyDown(KeyCode.S) && canSlide) //If Y velocity reaches the low threshold, provided it can slide...
+            {
+                //Slide and disable player's capability to jump and slide while sliding
+                transform.localScale = new Vector3(1, 1, 1);
+                StartCoroutine(SlideTime());
+            }
+            
+            //Check slide direction from velocity. Also check if the player object is on the edge of the lane
+            if (Input.GetKeyDown(KeyCode.D) && lane < 1)
+            {
+                Debug.Log("Slide Right!");
+                transform.DOMoveX(1.5f * ++lane, 0.8f);
+            }
+            else if (Input.GetKeyDown(KeyCode.A) && lane > -1)
+            {
+                Debug.Log("Slide Left!");
+                transform.DOMoveX(1.5f * --lane, 0.8f);
+            }
+        }
+
+        /// <summary>
+        /// Process player motion controls. Not to be used together with <see cref="Player.ProcessKeyControls"/>
         /// </summary>
         void ProcessControls()
         {
@@ -99,37 +143,19 @@ namespace FantasyErrand.Entities
                 if (velocityX > sidestepSpeedThreshold && transform.localPosition.x < 2)
                 {
                     Debug.Log("Slide Right!");
-                    transform.localPosition = new Vector3(transform.localPosition.x + 2, transform.localPosition.y, transform.localPosition.z);
+                    transform.Translate(Vector3.right * 2);
                     canSidestep = false;
                 }
                 else if (velocityX < -sidestepSpeedThreshold && transform.localPosition.x > -2)
                 {
                     Debug.Log("Slide Left!");
-                    transform.localPosition = new Vector3(transform.localPosition.x - 2, transform.localPosition.y, transform.localPosition.z);
+                    transform.Translate(Vector3.left * 2);
                     canSidestep = false;
                 }
             }
             else if (velocityX < 0.05f && velocityX > -0.05f) canSidestep = true;
 
             currentRate = Mathf.Lerp(currentRate, -Input.gyro.rotationRateUnbiased.y, 0.6f);
-
-            if (canTurn)
-            {
-                if (currentRate > turnThreshold)
-                {
-                    Debug.Log("Turn Right!");
-                    transform.Rotate(Vector3.up * 90);// = new Vector3(transform.localPosition.x + 2, transform.localPosition.y, transform.localPosition.z);
-                    canTurn = false;
-                }
-                else if (currentRate < -turnThreshold)
-                {
-                    Debug.Log("Turn Left!");
-                    transform.Rotate(Vector3.up * -90);
-                    //transform.localPosition = new Vector3(transform.localPosition.x - 2, transform.localPosition.y, transform.localPosition.z);
-                    canTurn = false;
-                }
-            }
-            else if (currentRate < 0.05f && currentRate > -0.05f) canTurn = true;
         }
 
         float GetDeviceYAngle()
@@ -161,11 +187,13 @@ namespace FantasyErrand.Entities
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.gameObject.tag != "Wall")
+            if (collision.collider.gameObject.tag == "Floor")
             {
+                GetComponent<Rigidbody>().isKinematic = true;
                 canSlide = true;
                 canJump = true;
             }
+            else OnCollision?.Invoke(collision);
 
         }
     }

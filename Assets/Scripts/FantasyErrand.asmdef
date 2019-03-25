@@ -1,0 +1,13 @@
+{
+    "name": "FantasyErrand",
+    "references": [
+        "Affdex",
+        "Unity.TextMeshPro",
+        "AndroidNative",
+        "DOTween.Modules"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -1,0 +1,11 @@
+{
+    "name": "FantasyErrand.WebSockets",
+    "references": [
+        "FantasyErrand",
+        "Affdex"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

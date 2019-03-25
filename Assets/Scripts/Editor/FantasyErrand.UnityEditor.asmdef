@@ -1,9 +1,7 @@
 {
-    "name": "FantasyErrand.Tests",
+    "name": "FantasyErrand.UnityEditor",
     "references": [],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
+    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],

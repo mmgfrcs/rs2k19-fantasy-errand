@@ -9,6 +9,9 @@ namespace FantasyErrand.Entities
 {
     public class Player : MonoBehaviour
     {
+        [Header("Non-Game")]
+        public bool enableNonGameMode;
+
         [Header("Motion Configuration"), SerializeField]
         private bool controlActive;
         public float sidestepSpeedThreshold = 1f;
@@ -49,9 +52,18 @@ namespace FantasyErrand.Entities
         // Use this for initialization
         void Start()
         {
-            emotionManager = FindObjectOfType<EmotionManager>();
-            Input.gyro.updateInterval = 0.1f;
-            Input.gyro.enabled = true;
+            if (enableNonGameMode)
+            {
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
+                speed = 5;
+            }
+            else
+            {
+                emotionManager = FindObjectOfType<EmotionManager>();
+                Input.gyro.updateInterval = 0.1f;
+                Input.gyro.enabled = true;
+            }
+
             
             //if(!AndroidPlugin.IsSupportedSensor(SensorType.Accelerometer)) Quit
         }
@@ -67,7 +79,7 @@ namespace FantasyErrand.Entities
 
             transform.Translate(transform.forward * speed * Time.deltaTime);
 
-            if (IsControlActive)
+            if (IsControlActive && !enableNonGameMode)
             {
                 ProcessKeyControls();
             }

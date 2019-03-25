@@ -13,7 +13,10 @@ namespace FantasyErrand.WebSockets
 {
     public class ResearchDataManager : MonoBehaviour
     {
-        public UnityEngine.UI.Image image;
+        [Header("Options")]
+        public bool dataTransmission = true;
+
+        [Header("Scripts")]
         public EmotionManager emotionManager;
         public Detector detector;
 
@@ -25,7 +28,6 @@ namespace FantasyErrand.WebSockets
         private void Start()
         {
             StartCoroutine(InitiateWebsocket());
-            Debug.Log("");
         }
 
         IEnumerator CollectData()
@@ -38,8 +40,6 @@ namespace FantasyErrand.WebSockets
                 Texture2D photo = new Texture2D(texture.width, texture.height);
                 photo.SetPixels(texture.GetPixels());
                 photo.Apply();
-
-                image.sprite = Sprite.Create(photo, new Rect(0, 0, photo.width, photo.height), Vector2.zero);
 
                 string imgStr = Convert.ToBase64String(photo.EncodeToPNG());
                 ResearchData data = new ResearchData() {
@@ -90,8 +90,6 @@ namespace FantasyErrand.WebSockets
                 {
                     Debug.Log("Ping sent");
                 }
-
-                
             };
 
             webSocket.OnError += (a, b) =>
@@ -113,7 +111,6 @@ namespace FantasyErrand.WebSockets
         {
             while(texture.isPlaying)
             {
-
                 yield return new WaitForEndOfFrame();
                 Frame frame = new Frame(texture.GetPixels32(), texture.width, texture.height, Frame.Orientation.Upright, Time.realtimeSinceStartup);
                 detector.ProcessFrame(frame);

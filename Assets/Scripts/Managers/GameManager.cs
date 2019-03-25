@@ -54,7 +54,6 @@ namespace FantasyErrand
             player.transform.position = Vector3.zero;
             player.transform.rotation = Quaternion.identity;
             player.enabled = true;
-            
 
             StartCoroutine(RollingStart());
         }

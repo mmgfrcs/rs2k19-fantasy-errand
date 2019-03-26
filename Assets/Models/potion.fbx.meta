@@ -5,25 +5,45 @@ ModelImporter:
   fileIDToRecycleName:
     100000: Cube
     100002: Cube.001
-    100004: Cube.002
-    100006: //RootNode
+    100004: //RootNode
+    100006: Text
+    100008: Text.001
     400000: Cube
     400002: Cube.001
-    400004: Cube.002
-    400006: //RootNode
-    2100000: Material
+    400004: //RootNode
+    400006: Text
+    400008: Text.001
+    2100000: Material.003
     2100002: No Name
     2100004: Material.001
     2300000: Cube
     2300002: Cube.001
-    2300004: Cube.002
+    2300004: Text
+    2300006: Text.001
     3300000: Cube
     3300002: Cube.001
-    3300004: Cube.002
-    4300000: Cube.002
-    4300002: Cube.001
-    4300004: Cube
-  externalObjects: {}
+    3300004: Text
+    3300006: Text.001
+    4300000: Text.001
+    4300002: Text
+    4300004: Cube.001
+    4300006: Cube
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 821a6a50aaf6a3548afed9109b73c4d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.003
+    second: {fileID: 2100000, guid: 2a31c802aac6f064ca6e557e5c570f0f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 3b01f944a8936204182687c69de8cccb, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

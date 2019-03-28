@@ -6,6 +6,8 @@ TagManager:
   tags:
   - lethal
   - Floor
+  - Obstacle
+  - Coin
   layers:
   - Default
   - TransparentFX

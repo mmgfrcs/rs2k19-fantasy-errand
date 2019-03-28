@@ -136,14 +136,19 @@ Upgrade Level | Multiplier Increase | Cost
 9 | 2 | 200,000
 10 | 2 | 400,000
 
-## Assets
-### 3D Models
-- Character (male and female in pizza delivery uniform)
-- Boss apparition
-- Tile map (forest)
-- Obstacle (forest) 
+Stage Unlock
+•	Heat Resistant clothes [5000 coin] – Unlock volcano stage
+•	Oxygen clothes [5000 coin] – Unlock sea stage
 
-### Sound
-- BGM (Forest)
-- CHAR VOICE (BOSS, CHAR)
-- SFX (COIN, GAME OVER)
+#Asset
+##Character 
+•	Amane Kisora-chan(FREE ver) credit to Sapphiart Inc  (http://www.sapphiart.co.jp/)
+•	Beast
+•	Tile map (forest)
+•	Obstacle (forest)
+
+##Sound
+•	Ambience (Forest)
+•	CHAR VOICE (Beast, CHAR)
+•	SFX (COIN, GAME OVER)
+

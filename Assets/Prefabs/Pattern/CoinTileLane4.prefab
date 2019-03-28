@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4658578565664008}
   m_Layer: 0
   m_Name: CoinTileLane4
-  m_TagString: Coin
+  m_TagString: CoinPath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

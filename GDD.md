@@ -140,14 +140,14 @@ Upgrade Level | Multiplier Increase | Cost
 9 | 2 | 200,000
 10 | 2 | 400,000
 
-#Asset
-##Character 
+# Asset
+## Character 
 -	Amane Kisora-chan(FREE ver) credit to Sapphiart Inc  (http://www.sapphiart.co.jp/)
 -	Beast
 -	Tile map (forest)
 -	Obstacle (forest)
 
-##Sound
+## Sound
 -	Ambience (Forest)
 -	CHAR VOICE (Beast, CHAR)
 -	SFX (COIN, GAME OVER)

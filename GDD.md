@@ -35,7 +35,11 @@ Each run, these can be collected:
   - Golden Coin: Increases coin value for a few seconds. Duration and Coin value multiplier increases with upgrades
 
 ### Stages
-There are 3 type of environments in this game: Forest, Volcano and Seal.
+There are 3 type of environments in this game: Forest, Volcano and Sea.
+Forest environtment doesn't need to be unlocked.
+Unlock Stage by buying the necessary equipment:
+- Heat Resistant clothes [5000 coin] – Unlock volcano stage
+-	Oxygen clothes [5000 coin] – Unlock sea stage
 
 *TODO - Under construction*
 
@@ -136,14 +140,15 @@ Upgrade Level | Multiplier Increase | Cost
 9 | 2 | 200,000
 10 | 2 | 400,000
 
-## Assets
-### 3D Models
-- Character (male and female in pizza delivery uniform)
-- Boss apparition
-- Tile map (forest)
-- Obstacle (forest) 
+# Asset
+## Character 
+-	Amane Kisora-chan(FREE ver) credit to Sapphiart Inc  (http://www.sapphiart.co.jp/)
+-	Beast
+-	Tile map (forest)
+-	Obstacle (forest)
 
-### Sound
-- BGM (Forest)
-- CHAR VOICE (BOSS, CHAR)
-- SFX (COIN, GAME OVER)
+## Sound
+-	Ambience (Forest)
+-	CHAR VOICE (Beast, CHAR)
+-	SFX (COIN, GAME OVER)
+

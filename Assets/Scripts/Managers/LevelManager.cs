@@ -39,7 +39,7 @@ namespace FantasyErrand
 
         [Header("Obstacles")]
         public float baseObstacleRatio = 100;
-        
+
         //public UnityEngine.UI.Text text;
 
         int patternSpawned;
@@ -50,7 +50,7 @@ namespace FantasyErrand
 		Queue<GameObject> tempTile = new Queue<GameObject> ();
 		public List<GameObject> obstacleList;
 		public List<GameObject> coinList;
-		public int spawnCounter=0;
+		public int prefabMultiplier=0;
         void Start()
         {
 			SetListPrefab ();
@@ -120,7 +120,7 @@ namespace FantasyErrand
 		//Instantiate all prefab on start
 		public void SetListPrefab(){
 			for (int i =0; i<obstaclePrefab.Length; i++) {
-				for(int x=0; x<4;x++)
+				for(int x=0; x<prefabMultiplier;x++)
 				{
 					GameObject a = Instantiate(obstaclePrefab[i],new Vector3(10,10,10),Quaternion.identity);
 					a.SetActive(false);
@@ -128,7 +128,7 @@ namespace FantasyErrand
 				}
 			}
 			for (int i =0; i<coinPrefab.Length; i++) {
-				for(int x = 0 ; x<4 ;x++)
+				for(int x = 0 ; x<prefabMultiplier ;x++)
 				{
 					GameObject a = Instantiate(coinPrefab[i],new Vector3(10,10,10),Quaternion.identity);
 					a.SetActive(false);

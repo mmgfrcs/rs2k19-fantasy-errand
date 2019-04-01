@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
+using System.Linq;
 
 namespace FantasyErrand
 {
@@ -10,6 +11,16 @@ namespace FantasyErrand
     {
         Straight, Junction, LeftCorner, RightCorner
     }
+
+	public enum Difficulty
+	{
+		Easy,Medium,Hard
+	}
+
+	public enum PathType
+	{
+		Coin,Obstacle
+	}
 
     public class LevelManager : MonoBehaviour
     {
@@ -28,14 +39,21 @@ namespace FantasyErrand
 
         [Header("Obstacles")]
         public float baseObstacleRatio = 100;
-        
+
         //public UnityEngine.UI.Text text;
 
         int patternSpawned;
 
         // Use this for initialization
+
+		public GameObject[] coinPrefab;
+		Queue<GameObject> tempTile = new Queue<GameObject> ();
+		public List<GameObject> obstacleList;
+		public List<GameObject> coinList;
+		public int prefabMultiplier=0;
         void Start()
         {
+			SetListPrefab ();
             StartCoroutine(Generate());
         }
         
@@ -58,8 +76,12 @@ namespace FantasyErrand
                     spawnedStart = true;
                     if(Vector3.Distance(spawnPos, player.transform.position) < maxGeneratedTile * tileScale)
                     {
-                        GameObject obj = Instantiate(straightPrefab, new Vector3(spawnPos.x, -0.5f, spawnPos.z), Quaternion.identity);
-                        spawnedTiles.Enqueue(obj);
+                        //GameObject obj = Instantiate(straightPrefab, new Vector3(spawnPos.x, -0.5f, spawnPos.z), Quaternion.identity);
+						GameObject obj = ReturnPath(Difficulty.Easy);
+						obj.SetActive(true);
+						obj.transform.position=new Vector3(spawnPos.x,-0.5f,spawnPos.z);
+						obj.transform.rotation=Quaternion.identity;
+						spawnedTiles.Enqueue(obj);
                         tiles++;
                         spawnPos += Vector3.forward * tileScale;
                     }
@@ -84,8 +106,105 @@ namespace FantasyErrand
             if(spawnedTiles.Count > 0)
             {
                 if (Vector3.Distance(player.transform.position, spawnedTiles.Peek().transform.position) > maxGeneratedTile * tileScale)
-                    Destroy(spawnedTiles.Dequeue());
+				{
+					GameObject obj =spawnedTiles.Dequeue();
+					obj.SetActive(false);
+					if(obj.CompareTag("BarrierPath"))
+						obstacleList.Add(obj);
+					else
+						coinList.Add(obj);
+				}
             }
         }
+
+		//Instantiate all prefab on start
+		public void SetListPrefab(){
+			for (int i =0; i<obstaclePrefab.Length; i++) {
+				for(int x=0; x<prefabMultiplier;x++)
+				{
+					GameObject a = Instantiate(obstaclePrefab[i],new Vector3(10,10,10),Quaternion.identity);
+					a.SetActive(false);
+					obstacleList.Add(a);
+				}
+			}
+			for (int i =0; i<coinPrefab.Length; i++) {
+				for(int x = 0 ; x<prefabMultiplier ;x++)
+				{
+					GameObject a = Instantiate(coinPrefab[i],new Vector3(10,10,10),Quaternion.identity);
+					a.SetActive(false);
+					coinList.Add(a);
+				}
+			}
+		}
+
+		//selecting path 
+		public GameObject AddPath(PathType pathType){
+			int rand;
+			if (pathType==PathType.Obstacle) {
+				rand = (int)Random.Range(0,obstacleList.Count-1);
+				GameObject path = obstacleList [rand];
+				obstacleList.RemoveAt(rand);
+				return path;
+			} else {
+				rand =(int) Random.Range(0,coinList.Count-1);
+				GameObject path = coinList [rand];
+				coinList.RemoveAt(rand);
+				return path;
+			}
+		}
+
+		public void FillTheList(Difficulty dif,ref List<GameObject>a)
+		{
+			//Easy= 4 coin 2 obstacle, Medium = 2 coin 4 obstacle, Hard = 0 coin 6 obstacle
+			for (int i=0; i<6; i++) 
+			{
+				if(dif==Difficulty.Easy)
+				{
+					if (i < 2)
+						a.Add (AddPath (PathType.Obstacle));
+					if (i < 6)
+						a.Add (AddPath (PathType.Coin));
+				}
+				else if(dif==Difficulty.Medium)
+				{
+					if (i < 2)
+						a.Add (AddPath (PathType.Coin));
+					if (i < 6)
+						a.Add (AddPath (PathType.Obstacle));
+				}
+				else if(dif==Difficulty.Hard)
+				{
+					a.Add(AddPath(PathType.Obstacle));
+				}	
+			}
+		}
+
+		public GameObject ReturnPath(Difficulty dif)
+		{
+			if (tempTile.Count == 0) {
+					List<GameObject>tileList= new List<GameObject>();
+					FillTheList(dif,ref tileList);
+					//shuffle isi list
+					GameObject[]temp = tileList.ToArray();
+					MathRand.Shuffle<GameObject>(ref temp);
+					tileList=temp.ToList();
+					int size = tileList.Count;
+					//insert the tile into queue
+					for(int i =0 ; i<size;i++)
+					{
+						tempTile.Enqueue(tileList[0]);
+						tileList.RemoveAt(0);
+					}
+				GameObject data = (GameObject) tempTile.Dequeue();
+				return data;
+			}
+			//Return tile on the queue 
+			else{
+				GameObject data = (GameObject)tempTile.Dequeue();
+				return data;
+			}
+
+		}
+
     }
 }

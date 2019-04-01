@@ -6,6 +6,9 @@ TagManager:
   tags:
   - lethal
   - Floor
+  - Undefined
+  - BarrierPath
+  - CoinPath
   layers:
   - Default
   - TransparentFX

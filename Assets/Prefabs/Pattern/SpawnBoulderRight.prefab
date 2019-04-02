@@ -55,6 +55,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4979415549474034}
+  - component: {fileID: 114833474211472410}
   m_Layer: 0
   m_Name: SpawnBoulderRight
   m_TagString: Untagged
@@ -92,7 +93,6 @@ GameObject:
   - component: {fileID: 23312429761993662}
   - component: {fileID: 135072650440479614}
   - component: {fileID: 54899175267441462}
-  - component: {fileID: 114381848887170216}
   m_Layer: 9
   m_Name: Sphere
   m_TagString: Untagged
@@ -388,19 +388,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114381848887170216
+--- !u!114 &114833474211472410
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1837290870944878}
+  m_GameObject: {fileID: 1499342946615884}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4c4e883cd7f3454894f61caa7d939bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  isBoulder: 1
+  spawnRate: 20
+  minSpeed: 5
+  moveSpeed: 10
+  rotateSpeed: {x: -180, y: 0, z: 0}
+  movableObject: {fileID: 1837290870944878}
+  player: {fileID: 0}
+  minDistance: 15
 --- !u!135 &135072650440479614
 SphereCollider:
   m_ObjectHideFlags: 1

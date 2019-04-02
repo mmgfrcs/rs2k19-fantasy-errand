@@ -947,6 +947,7 @@ GameObject:
   - component: {fileID: 1152662693}
   - component: {fileID: 1152662695}
   - component: {fileID: 1152662696}
+  - component: {fileID: 1152662697}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1042,6 +1043,7 @@ MonoBehaviour:
   startTiles: 2
   tileScale: 5
   baseObstacleRatio: 100
+  showGizmos: 1
 --- !u!114 &1152662696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,6 +1053,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64fda1334f578ce49bcdd6f68d6ea257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1152662697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1152662691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a18c6ca912e7d4b43a01f22221be0476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1374055816
@@ -1151,7 +1164,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4478454067199198, guid: b13b99af3eb47364f9e6fec4347cee27, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.69
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4478454067199198, guid: b13b99af3eb47364f9e6fec4347cee27, type: 2}
       propertyPath: m_LocalPosition.z

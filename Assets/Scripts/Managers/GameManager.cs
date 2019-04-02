@@ -38,7 +38,6 @@ namespace FantasyErrand
         {
             //Setup game
             Multiplier = startingMultiplier;
-            Application.targetFrameRate = 60;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             StartGame();
         }

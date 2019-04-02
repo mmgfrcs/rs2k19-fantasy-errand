@@ -12,6 +12,7 @@ namespace FantasyErrand.Tests
         public void PlayerAtOrigin()
         {
             GameObject player = GameObject.Find("PlayerObject");
+            Assert.IsNotNull(player, "Player object not found");
             Assert.AreEqual(0, player.transform.position.x);
             Assert.AreEqual(0, player.transform.position.y);
             Assert.AreEqual(0, player.transform.position.z);
@@ -22,6 +23,7 @@ namespace FantasyErrand.Tests
         public void PlayerRotationZero()
         {
             GameObject player = GameObject.Find("PlayerObject");
+            Assert.IsNotNull(player, "Player object not found");
             Assert.AreEqual(0, player.transform.rotation.eulerAngles.x);
             Assert.AreEqual(0, player.transform.rotation.eulerAngles.y);
             Assert.AreEqual(0, player.transform.rotation.eulerAngles.z);

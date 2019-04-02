@@ -40,6 +40,9 @@ namespace FantasyErrand
         [Header("Obstacles")]
         public float baseObstacleRatio = 100;
 
+        [Header("Debug")]
+        public bool showGizmos = true;
+        
         //public UnityEngine.UI.Text text;
 
         int patternSpawned;
@@ -60,6 +63,7 @@ namespace FantasyErrand
 				StartCoroutine(Generate());
 			}
 	 	}
+
         
         IEnumerator Generate()
         {
@@ -97,12 +101,16 @@ namespace FantasyErrand
 
         private void OnDrawGizmos()
         {
-            float distance = maxGeneratedTile * tileScale;
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(player.transform.position, player.transform.position + Vector3.forward * distance);
-            Gizmos.DrawLine(player.transform.position, player.transform.position + Vector3.back * distance);
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(player.transform.position, distance);
+            if (showGizmos)
+            {
+                float distance = maxGeneratedTile * tileScale;
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(player.transform.position, player.transform.position + Vector3.forward * distance);
+                Gizmos.DrawLine(player.transform.position, player.transform.position + Vector3.back * distance);
+                Gizmos.color = new Color(1, 0, 0, 0.33f);
+                Gizmos.DrawWireSphere(player.transform.position, distance);
+            }
+
         }
 
         private void Update()

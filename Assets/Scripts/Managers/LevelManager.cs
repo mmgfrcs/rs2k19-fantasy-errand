@@ -50,12 +50,16 @@ namespace FantasyErrand
 		Queue<GameObject> tempTile = new Queue<GameObject> ();
 		public List<GameObject> obstacleList;
 		public List<GameObject> coinList;
+		public bool SpawnedObstacle;
 		public int prefabMultiplier=0;
         void Start()
         {
-			SetListPrefab ();
-            StartCoroutine(Generate());
-        }
+			if (SpawnedObstacle != true) 
+			{
+				SetListPrefab ();
+				StartCoroutine(Generate());
+			}
+	 	}
         
         IEnumerator Generate()
         {
@@ -141,12 +145,12 @@ namespace FantasyErrand
 		public GameObject AddPath(PathType pathType){
 			int rand;
 			if (pathType==PathType.Obstacle) {
-				rand = (int)Random.Range(0,obstacleList.Count-1);
+				rand = (int)Random.Range(0,obstacleList.Count);
 				GameObject path = obstacleList [rand];
 				obstacleList.RemoveAt(rand);
 				return path;
 			} else {
-				rand =(int) Random.Range(0,coinList.Count-1);
+				rand =(int) Random.Range(0,coinList.Count);
 				GameObject path = coinList [rand];
 				coinList.RemoveAt(rand);
 				return path;

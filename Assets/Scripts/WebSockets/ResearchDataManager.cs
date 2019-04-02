@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Affdex;
 using Newtonsoft.Json;
+using FantasyErrand.WebSockets.Models;
 
 namespace FantasyErrand.WebSockets
 {
@@ -24,9 +25,19 @@ namespace FantasyErrand.WebSockets
         WebCamTexture texture;
 
         bool collecting = false;
+        bool opened = false;
 
         private void Start()
         {
+            //TODO: Only record if FER is enabled
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+                texture = new WebCamTexture(WebCamTexture.devices.FirstOrDefault(x => x.name.Contains("RGB")).name, 640, 480, 50);
+            else if (Application.platform == RuntimePlatform.Android)
+                texture = new WebCamTexture(WebCamTexture.devices.FirstOrDefault(x => x.isFrontFacing).name, 640, 480, 50);
+
+            texture.Play();
+            StartCoroutine(AffdexProcessFace());
+
             StartCoroutine(InitiateWebsocket());
         }
 
@@ -86,10 +97,10 @@ namespace FantasyErrand.WebSockets
             webSocket.OnOpen += (a, b) =>
             {
                 Debug.Log("Websocket connection established");
-                if(webSocket.Ping("Init"))
-                {
-                    Debug.Log("Ping sent");
-                }
+
+                StartCoroutine(CollectData());
+                
+                collecting = true;
             };
 
             webSocket.OnError += (a, b) =>
@@ -100,11 +111,19 @@ namespace FantasyErrand.WebSockets
 
             webSocket.OnClose += (sender, e) =>
             {
+                if (!opened) StartCoroutine(Reconnect());
                 print("Websocket Closed");
             };
 
             webSocket.ConnectAsync();
             yield return null;
+        }
+
+        IEnumerator Reconnect()
+        {
+            print("Reconnecting in 5 seconds");
+            yield return new WaitForSecondsRealtime(5f);
+            StartCoroutine(InitiateWebsocket());
         }
 
         IEnumerator AffdexProcessFace()
@@ -120,36 +139,12 @@ namespace FantasyErrand.WebSockets
 
         private void Update()
         {
-            if(webSocket != null && webSocket.ReadyState == WebSocketState.Open)
-            {
-                if(!collecting)
-                {
-                    if (Application.platform == RuntimePlatform.WindowsEditor)
-                        texture = new WebCamTexture(WebCamTexture.devices.FirstOrDefault(x => x.name.Contains("RGB")).name, 640, 480, 50);
-                    else if (Application.platform == RuntimePlatform.Android)
-                        texture = new WebCamTexture(WebCamTexture.devices.FirstOrDefault(x => x.isFrontFacing).name, 640, 480, 50);
 
-                    texture.Play();
-                    StartCoroutine(CollectData());
-                    StartCoroutine(AffdexProcessFace());
-                    collecting = true;
-                }
-            }
         }
 
         private void OnApplicationQuit()
         {
             if (webSocket.ReadyState != WebSocketState.Closed) webSocket.CloseAsync(CloseStatusCode.Away);
         }
-    }
-
-    [Serializable]
-    public class ResearchData
-    {
-        public int pictureNo;
-        public string imageData;
-
-        public Dictionary<string, float> emotions;
-        public Dictionary<string, float> expressions;
     }
 }

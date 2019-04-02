@@ -29,6 +29,14 @@ namespace FantasyErrand.Entities
             }
         }
 
+        public bool IsHurdling
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public void DoMove()
         {
             transform.Translate(new Vector3(0, 0, moveSpeed) * Time.deltaTime);

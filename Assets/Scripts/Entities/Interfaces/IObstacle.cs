@@ -8,6 +8,7 @@ namespace FantasyErrand.Entities.Interfaces
 {
     public interface IObstacle
     {
+        bool IsHurdling { get; }
         float SpawnRate { get; }
     }
 }

@@ -13,7 +13,10 @@ public class RotateObstacle : MonoBehaviour,IObstacleMovable,IObstacleRotatable 
 	private float moveSpeed;
 	[SerializeField]
 	private Vector3 rotateSpeed= new Vector3(-180f,0f,0f);
+	[SerializeField]
+	private bool isHurdling;
 	public GameObject movableObject;
+
 
 	public GameObject player;
 	public int minDistance;
@@ -67,5 +70,12 @@ public class RotateObstacle : MonoBehaviour,IObstacleMovable,IObstacleRotatable 
 	{
 		//transform.Rotate (rotateSpeed * Time.deltaTime);
 		movableObject.transform.Rotate (rotateSpeed * Time.deltaTime);
+	}
+
+	public bool IsHurdling{
+		get
+		{
+			return isHurdling;
+		}
 	}
 }

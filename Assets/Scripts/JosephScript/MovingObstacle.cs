@@ -12,7 +12,15 @@ public class MovingObstacle : MonoBehaviour,IObstacleMovable {
 	private float minSpeed;
 	[SerializeField]
 	private float spawnRate;
+	[SerializeField]
+	private bool isHurdling;
 	public GameObject movableObject;
+
+	public bool IsHurdling
+	{
+		get{return isHurdling;}
+	}
+
 	public float SpawnRate
 	{
 		get

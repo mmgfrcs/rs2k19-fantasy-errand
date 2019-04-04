@@ -5,7 +5,16 @@ using FantasyErrand.Entities.Interfaces;
 public class StaticObstacle : MonoBehaviour,IObstacle {
 	[SerializeField]
 	private float spawnRate;
+	[SerializeField]
+	private bool isHurdling;
 
+	public bool IsHurdling
+	{
+		get
+		{
+			return isHurdling;
+		}
+	}
 	public float SpawnRate 
 	{
 		get

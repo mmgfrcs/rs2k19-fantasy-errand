@@ -7,6 +7,8 @@ using DG.Tweening;
 using FantasyErrand.Entities.Interfaces;
 using System.Linq;
 using FantomLib;
+using System;
+using System.IO;
 
 namespace FantasyErrand
 {
@@ -15,48 +17,63 @@ namespace FantasyErrand
         public Slider loadingSlider;
         public CanvasGroup optionsPanel;
         public Image neutralImage, happyImage;
-        public GalleryPickController picker;
-        public ToastController toast;
+        public GameObject researchModeFrame, basicInfoFrame, expressionFrame;
+
+        public Image fader;
 
         bool isPanelOpen = false;
-        GameObject fader;
 
         int pickMode = 0;
-
+        
         public void OnTakeNeutralPicture()
         {
             pickMode = 0;
-            picker.Show();
+            NativeCamera.TakePicture(OnLoadImage);
         }
 
-        public void OnResult(string data, int x, int y)
+        public void OnTakeHappyPicture()
         {
-            print($"{data} - {x} - {y}");
+            pickMode = 1;
+            NativeCamera.TakePicture(OnLoadImage);
         }
 
-        public void OnImageSelected(ImageInfo info)
+        private void OnLoadImage(string path)
         {
-            print("Image selected - " + info);
-            if(info.width < info.height)
+            AndroidPlugin.ShowToast("Loading Image...");
+            StartCoroutine(LoadImage(path, pickMode == 0 ? neutralImage : happyImage));
+        }
+
+        IEnumerator LoadImage(string path, Image image)
+        {
+            var properties = NativeCamera.GetImageProperties(path);
+            yield return null;
+            if (properties.width < properties.height)
             {
-                float aspect = (float)info.width / info.height;
-                if (aspect <= 9f / 16f)
-                {
-                    print(info.fileUri);
-                    print(info.uri);
-                    print(info.path);
-                    print(info.name);
-                    print(info.mimeType);
+                fader.gameObject.SetActive(true);
+                fader.color = new Color(0, 0, 0, 0.5f);
 
-                }
-                else toast.Show($"Aspect Ratio Error, expected 9:16 or lower, found {(aspect * 16).ToString("n1")}:16");
+                byte[] bytes = File.ReadAllBytes(path);
+                yield return null;
+
+                Texture2D t2d = new Texture2D(properties.width, properties.height);
+                t2d.LoadImage(bytes);
+                yield return null;
+                t2d.Apply();
+                if (properties.orientation != NativeCamera.ImageOrientation.Normal && properties.orientation != NativeCamera.ImageOrientation.Unknown)
+                    t2d = t2d.RotateImage();
+                yield return null;
+
+                image.rectTransform.sizeDelta = new Vector2(t2d.width * 432f / t2d.height, 432);
+                image.sprite = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
+                AndroidPlugin.ShowToast("Image Loaded");
+                fader.DOFade(0f, 1f).onComplete = () =>
+                    {
+                        fader.gameObject.SetActive(false);
+                    };
+                yield return null;
+               
             }
-            else toast.Show("Image must be portrait in orientation");
-        }
-
-        public void OnError(string err)
-        {
-            print(err);
+            else AndroidPlugin.ShowToast("Not a portrait image");
         }
 
         IEnumerator LoadScene()
@@ -70,7 +87,7 @@ namespace FantasyErrand
                 yield return null;
             }
             while (scene.progress < 0.9f);
-            fader.SetActive(true);
+            fader.gameObject.SetActive(true);
             var tween = fader.GetComponent<Image>().DOFade(1f, 2f);
             yield return tween.WaitForCompletion();
             scene.allowSceneActivation = true;
@@ -95,16 +112,8 @@ namespace FantasyErrand
         // Use this for initialization
         void Start()
         {
-            fader = new GameObject("Fader", typeof(Image));
-            fader.transform.SetParent(optionsPanel.transform.parent);
-            RectTransform panelTransform = fader.GetComponent<RectTransform>();
-            panelTransform.anchorMin = Vector2.zero;
-            panelTransform.anchorMax = Vector2.one;
-            panelTransform.sizeDelta = Vector2.zero;
-            Image img = fader.GetComponent<Image>();
-            img.color = Color.black;
-            img.DOFade(0f, 2f).onComplete = () => {
-                img.gameObject.SetActive(false);
+            fader.DOFade(0f, 2f).onComplete = () => {
+                fader.gameObject.SetActive(false);
             };
         }
 

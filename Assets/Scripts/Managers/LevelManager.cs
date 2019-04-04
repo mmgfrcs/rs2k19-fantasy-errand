@@ -53,17 +53,31 @@ namespace FantasyErrand
 		Queue<GameObject> tempTile = new Queue<GameObject> ();
 		public List<GameObject> obstacleList;
 		public List<GameObject> coinList;
+		public Queue<GameObject> straightPrefabQueue= new Queue<GameObject>();
 		public bool SpawnedObstacle;
 		public int prefabMultiplier=0;
         void Start()
         {
-			if (SpawnedObstacle != true) 
+			if (SpawnedObstacle) 
 			{
 				SetListPrefab ();
-				StartCoroutine(Generate());
+				StartCoroutine (Generate ());
+			}
+			else 
+			{	
+				setStraightPrefab();
+				StartCoroutine(generateStraightPath());
 			}
 	 	}
 
+		void setStraightPrefab(){
+			for(int i =0; i<30; i++)
+			{
+				GameObject a =Instantiate(straightPrefab,new Vector3(0,0,0),Quaternion.identity);
+				a.SetActive(false);
+				straightPrefabQueue.Enqueue(a);
+			}
+		}
         
         IEnumerator Generate()
         {
@@ -72,7 +86,7 @@ namespace FantasyErrand
             Vector3 spawnPos = startPosition;
             while(true)
             {
-                if (!spawnedStart && tiles < startTiles)
+                if (spawnedStart && tiles < startTiles)
                 {
                     GameObject obj = Instantiate(startPrefab, new Vector3(spawnPos.x, -0.5f, spawnPos.z), Quaternion.identity);
                     spawnedTiles.Enqueue(obj);
@@ -98,6 +112,22 @@ namespace FantasyErrand
             }
         }
 
+		IEnumerator generateStraightPath()
+		{
+			Vector3 spawnPos = startPosition;
+			while (true) {
+				if(Vector3.Distance(spawnPos, player.transform.position) < maxGeneratedTile * tileScale)
+				{
+					GameObject obj = straightPrefabQueue.Dequeue();
+					obj.SetActive(true);
+					obj.transform.position=new Vector3(spawnPos.x,-0.5f,spawnPos.z);
+					spawnedTiles.Enqueue(obj);
+					spawnPos += Vector3.forward * tileScale;
+				}
+				yield return new WaitForEndOfFrame();
+			}
+		}
+
 
         private void OnDrawGizmos()
         {
@@ -115,18 +145,22 @@ namespace FantasyErrand
 
         private void Update()
         {
-            if(spawnedTiles.Count > 0)
-            {
-                if (Vector3.Distance(player.transform.position, spawnedTiles.Peek().transform.position) > maxGeneratedTile * tileScale)
-				{
-					GameObject obj =spawnedTiles.Dequeue();
-					obj.SetActive(false);
-					if(obj.CompareTag("BarrierPath"))
-						obstacleList.Add(obj);
+            if (spawnedTiles.Count > 0 && SpawnedObstacle) {
+				if (Vector3.Distance (player.transform.position, spawnedTiles.Peek ().transform.position) > maxGeneratedTile * tileScale) {
+					GameObject obj = spawnedTiles.Dequeue ();
+					obj.SetActive (false);
+					if (obj.CompareTag ("BarrierPath"))
+						obstacleList.Add (obj);
 					else
-						coinList.Add(obj);
+						coinList.Add (obj);
 				}
-            }
+			} else if(!SpawnedObstacle) {
+				if (Vector3.Distance (player.transform.position, spawnedTiles.Peek ().transform.position) > maxGeneratedTile * tileScale) {
+					GameObject obj = spawnedTiles.Dequeue ();
+					obj.SetActive (false);
+					straightPrefabQueue.Enqueue(obj);
+				}
+			}
         }
 
 		//Instantiate all prefab on start

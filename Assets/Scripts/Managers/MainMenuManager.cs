@@ -9,6 +9,7 @@ using System.Linq;
 using FantomLib;
 using System;
 using System.IO;
+using TMPro;
 
 namespace FantasyErrand
 {
@@ -16,14 +17,23 @@ namespace FantasyErrand
     {
         public Slider loadingSlider;
         public CanvasGroup optionsPanel;
-        public Image neutralImage, happyImage;
         public GameObject researchModeFrame, basicInfoFrame, expressionFrame;
+
+        [Header("Option Fields")]
+        public TMP_InputField[] serverAddress;
+        public Toggle researchToggle, basicGatherToggle, expressionToggle;
+        public TMP_InputField nameField, ageField;
+        public Image neutralImage, happyImage;
+        public Button backButton;
+
+        Texture2D neutral, happy;
 
         public Image fader;
 
         bool isPanelOpen = false;
 
         int pickMode = 0;
+        int errors = 0;
         
         public void OnTakeNeutralPicture()
         {
@@ -61,6 +71,9 @@ namespace FantasyErrand
                 t2d.Apply();
                 if (properties.orientation != NativeCamera.ImageOrientation.Normal && properties.orientation != NativeCamera.ImageOrientation.Unknown)
                     t2d = t2d.RotateImage();
+
+                if (pickMode == 0) neutral = t2d;
+                else happy = t2d;
                 yield return null;
 
                 image.rectTransform.sizeDelta = new Vector2(t2d.width * 432f / t2d.height, 432);
@@ -97,24 +110,78 @@ namespace FantasyErrand
         {
             if(isPanelOpen)
             {
+                print($"GameData - Saving Data: {nameField.text}, Age {ageField.text}\nResearch Mode is {(researchToggle.isOn ? "on" : "off")} at 192.168.{serverAddress[0].text}.{serverAddress[1].text}");
+                GameDataManager.instance.SaveParticipantData(nameField.text, ageField.text == "" ? 0 : int.Parse(ageField.text), neutral, happy);
+                GameDataManager.instance.SaveBasicOptions(researchToggle.isOn, basicGatherToggle.isOn, 
+                    expressionToggle.isOn, $"192.168.{serverAddress[0].text}.{serverAddress[1].text}");
                 optionsPanel.DOFade(0f, 1f).onComplete += () => {
                     optionsPanel.blocksRaycasts = false;
                 };
+                //GameDataManager.instance.SaveResearchDataToFile();
             }
             else
             {
                 optionsPanel.blocksRaycasts = true;
                 optionsPanel.DOFade(1f, 1f);
+                nameField.text = GameDataManager.instance.PlayerName;
+                ageField.text = GameDataManager.instance.Age.ToString();
+                string[] addr = GameDataManager.instance.ServerAddress.Split('.');
+                serverAddress[0].text = addr[2];
+                serverAddress[1].text = addr[3];
+                researchToggle.isOn = GameDataManager.instance.ResearchMode;
+                basicGatherToggle.isOn = GameDataManager.instance.BasicGathering;
+                expressionToggle.isOn = GameDataManager.instance.ExpressionGathering;
+                neutral = GameDataManager.instance.NeutralPicture;
+                if (neutral != null) neutralImage.sprite = Sprite.Create(neutral, new Rect(0, 0, neutral.width, neutral.height), Vector2.zero);
+                happy = GameDataManager.instance.HappyPicture;
+                if (happy != null) happyImage.sprite = Sprite.Create(happy, new Rect(0, 0, happy.width, happy.height), Vector2.zero);
+                print($"GameData - Loading Data: {GameDataManager.instance.PlayerName}, Age {GameDataManager.instance.Age}\nResearch Mode is {(GameDataManager.instance.ResearchMode ? "on" : "off")} at {GameDataManager.instance.ServerAddress}");
             }
             isPanelOpen = !isPanelOpen;
+        }
+
+        public void OnResearchModeToggle(bool state)
+        {
+            if (state) researchModeFrame.SetActive(true);
+            else researchModeFrame.SetActive(false);
+        }
+
+        public void OnBasicGatheringToggle(bool state)
+        {
+            if (state) basicInfoFrame.SetActive(true);
+            else basicInfoFrame.SetActive(false);
+        }
+
+        public void OnExpressionGatheringToggle(bool state)
+        {
+            if (state) expressionFrame.SetActive(true);
+            else expressionFrame.SetActive(false);
+        }
+
+        public void CheckNameEmpty(string text)
+        {
+            if (text == "") errors++;
+            else errors--;
+
+            if (errors > 0) backButton.enabled = false;
+            else backButton.enabled = true;
+        }
+
+        public void CheckAgeEmpty(string text)
+        {
+            if (text == "") ageField.text = "0";
         }
 
         // Use this for initialization
         void Start()
         {
+            optionsPanel.alpha = 0;
+            optionsPanel.blocksRaycasts = false;
             fader.DOFade(0f, 2f).onComplete = () => {
                 fader.gameObject.SetActive(false);
             };
+
+
         }
 
         // Update is called once per frame

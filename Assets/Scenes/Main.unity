@@ -274,7 +274,18 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1869478384}
+        m_MethodName: OnResearchModeToggle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
@@ -380,7 +391,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 121
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -408,7 +419,7 @@ MonoBehaviour:
     spaceCount: 18
     wordCount: 19
     linkCount: 0
-    lineCount: 4
+    lineCount: 3
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -966,8 +977,8 @@ RectTransform:
   - {fileID: 1327317386}
   - {fileID: 90231702}
   - {fileID: 509145847}
-  m_Father: {fileID: 867035229}
-  m_RootOrder: 4
+  m_Father: {fileID: 1020957719}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2106,7 +2117,7 @@ GameObject:
   - component: {fileID: 368806490}
   - component: {fileID: 368806491}
   m_Layer: 5
-  m_Name: BasicInfoToggle (1)
+  m_Name: EmotionsToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2124,8 +2135,8 @@ RectTransform:
   m_Children:
   - {fileID: 631191655}
   - {fileID: 762518519}
-  m_Father: {fileID: 867035229}
-  m_RootOrder: 3
+  m_Father: {fileID: 1020957719}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2173,7 +2184,18 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1869478384}
+        m_MethodName: OnExpressionGatheringToggle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
@@ -6124,8 +6146,6 @@ RectTransform:
   - {fileID: 342690302}
   - {fileID: 1309412625}
   - {fileID: 1020957719}
-  - {fileID: 368806490}
-  - {fileID: 138871423}
   m_Father: {fileID: 2021106380}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6752,7 +6772,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1020957719}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Basic Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6770,6 +6790,8 @@ RectTransform:
   m_Children:
   - {fileID: 668239431}
   - {fileID: 1135928818}
+  - {fileID: 368806490}
+  - {fileID: 138871423}
   m_Father: {fileID: 867035229}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9037,7 +9059,18 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1869478384}
+        m_MethodName: OnBasicGatheringToggle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
@@ -12798,7 +12831,7 @@ MonoBehaviour:
     type: 2}
   obstaclePrefab: []
   startPosition: {x: 0, y: 0, z: 0}
-  maxGeneratedTile: 30
+  maxGeneratedTile: 10
   startTiles: 0
   tileScale: 8
   baseObstacleRatio: 100
@@ -12807,7 +12840,7 @@ MonoBehaviour:
   obstacleList: []
   coinList: []
   SpawnedObstacle: 0
-  prefabMultiplier: 0
+  prefabMultiplier: 5
 --- !u!4 &1869478381
 Transform:
   m_ObjectHideFlags: 0
@@ -12850,8 +12883,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingSlider: {fileID: 841631250}
   optionsPanel: {fileID: 2021106383}
+  researchModeFrame: {fileID: 867035228}
+  basicInfoFrame: {fileID: 1020957718}
+  expressionFrame: {fileID: 138871422}
+  serverAddress:
+  - {fileID: 1658775098}
+  - {fileID: 1823800484}
+  researchToggle: {fileID: 14784856}
+  basicGatherToggle: {fileID: 1309412626}
+  expressionToggle: {fileID: 368806491}
+  nameField: {fileID: 1129474340}
+  ageField: {fileID: 594338194}
   neutralImage: {fileID: 1327317387}
   happyImage: {fileID: 90231703}
+  backButton: {fileID: 0}
   fader: {fileID: 139791583}
 --- !u!1 &1874570425
 GameObject:

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Affdex
 {
@@ -351,16 +352,23 @@ namespace Affdex
             //todo: Handle Initialize failure here!
             yield return StartCoroutine(nativePlatform.Initialize(this, discrete ? 1 : 0));
 
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Enabled Emotions:");
+
             //find all ON emotions and enable them!
             for (int i = 0; i < System.Enum.GetNames(typeof(Emotions)).Length; i++)
             {
                 Emotions targetEmotion = (Emotions)i;
                 if (emotions.On(targetEmotion))
                 {
-                    Debug.Log(targetEmotion + " is on");
+                    sb.AppendLine($"- {targetEmotion}");
                     nativePlatform.SetEmotionState(i, true);
                 }
             }
+
+            Debug.Log(sb.ToString());
+            sb.Clear();
+            sb.AppendLine("Enabled Expressions:");
 
             //find all ON expressions and enable them!
             for (int i = 0; i < System.Enum.GetNames(typeof(Expressions)).Length; i++)
@@ -368,11 +376,11 @@ namespace Affdex
                 Expressions targetExpression = (Expressions)i;
                 if (expressions.On(targetExpression))
                 {
-                    Debug.Log(targetExpression + " is on");
+                    sb.AppendLine($"- {targetExpression}");
                     nativePlatform.SetExpressionState(i, true);
                 }
             }
-
+            Debug.Log(sb.ToString());
             initialized = true;
         }
 

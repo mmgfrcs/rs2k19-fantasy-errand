@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 
 using FantasyErrand.Entities;
+using FantasyErrand.Entities.Interfaces;
 
 namespace FantasyErrand
 {
@@ -14,11 +15,16 @@ namespace FantasyErrand
 
     public class GameManager : MonoBehaviour
     {
-        public Player player;
-        public GameUIManager UIManager;
-        public float startSpeed;
-        public AnimationCurve speedGraph;
-        public int startingMultiplier = 10;
+        [SerializeField]
+        Player player;
+        [SerializeField]
+        GameUIManager UIManager;
+        [SerializeField]
+        float startSpeed;
+        [SerializeField]
+        AnimationCurve speedGraph;
+        [SerializeField]
+        int startingMultiplier = 10;
 
         public float Score { get; private set; }
         public float Distance { get; private set; }
@@ -31,14 +37,20 @@ namespace FantasyErrand
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
 
+        public static GameManager instance;
+
         TextMeshProUGUI scoreText;
+        UnityEngine.UI.Image fader;
         float startTime;
 
         public void Start()
         {
+            if (instance == null) instance = this;
+            else { Destroy(this); return; }
             //Setup game
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
+            fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
             StartGame();
         }
 
@@ -59,18 +71,30 @@ namespace FantasyErrand
 
         private void Player_OnCollision(Collision obj)
         {
-            if(obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
+            if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
                 OnGameEnd?.Invoke(new GameEndEventArgs() { Score = Score, Distance = Distance, Currency = Currency, Multiplier = Multiplier });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
                 player.enabled = false;
                 IsGameRunning = false;
+                StartCoroutine(EndGame());
+            }
+            else {
+                ICollectible collectible = obj.gameObject.GetComponent<ICollectible>();
+                if (collectible != null)
+                {
+                    if (collectible.Type == CollectibleType.Monetary)
+                        Currency += collectible.Value;
+                    if (collectible.Type != CollectibleType.None)
+                        collectible.CollectibleEffect();
+                }
             }
         }
 
         IEnumerator RollingStart()
         {
+            fader.DOFade(0f, 1f).onComplete = () => fader.gameObject.SetActive(false);
             IsRollingStart = true;
             IsGameRunning = false;
             player.IsControlActive = false;
@@ -82,6 +106,13 @@ namespace FantasyErrand
             startTime = Time.time;
             OnGameStart?.Invoke();
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+        }
+
+        IEnumerator EndGame()
+        {
+            yield return new WaitForSeconds(1.5f);
+            Debug.Log("Game Over");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
         }
 
         public void Update()

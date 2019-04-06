@@ -42,10 +42,7 @@ namespace FantasyErrand.Entities
         bool canJump = true;
         bool canSlide = true;
         bool canSidestep = true;
-
-        //Turn
-        float currentRate;
-        bool canTurn = true;
+        
 
         int lane = 0;
 
@@ -57,15 +54,7 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
                 speed = 5;
             }
-            else
-            {
-                emotionManager = FindObjectOfType<EmotionManager>();
-                Input.gyro.updateInterval = 0.1f;
-                Input.gyro.enabled = true;
-            }
-
-            
-            //if(!AndroidPlugin.IsSupportedSensor(SensorType.Accelerometer)) Quit
+            else emotionManager = FindObjectOfType<EmotionManager>();
         }
 
 
@@ -166,8 +155,6 @@ namespace FantasyErrand.Entities
                 }
             }
             else if (velocityX < 0.05f && velocityX > -0.05f) canSidestep = true;
-
-            currentRate = Mathf.Lerp(currentRate, -Input.gyro.rotationRateUnbiased.y, 0.6f);
         }
 
         float GetDeviceYAngle()

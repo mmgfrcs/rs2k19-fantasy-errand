@@ -13,7 +13,7 @@ namespace FantasyErrand
 
         public enum UIType
         {
-            ScoreText, InfoText, DebugText, PauseBtn, PowerupSlider, PowerupImage
+            ScoreText, InfoText, DebugText, PauseBtn, PowerupSlider, PowerupImage, Fader
         }
 
         // Use this for initialization
@@ -41,6 +41,8 @@ namespace FantasyErrand
                     elements.Add(new GameUIElement(UIType.InfoText, graphicElement));
                 else if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("Debug"))
                     elements.Add(new GameUIElement(UIType.DebugText, graphicElement));
+                else if (graphicElement is Image && graphicElement.gameObject.name.Contains("Fader"))
+                    elements.Add(new GameUIElement(UIType.Fader, graphicElement));
                 else if (graphicElement is Image && graphicElement.gameObject.name.Contains("Powerup"))
                     elements.Add(new GameUIElement(UIType.PowerupImage, graphicElement));
                 else if (graphicElement is Slider && graphicElement.gameObject.name.Contains("Powerup"))

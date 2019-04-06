@@ -17,7 +17,6 @@ public class RotateObstacle : MonoBehaviour,IObstacleMovable,IObstacleRotatable 
 	private bool isHurdling;
 	public GameObject movableObject;
 
-
 	public GameObject player;
 	public int minDistance;
 	void Start () 

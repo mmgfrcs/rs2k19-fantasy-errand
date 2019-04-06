@@ -9,7 +9,7 @@ namespace FantasyErrand
 {
     public enum PatternType
     {
-        Straight, Junction, LeftCorner, RightCorner
+        Straight, LeftCorner, RightCorner
     }
 
 	public enum Difficulty
@@ -77,6 +77,7 @@ namespace FantasyErrand
 				a.SetActive(false);
 				straightPrefabQueue.Enqueue(a);
 			}
+            print($"Queue Count: {straightPrefabQueue.Count}");
 		}
         
         IEnumerator Generate()

@@ -4,21 +4,29 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 namespace FantasyErrand
 {
     public class GameUIManager : MonoBehaviour
     {
+        public CanvasGroup gameOverPanel;
         List<GameUIElement> elements;
+
+        public event System.Action OnRestartGame;
+        public event System.Action OnBackToMainMenu;
 
         public enum UIType
         {
-            ScoreText, InfoText, DebugText, PauseBtn, PowerupSlider, PowerupImage, Fader
+            ScoreText, InfoText, DebugText, PauseBtn, PowerupSlider, PowerupImage, Fader, GameOverScore, GameOverCoins, GameOverDistance, GameOverMultiplier
         }
 
         // Use this for initialization
         void Start()
         {
+            if (gameOverPanel == null) gameOverPanel = GameObject.Find("GameOver").GetComponent<CanvasGroup>();
+            gameOverPanel.alpha = 0;
+            gameOverPanel.blocksRaycasts = false;
             GetAllUIElements();
         }
 
@@ -29,13 +37,27 @@ namespace FantasyErrand
             else throw new System.ArgumentException("UI Type is not valid for the given generic type");
         }
 
+        public void ActivateGameOver()
+        {
+            gameOverPanel.blocksRaycasts = true;
+            gameOverPanel.DOFade(1f, 1f);
+        }
+
         private void GetAllUIElements()
         {
             elements = new List<GameUIElement>();
             var sceneElements = FindObjectsOfType<MonoBehaviour>();
             foreach (var graphicElement in sceneElements)
             {
-                if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("Score"))
+                if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverScore"))
+                    elements.Add(new GameUIElement(UIType.GameOverScore, graphicElement));
+                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverCoins"))
+                    elements.Add(new GameUIElement(UIType.GameOverCoins, graphicElement));
+                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverDistance"))
+                    elements.Add(new GameUIElement(UIType.GameOverDistance, graphicElement));
+                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverMultiplier"))
+                    elements.Add(new GameUIElement(UIType.GameOverMultiplier, graphicElement));
+                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name == "ScoreText")
                     elements.Add(new GameUIElement(UIType.ScoreText, graphicElement));
                 else if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("Info"))
                     elements.Add(new GameUIElement(UIType.InfoText, graphicElement));
@@ -51,6 +73,15 @@ namespace FantasyErrand
             print($"UI Manager: {sceneElements.Length} Scripts detected, { elements.Count } UI elements detected");
         }
         
+        public void OnRestart()
+        {
+            OnRestartGame?.Invoke();
+        }
+
+        public void OnMainMenu()
+        {
+            OnBackToMainMenu?.Invoke();
+        }
     }
 
     [System.Serializable]

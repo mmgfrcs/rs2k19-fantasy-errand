@@ -18,6 +18,7 @@ namespace FantasyErrand
         public Slider loadingSlider;
         public CanvasGroup optionsPanel;
         public GameObject researchModeFrame, basicInfoFrame, expressionFrame;
+        public TextMeshProUGUI versionText;
 
         [Header("Option Fields")]
         public TMP_InputField[] serverAddress;
@@ -34,6 +35,11 @@ namespace FantasyErrand
 
         int pickMode = 0;
         int errors = 0;
+
+        public void OnPlay()
+        {
+            StartCoroutine(LoadScene());
+        }
         
         public void OnTakeNeutralPicture()
         {
@@ -181,13 +187,22 @@ namespace FantasyErrand
                 fader.gameObject.SetActive(false);
             };
 
-
+            versionText.text = $"v{Application.version}{(Debug.isDebugBuild ? "\nDevelopment Build" : "")}";
         }
 
         // Update is called once per frame
         void Update()
         {
+            if(Input.GetKeyDown(KeyCode.Escape) && Application.platform == RuntimePlatform.Android)
+            {
+                AndroidPlugin.ShowDialog("Exit", "Are you sure you wanted to exit?", gameObject.name, "OnExit", "Yes", "YES", "No", "NO");
 
+            }
+        }
+
+        void OnExit(string val)
+        {
+            if (val == "YES") Application.Quit();
         }
     }
 }

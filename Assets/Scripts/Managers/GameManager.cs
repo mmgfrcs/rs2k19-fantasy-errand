@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-
+using UnityEngine.SceneManagement;
 using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
 
@@ -36,17 +36,13 @@ namespace FantasyErrand
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
-
-        public static GameManager instance;
-
+        
         TextMeshProUGUI scoreText;
         UnityEngine.UI.Image fader;
         float startTime;
 
         public void Start()
         {
-            if (instance == null) instance = this;
-            else { Destroy(this); return; }
             //Setup game
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
@@ -60,6 +56,7 @@ namespace FantasyErrand
             Distance = 0;
             Currency = 0;
             player.speed = startSpeed;
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
             Camera.main.GetComponent<Animator>().Play("StartPan", -1, 0f);
             player.OnCollision += Player_OnCollision;
             player.transform.position = Vector3.zero;
@@ -110,9 +107,28 @@ namespace FantasyErrand
 
         IEnumerator EndGame()
         {
+            
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
+            UIManager.OnRestartGame += () => {
+                fader.gameObject.SetActive(true);
+                fader.DOFade(1f, 2f).onComplete = () => SceneManager.LoadScene("SampleScene");
+            };
+
+            UIManager.OnBackToMainMenu += () =>
+            {
+                fader.gameObject.SetActive(true);
+                fader.DOFade(1f, 2f).onComplete = () => SceneManager.LoadScene("Main");
+            };
+
+            UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverScore).text = Score.ToString("n0");
+            UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverDistance).text = Distance.ToString("n0");
+            UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverCoins).text = Currency.ToString("n0");
+            UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverMultiplier).text = "x" + Multiplier.ToString("n0");
+
+            UIManager.ActivateGameOver();
+
+            //UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
         }
 
         public void Update()
@@ -123,7 +139,6 @@ namespace FantasyErrand
                 Distance += player.speed * Time.deltaTime;
                 if (IsGameRunning) player.speed = speedGraph.Evaluate(Distance);
             }
-            else if (!IsGameRunning && Input.GetMouseButtonDown(0)) StartGame();
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
         }

@@ -27,10 +27,10 @@ public class RotateObstacle : MonoBehaviour,IObstacleMovable,IObstacleRotatable 
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Vector3.Distance (player.transform.position, transform.position) < minDistance) {
-			DoMove();
-			DoRotate();
-		}
+		//if (Vector3.Distance (player.transform.position, transform.position) < minDistance) {
+		//	DoMove();
+		//	DoRotate();
+		//}
 	}
 	public float SpawnRate
 	{

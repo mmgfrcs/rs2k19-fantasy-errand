@@ -71,6 +71,7 @@ namespace FantasyErrand
         public void SaveGameDataToFile()
         {
             Data.PlayerName = PlayerName;
+            print($"GameDataManager: Saving Data: {Data.PlayerName}, {Data.CumulativeScore} in {Data.CumulativeRuns} runs\nJSON: {JsonUtility.ToJson(Data)}");
             File.WriteAllText(Path.Combine(Application.persistentDataPath, SaveFileName), JsonUtility.ToJson(Data));
         }
 

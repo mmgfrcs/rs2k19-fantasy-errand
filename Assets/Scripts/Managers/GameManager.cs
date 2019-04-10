@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
+using Firebase.Analytics;
 
 namespace FantasyErrand
 {
@@ -127,6 +128,12 @@ namespace FantasyErrand
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverMultiplier).text = "x" + Multiplier.ToString("n0");
 
             UIManager.ActivateGameOver();
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelEnd,
+                new Parameter("level", "Easy"),
+                new Parameter("score", Score),
+                new Parameter("coins", Currency),
+                new Parameter("distance", Distance),
+                new Parameter("multiplier", Multiplier));
 
             //UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
         }

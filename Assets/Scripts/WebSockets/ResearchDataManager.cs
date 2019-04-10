@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Affdex;
 using Newtonsoft.Json;
+using FantasyErrand.WebSockets.Utilities;
 using FantasyErrand.WebSockets.Models;
 
 namespace FantasyErrand.WebSockets
@@ -17,6 +18,7 @@ namespace FantasyErrand.WebSockets
         [Header("Options"), SerializeField]
         private string opcode = "684F2BA5B03585274A874D21BB6B16B802227A081577946A82E14EED9A4468DB";
         public bool dataTransmission = true;
+        public int retryAttempts = 3;
 
         [Header("Scripts")]
         public EmotionManager emotionManager;
@@ -50,6 +52,29 @@ namespace FantasyErrand.WebSockets
         IEnumerator CollectData()
         {
             int n = 1;
+            //First send the participant data
+            ParticipantData partdata = new ParticipantData();
+            partdata.name = GameDataManager.instance.PlayerName;
+            partdata.age = GameDataManager.instance.Age;
+            partdata.researchData = new List<ResearchData>();
+
+            PresetExpression expressionNeutral = new PresetExpression();
+            expressionNeutral.name = "Neutral";
+            if (GameDataManager.instance.NeutralPicture == null) expressionNeutral.value = "";
+            else expressionNeutral.value = Convert.ToBase64String(Compressor.Compress(GameDataManager.instance.NeutralPicture.EncodeToPNG()));
+            PresetExpression expressionHappy = new PresetExpression();
+            expressionHappy.name = "Happy";
+            if (GameDataManager.instance.HappyPicture == null) expressionHappy.value = "";
+            else expressionHappy.value = Convert.ToBase64String(Compressor.Compress(GameDataManager.instance.HappyPicture.EncodeToPNG()));
+            partdata.presetExpressions = new PresetExpression[] { expressionNeutral, expressionHappy };
+
+            DataPacket packet = new DataPacket();
+            packet.packetId = (int)PacketType.NewParticipant;
+            packet.packetData = JsonConvert.SerializeObject(partdata);
+            webSocket.Send(JsonConvert.SerializeObject(packet));
+
+            yield return new WaitForSecondsRealtime(0.25f);
+
             while (webSocket.ReadyState == WebSocketState.Open)
             {
                 yield return new WaitForSecondsRealtime(2f);
@@ -58,8 +83,9 @@ namespace FantasyErrand.WebSockets
                 photo.SetPixels(texture.GetPixels());
                 photo.Apply();
 
-                string imgStr = Convert.ToBase64String(photo.EncodeToPNG());
+                string imgStr = Convert.ToBase64String(Compressor.Compress(photo.EncodeToPNG()));
                 ResearchData data = new ResearchData() {
+                    name = GameDataManager.instance.PlayerName,
                     pictureNo = n++,
                     imageData = imgStr,
                     emotions = new Dictionary<string, float>(),
@@ -85,8 +111,15 @@ namespace FantasyErrand.WebSockets
                 print($"JSON: Sent {emotionManager.EmotionsList.Count} face");
 
                 string json = JsonConvert.SerializeObject(data);
-                
-                webSocket.Send(json);
+
+                packet = new DataPacket()
+                {
+                    packetId = (int)PacketType.GameData,
+                    packetData = json
+                };
+
+
+                webSocket.Send(JsonConvert.SerializeObject(packet));
             }
             texture.Stop();
             enabled = false;
@@ -102,19 +135,15 @@ namespace FantasyErrand.WebSockets
 
             webSocket.OnOpen += (a, b) =>
             {
-                DataPacket packet = new DataPacket();
-                packet.packetId = (int)PacketType.Identify;
-                packet.packetData = string.Join(";", new string[] { Application.identifier, opcode });
-
-                webSocket.Send(packet.ToByteArray(ByteOrder.Big));
-
                 mainThreadActionQueue.Enqueue(() =>
                 {
-                    Debug.Log("Websocket connection established");
+                    DataPacket packet = new DataPacket();
+                    packet.packetId = (int)PacketType.Identify;
+                    packet.packetData = string.Join(";", new string[] { Application.identifier, opcode });
+                    Debug.Log($"Websocket connection established. Sending Identify {packet.packetData}");
+                    webSocket.Send(JsonConvert.SerializeObject(packet));
                     
                 });
-                
-                collecting = true;
             };
 
             webSocket.OnError += (a, b) =>
@@ -127,29 +156,44 @@ namespace FantasyErrand.WebSockets
             webSocket.OnClose += (sender, e) =>
             {
                 mainThreadActionQueue.Enqueue(() => {
-                    print("Websocket Closed");
-                    if (!opened) StartCoroutine(Reconnect());
+                    print($"Websocket Closed, code {(CloseStatusCode)e.Code}: {e.Reason}");
+                    if (!opened)
+                    {
+                        if (retryAttempts > 0)
+                        {
+                            retryAttempts--;
+                            StartCoroutine(Reconnect());
+                        }
+                        else Debug.LogWarning("WebSockets: Out of Retry Attempts - Research data will not be submitted");
+                    }
                 });
                 identified = false;
             };
 
             webSocket.OnMessage += (sender, e) =>
             {
-                if(e.IsBinary)
+                if(!e.IsBinary)
                 {
-                    DataPacket packet = e.RawData.To<DataPacket>(ByteOrder.Big);
-                    if(packet.packetId == (int)PacketType.Identify)
+                    DataPacket packet = JsonConvert.DeserializeObject<DataPacket>(e.Data);
+                    if (packet.packetId == (int)PacketType.Identify && !identified)
                     {
                         string[] data = packet.packetData.Split(';');
                         try
                         {
-                            //StartCoroutine(CollectData());
+                            if (data.Length == 2 && data[1] == opcode)
+                            {
+                                identified = true;
+                                collecting = true;
+                                mainThreadActionQueue.Enqueue(() => StartCoroutine(CollectData()));
+                            }
+                            else throw new Exception();
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             webSocket.CloseAsync(CloseStatusCode.InvalidData);
                         }
                     }
+                    else Debug.LogError($"(Server) Error in {(PacketType)packet.packetId}: {packet.packetData}");
                 }
             };
 
@@ -187,7 +231,7 @@ namespace FantasyErrand.WebSockets
 
         private void OnApplicationQuit()
         {
-            if (webSocket.ReadyState != WebSocketState.Closed) webSocket.CloseAsync(CloseStatusCode.Away);
+            if (webSocket.ReadyState != WebSocketState.Closed && identified) webSocket.CloseAsync(CloseStatusCode.Away);
         }
     }
 }

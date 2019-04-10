@@ -12,6 +12,8 @@ public class ObjectPooler : MonoBehaviour {
 
     Stack<GameObject> objects = new Stack<GameObject>();
 
+    GameObject[] debugObjects;
+
     Vector3 poolPos = new Vector3(0, -10000, 0);
 
     bool init = false;
@@ -34,6 +36,7 @@ public class ObjectPooler : MonoBehaviour {
             {
                 GameObject go = objects.Pop();
                 go.transform.position = pos;
+                go.SetActive(true);
                 return go;
             }
             else
@@ -43,6 +46,7 @@ public class ObjectPooler : MonoBehaviour {
             }
         }
         else return null;
+        
     }
 
     public void Destroy(GameObject obj)
@@ -64,5 +68,7 @@ public class ObjectPooler : MonoBehaviour {
             go.SetActive(false);
             objects.Push(go);
         }
+
+        init = true;
     }
 }

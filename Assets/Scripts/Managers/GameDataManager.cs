@@ -5,6 +5,7 @@ using FantasyErrand.Utilities;
 using System.IO;
 using FantomLib;
 using System;
+using Firebase.Analytics;
 
 namespace FantasyErrand
 {

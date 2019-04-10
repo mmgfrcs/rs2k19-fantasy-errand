@@ -37,13 +37,14 @@ namespace FantasyErrand.Entities
         //Motion related variables
         //Sidestep/Jump/Slide
         Vector3 accelerometerValue;
+        Vector3 initialScale;
         float velocityX = 0;
         float velocityY = 0;
         bool canJump = true;
         bool canSlide = true;
         bool canSidestep = true;
-        
 
+        float jumpCollDelay = 0;
         int lane = 0;
 
         // Use this for initialization
@@ -54,7 +55,11 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
                 speed = 5;
             }
-            else emotionManager = FindObjectOfType<EmotionManager>();
+            else
+            {
+                emotionManager = FindObjectOfType<EmotionManager>();
+                initialScale = transform.localScale;
+            }
         }
 
 
@@ -68,9 +73,24 @@ namespace FantasyErrand.Entities
 
             transform.Translate(transform.forward * speed * Time.deltaTime);
 
+            jumpCollDelay = Mathf.Max(0, jumpCollDelay - Time.deltaTime);
+
             if (IsControlActive && !enableNonGameMode)
             {
-                ProcessKeyControls();
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                    ProcessKeyControls();
+                else ProcessControls();
+                RaycastHit hit;
+                if(Physics.Raycast(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down, out hit, 0.2f)){
+                    if(jumpCollDelay == 0)
+                    {
+                        
+                        GetComponent<Rigidbody>().isKinematic = true;
+                        canSlide = true;
+                        canJump = true;
+                    }
+                    
+                }
             }
 
         }
@@ -91,11 +111,12 @@ namespace FantasyErrand.Entities
                 GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
                 canJump = false;
                 canSlide = false;
+                jumpCollDelay = 0.1f;
             }
             else if (Input.GetKeyDown(KeyCode.S) && canSlide) //If Y velocity reaches the low threshold, provided it can slide...
             {
                 //Slide and disable player's capability to jump and slide while sliding
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(initialScale.x, initialScale.y / 2, initialScale.z);
                 StartCoroutine(SlideTime());
             }
             
@@ -179,21 +200,19 @@ namespace FantasyErrand.Entities
             canSlide = false;
             canJump = false;
             yield return new WaitForSeconds(1f);
-            transform.localScale = new Vector3(1, 2, 1);
+            transform.localScale = initialScale;
             canSlide = true;
             canJump = true;
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.gameObject.tag == "Floor")
-            {
-                GetComponent<Rigidbody>().isKinematic = true;
-                canSlide = true;
-                canJump = true;
-            }
-            else OnCollision?.Invoke(collision);
+            OnCollision?.Invoke(collision);
+        }
 
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawRay(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down * 0.2f);
         }
     }
 }

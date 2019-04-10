@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2655,6 +2655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opcode: 684F2BA5B03585274A874D21BB6B16B802227A081577946A82E14EED9A4468DB
   dataTransmission: 1
+  retryAttempts: 3
   emotionManager: {fileID: 1152662696}
   detector: {fileID: 1924354295}
 --- !u!4 &1152662694

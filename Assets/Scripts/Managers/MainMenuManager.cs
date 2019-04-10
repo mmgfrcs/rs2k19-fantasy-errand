@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Firebase.Analytics;
 using FantasyErrand.Entities.Interfaces;
 using System.Linq;
 using FantomLib;
@@ -109,6 +110,7 @@ namespace FantasyErrand
             fader.gameObject.SetActive(true);
             var tween = fader.GetComponent<Image>().DOFade(1f, 2f);
             yield return tween.WaitForCompletion();
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
             scene.allowSceneActivation = true;
         }
 
@@ -116,6 +118,7 @@ namespace FantasyErrand
         {
             if(isPanelOpen)
             {
+                FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
                 print($"GameData - Saving Data: {nameField.text}, Age {ageField.text}\nResearch Mode is {(researchToggle.isOn ? "on" : "off")} at 192.168.{serverAddress[0].text}.{serverAddress[1].text}");
                 GameDataManager.instance.SaveParticipantData(nameField.text, ageField.text == "" ? 0 : int.Parse(ageField.text), neutral, happy);
                 GameDataManager.instance.SaveBasicOptions(researchToggle.isOn, basicGatherToggle.isOn, 
@@ -123,10 +126,11 @@ namespace FantasyErrand
                 optionsPanel.DOFade(0f, 1f).onComplete += () => {
                     optionsPanel.blocksRaycasts = false;
                 };
-                //GameDataManager.instance.SaveResearchDataToFile();
+                GameDataManager.instance.SaveResearchDataToFile();
             }
             else
             {
+                FirebaseAnalytics.SetCurrentScreen("Options", "System");
                 optionsPanel.blocksRaycasts = true;
                 optionsPanel.DOFade(1f, 1f);
                 nameField.text = GameDataManager.instance.PlayerName;
@@ -181,13 +185,14 @@ namespace FantasyErrand
         // Use this for initialization
         void Start()
         {
+            FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
             optionsPanel.alpha = 0;
             optionsPanel.blocksRaycasts = false;
             fader.DOFade(0f, 2f).onComplete = () => {
                 fader.gameObject.SetActive(false);
             };
 
-            versionText.text = $"v{Application.version}{(Debug.isDebugBuild ? "\nDevelopment Build" : "")}";
+            versionText.text = $"v{Application.version}{(Debug.isDebugBuild ? "\nDev Mode" : "")}";
         }
 
         // Update is called once per frame

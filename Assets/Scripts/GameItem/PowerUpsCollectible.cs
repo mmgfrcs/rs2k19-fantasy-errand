@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PowerUpsCollectible : MonoBehaviour,ICollectible{
 
-    [SerializeField]
+    
     private int value;
     CollectibleType type;
 

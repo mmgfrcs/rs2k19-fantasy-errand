@@ -20,7 +20,6 @@ public class ObstacleGeneral : MonoBehaviour,IObstacleMovable,IObstacleRotatable
 	private bool isHurdling;
 	[SerializeField]
 	private Vector3 rotateSpeed= new Vector3(-180f,0f,0f);
-	public GameObject movableObject;
 	public bool isStaticObstacle;
 	public bool isRotatableObstacle;
 	public bool isMovableObstacle;
@@ -31,8 +30,11 @@ public class ObstacleGeneral : MonoBehaviour,IObstacleMovable,IObstacleRotatable
 	
 	// Update is called once per frame
 	void Update () {
-		if (isRotatableObstacle)
-			DoRotate();
+        if (isRotatableObstacle) {
+            DoRotate();
+            DoMove();
+        }
+			
 		if (isMovableObstacle)
 			DoMove ();
 	}
@@ -69,12 +71,12 @@ public class ObstacleGeneral : MonoBehaviour,IObstacleMovable,IObstacleRotatable
 	public void DoRotate()
 	{
 		//transform.Rotate (rotateSpeed * Time.deltaTime);
-		movableObject.transform.Rotate (rotateSpeed * Time.deltaTime);
+		transform.Rotate (rotateSpeed * Time.deltaTime);
 	}
 
 	public void DoMove()
 	{
-		movableObject.transform.Translate (-Vector3.forward * minSpeed * Time.deltaTime, Space.World);
+		transform.Translate (-Vector3.forward * minSpeed * Time.deltaTime, Space.World);
 		if (minSpeed < moveSpeed)
 			minSpeed++;
 	}

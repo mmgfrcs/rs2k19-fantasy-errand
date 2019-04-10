@@ -9,6 +9,7 @@ TagManager:
   - Undefined
   - BarrierPath
   - CoinPath
+  - PowerUpsPath
   layers:
   - Default
   - TransparentFX

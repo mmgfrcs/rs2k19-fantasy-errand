@@ -25,9 +25,9 @@ public class PowerUpsCollectible : MonoBehaviour,ICollectible{
         }
     }
 
-    public void OnCollisionEnter(Collision collision)
+    public void CollectibleEffect()
     {
-        
+        throw new System.NotImplementedException();
     }
 
     void Start () {

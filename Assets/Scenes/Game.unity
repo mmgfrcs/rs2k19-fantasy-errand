@@ -282,7 +282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894ec886811909d4a88f8f7f1658e941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1748788115}
 --- !u!4 &48845285
 Transform:
   m_ObjectHideFlags: 0
@@ -3138,6 +3137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d4cef4ab558ca4f83e138212a75ec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverPanel: {fileID: 0}
 --- !u!1 &834441696
 GameObject:
   m_ObjectHideFlags: 0
@@ -7039,11 +7039,6 @@ Transform:
   m_Father: {fileID: 1589818425}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1748788115 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1028563887749222, guid: 09bc696ea6f84fc43862622ccde94d33,
-    type: 2}
-  m_PrefabInternal: {fileID: 1687800395}
 --- !u!1 &1765249735
 GameObject:
   m_ObjectHideFlags: 0
@@ -7804,40 +7799,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 2007859971}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26bf7226c5877c248aab46911a08deee, type: 3}
+  m_Script: {fileID: 11500000, guid: e4110c0403df7f64eaed0e20eff63226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 924932966}
   startPrefab: {fileID: 1893105060871348, guid: f422498cc7c907d4880fe2adfffb7368,
     type: 2}
-  straightPrefab: {fileID: 1893105060871348, guid: f422498cc7c907d4880fe2adfffb7368,
-    type: 2}
+  straightPrefabs:
+  - {fileID: 1893105060871348, guid: f422498cc7c907d4880fe2adfffb7368, type: 2}
+  obstaclePrefabs:
+  - {fileID: 1028563887749222, guid: 09bc696ea6f84fc43862622ccde94d33, type: 2}
+  powerupsPrefabs:
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
+  coinPrefabs:
+  - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
+  gameMode: 1
   maxGeneratedTile: 10
+  pooledObstacles: 20
+  pooledCoins: 40
   startTiles: 2
+  tileSpawnRates:
+    baseTile: 100
+    obstacleTile: 100
+    coinsTile: 100
+    powerupsTile: 100
   tileScale: 8
   baseObstacleRatio: 100
+  maxCoinSpawnPerTile: 6
+  minCoins: 4
+  maxCoins: 24
   showGizmos: 1
-  coinPrefab:
-  - {fileID: 1900681155176288, guid: 25396e584edb1964593d8e2a960af2dc, type: 2}
-  obstaclePrefab:
-  - {fileID: 1004647927568446, guid: f789d228650c532449543d309728a171, type: 2}
-  powerUpsPrefab:
-  - {fileID: 1004647927568446, guid: f789d228650c532449543d309728a171, type: 2}
-  maxObstacle: 8
-  minObstacle: 2
-  minCoin: 8
-  maxCoin: 2
-  maxPowerUps: 8
-  maxSpeed: 12
-  minSpeed: 5
-  prefabMultiplier: 100
-  totalGeneratedItem: 10
-  distanceToDestroyItem: 0
-  obstacleList: []
-  coinList: []
-  powerUpsList: []
-  obstacleSpawnRate: []
 --- !u!4 &2007859973
 Transform:
   m_ObjectHideFlags: 0
@@ -8062,6 +8054,11 @@ Prefab:
     - target: {fileID: 4144974076714540, guid: 1f23855ea6c368648b4f074e612feb92, type: 2}
       propertyPath: m_RootOrder
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993055391905436, guid: 1f23855ea6c368648b4f074e612feb92,
+        type: 2}
+      propertyPath: isMovableObstacle
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f23855ea6c368648b4f074e612feb92, type: 2}

@@ -72,7 +72,7 @@ namespace FantomLib
     /// https://github.com/zxing/zxing
     /// ==========================================================
     /// </summary>
-#if UNITY_ANDROID
+
     public static class AndroidPlugin
     {
 
@@ -6384,7 +6384,7 @@ namespace FantomLib
         }
 
     }
-#endif
+
 
 
 

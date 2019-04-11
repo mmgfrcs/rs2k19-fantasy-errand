@@ -27,12 +27,12 @@ In addition, there are three different types of movement in this game, each effe
 
 ### Collectibles
 Each run, these can be collected:
-- Coins, can be used to buy upgrades. Available in 1 (Cooper), 2 (Silver), 3 (Gold), 4 (Platinum) and 10 (Rainbow) denominations
+- Coins, can be used to buy upgrades. Available in 1 (Cooper), 2 (Silver), 3 (Gold), 4 (Platinum) and 10 (Ruby) denominations
 - Power ups: 
-  - Magnet: Grab nearby coins automatically for a few seconds. Duration and range increases with upgrades (Potion Magent, a potion bottle with a magnet symbol)
-  - Phase: Go through all obstacles for a few seconds. Does not include falls. Duration increases with upgrades (Potion Phase, a potion bottle with boots symbol)
-  - Boost: Move faster for a few seconds. While boosted, also gains Phase. Duration increases with upgrades (Potion Boost, a potion bottle with lightning symbol)
-  - Golden Coin: Increases coin value for a few seconds. Duration and Coin value multiplier increases with upgrades (Potion Guld, a potion bottle with Golden coin symbol)
+  - Magnet: Grab nearby coins automatically for a few seconds. Duration and range increases with upgrades 
+  - Phase: Go through all obstacles for a few seconds. Does not include falls. Duration increases with upgrades
+  - Boost: Move faster for a few seconds. While boosted, also gains Phase. Duration increases with upgrades
+  - Golden Coin: Increases coin value for a few seconds. Duration and Coin value multiplier increases with upgrades 
 
 ### Stages
 There are 3 type of environments in this game: Forest, Volcano and Sea.
@@ -147,6 +147,21 @@ Upgrade Level | Multiplier Increase | Cost
 -	Beast
 -	Tile map (forest)
 -	Obstacle (forest)
+
+
+## Game Item
+### Power-Ups
+- Potion Magent, a potion bottle with a magnet symbol
+- Potion Phase, a potion bottle with boots symbol 
+- Potion Boost, a potion bottle with lightning symbol
+- Potion Guld, a potion bottle with Golden coin symbol
+
+### Coins
+- Copper Coin
+- Silver Coin
+- Gold Coin
+- Platinum Coin
+- Ruby Coin
 
 ## Sound
 -	Ambience (Forest)

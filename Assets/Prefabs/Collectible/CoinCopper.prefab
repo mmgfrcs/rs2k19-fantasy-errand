@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33206578236033562}
   - component: {fileID: 23028441605500760}
   - component: {fileID: 65477475370862750}
+  - component: {fileID: 114406301501995460}
   m_Layer: 0
   m_Name: CoinCopper
   m_TagString: Untagged
@@ -96,3 +97,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0016853858, y: 0.010827676, z: 0.010887321}
   m_Center: {x: -0.0010047987, y: 0.00086901494, z: 0.00016492695}
+--- !u!114 &114406301501995460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1702790285588938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68641dff925384b9a2af0d254fba9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 1

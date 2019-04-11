@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33247485449673632}
   - component: {fileID: 23961557458204676}
   - component: {fileID: 65937291829377806}
+  - component: {fileID: 114316354553618080}
   m_Layer: 0
   m_Name: CoinGold
   m_TagString: Untagged
@@ -96,3 +97,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0016853858, y: 0.010827676, z: 0.010887321}
   m_Center: {x: -0.0010047987, y: 0.00086901494, z: 0.00016492695}
+--- !u!114 &114316354553618080
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1874862385252794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c68641dff925384b9a2af0d254fba9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 3

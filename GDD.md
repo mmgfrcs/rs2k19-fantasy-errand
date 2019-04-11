@@ -16,7 +16,7 @@ The game will also feature dynamic balancing, which uses facial emotion recognit
 ### Obstacles
 The main feature is Endless Running with 4 different obstacle types. The obstacle types include:
 1. Hurdling
-2. Hole
+2. Trap Hole
 3. Overhead Obstacle
 4. Wall
 
@@ -27,19 +27,20 @@ In addition, there are three different types of movement in this game, each effe
 
 ### Collectibles
 Each run, these can be collected:
-- Coins, can be used to buy upgrades. Available in 1, 2, 3, 4 and 10 denominations
+- Coins, can be used to buy upgrades. Available in 1 (Cooper), 2 (Silver), 3 (Gold), 4 (Platinum) and 10 (Ruby) denominations
 - Power ups: 
-  - Magnet: Grab nearby coins automatically for a few seconds. Duration and range increases with upgrades
+  - Magnet: Grab nearby coins automatically for a few seconds. Duration and range increases with upgrades 
   - Phase: Go through all obstacles for a few seconds. Does not include falls. Duration increases with upgrades
   - Boost: Move faster for a few seconds. While boosted, also gains Phase. Duration increases with upgrades
-  - Golden Coin: Increases coin value for a few seconds. Duration and Coin value multiplier increases with upgrades
+  - Golden Coin: Increases coin value for a few seconds. Duration and Coin value multiplier increases with upgrades 
 
 ### Stages
 There are 3 type of environments in this game: Forest, Volcano and Sea.
 Forest environtment doesn't need to be unlocked.
 Unlock Stage by buying the necessary equipment:
-- Heat Resistant clothes [5000 coin] – Unlock volcano stage
--	Oxygen clothes [5000 coin] – Unlock sea stage
+- Heat Resistant clothes [5000 coin] – Unlock volcano stage - *planned volcano stage start at 5000m
+-	Oxygen clothes [5000 coin] – Unlock sea stage - *planned Sea stage start at 10.000m
+  *planned After sea stage at 15.000m it goes back to forest stage and so on at every 5000m.
 
 *TODO - Under construction*
 
@@ -146,6 +147,21 @@ Upgrade Level | Multiplier Increase | Cost
 -	Beast
 -	Tile map (forest)
 -	Obstacle (forest)
+
+
+## Game Item
+### Power-Ups
+- Potion Magent, a potion bottle with a magnet symbol
+- Potion Phase, a potion bottle with boots symbol 
+- Potion Boost, a potion bottle with lightning symbol
+- Potion Guld, a potion bottle with Golden coin symbol
+
+### Coins
+- Copper Coin
+- Silver Coin
+- Gold Coin
+- Platinum Coin
+- Ruby Coin
 
 ## Sound
 -	Ambience (Forest)

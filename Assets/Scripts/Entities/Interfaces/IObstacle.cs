@@ -10,5 +10,6 @@ namespace FantasyErrand.Entities.Interfaces
     {
         bool IsHurdling { get; }
         float SpawnRate { get; }
+
     }
 }

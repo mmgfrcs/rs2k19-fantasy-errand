@@ -3046,7 +3046,18 @@ Prefab:
       propertyPath: enableNonGameMode
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114851624720508418, guid: b13b99af3eb47364f9e6fec4347cee27,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114725809318673508, guid: b13b99af3eb47364f9e6fec4347cee27,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114725809318673508, guid: b13b99af3eb47364f9e6fec4347cee27, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: b13b99af3eb47364f9e6fec4347cee27, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1610604279

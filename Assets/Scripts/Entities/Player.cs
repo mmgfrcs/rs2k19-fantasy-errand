@@ -44,7 +44,6 @@ namespace FantasyErrand.Entities
         bool canSlide = true;
         bool canSidestep = true;
 
-        float jumpCollDelay = 0;
         int lane = 0;
 
         // Use this for initialization
@@ -73,24 +72,15 @@ namespace FantasyErrand.Entities
 
             transform.Translate(transform.forward * speed * Time.deltaTime);
 
-            jumpCollDelay = Mathf.Max(0, jumpCollDelay - Time.deltaTime);
-
             if (IsControlActive && !enableNonGameMode)
             {
                 if (Application.platform == RuntimePlatform.WindowsEditor)
                     ProcessKeyControls();
                 else ProcessControls();
                 RaycastHit hit;
-                if(Physics.Raycast(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down, out hit, 0.2f)){
-                    if(jumpCollDelay == 0)
-                    {
-                        
-                        GetComponent<Rigidbody>().isKinematic = true;
-                        canSlide = true;
-                        canJump = true;
-                    }
-                    
-                }
+                //if(Physics.Raycast(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down, out hit, 0.18f)){
+
+                //}
             }
 
         }
@@ -107,30 +97,19 @@ namespace FantasyErrand.Entities
             if (Input.GetKeyDown(KeyCode.W) && canJump) //If Y velocity reaches the high threshold, provided it can jump...
             {
                 //Jump and disable player's capability to jump and slide while on air
-                GetComponent<Rigidbody>().isKinematic = false;
-                GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
-                canJump = false;
-                canSlide = false;
-                jumpCollDelay = 0.1f;
+                Jump();
+                
             }
             else if (Input.GetKeyDown(KeyCode.S) && canSlide) //If Y velocity reaches the low threshold, provided it can slide...
             {
                 //Slide and disable player's capability to jump and slide while sliding
-                transform.localScale = new Vector3(initialScale.x, initialScale.y / 2, initialScale.z);
-                StartCoroutine(SlideTime());
+                Slide();
             }
             
             //Check slide direction from velocity. Also check if the player object is on the edge of the lane
-            if (Input.GetKeyDown(KeyCode.D) && lane < 1)
-            {
-                Debug.Log("Slide Right!");
-                transform.DOMoveX(1.5f * ++lane, 0.8f);
-            }
-            else if (Input.GetKeyDown(KeyCode.A) && lane > -1)
-            {
-                Debug.Log("Slide Left!");
-                transform.DOMoveX(1.5f * --lane, 0.8f);
-            }
+            if (Input.GetKeyDown(KeyCode.D) && lane < 2) Sidestep(false);
+            else if (Input.GetKeyDown(KeyCode.A) && lane > -2) Sidestep(true);
+            
         }
 
         /// <summary>
@@ -145,15 +124,12 @@ namespace FantasyErrand.Entities
             if (velocityY > jumpSpeedThreshold && canJump) //If Y velocity reaches the high threshold, provided it can jump...
             {
                 //Jump and disable player's capability to jump and slide while on air
-                GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
-                canJump = false;
-                canSlide = false;
+                Jump();
             }
             else if (velocityY < -jumpSpeedThreshold && canSlide) //If Y velocity reaches the low threshold, provided it can slide...
             {
                 //Slide and disable player's capability to jump and slide while sliding
-                transform.localScale = new Vector3(1, 1, 1);
-                StartCoroutine(SlideTime());
+                Slide();
             }
 
             velocityX += accelerometerValue.x * Time.deltaTime;
@@ -162,20 +138,39 @@ namespace FantasyErrand.Entities
             if (canSidestep)
             {
                 //Check slide direction from velocity. Also check if the player object is on the edge of the lane
-                if (velocityX > sidestepSpeedThreshold && transform.localPosition.x < 2)
+                if (velocityX > sidestepSpeedThreshold && lane < 2)
                 {
-                    Debug.Log("Slide Right!");
-                    transform.Translate(Vector3.right * 2);
+                    Sidestep(false);
                     canSidestep = false;
                 }
-                else if (velocityX < -sidestepSpeedThreshold && transform.localPosition.x > -2)
+                else if (velocityX < -sidestepSpeedThreshold && lane > -2)
                 {
-                    Debug.Log("Slide Left!");
-                    transform.Translate(Vector3.left * 2);
+                    Sidestep(true);
                     canSidestep = false;
                 }
             }
             else if (velocityX < 0.05f && velocityX > -0.05f) canSidestep = true;
+        }
+
+        void Jump()
+        {
+            GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
+            canJump = false;
+            canSlide = false;
+        }
+
+        void Slide()
+        {
+            transform.DOScaleY(initialScale.y / 2, 0.3f);
+            StartCoroutine(SlideTime());
+        }
+
+        void Sidestep(bool left)
+        {
+            if (left)
+                transform.DOMoveX(1.5f * --lane, 0.5f);
+            else
+                transform.DOMoveX(1.5f * ++lane, 0.5f);
         }
 
         float GetDeviceYAngle()
@@ -200,14 +195,19 @@ namespace FantasyErrand.Entities
             canSlide = false;
             canJump = false;
             yield return new WaitForSeconds(1f);
-            transform.localScale = initialScale;
+            transform.DOScaleY(initialScale.y, 0.3f);
             canSlide = true;
             canJump = true;
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            OnCollision?.Invoke(collision);
+            if (collision.gameObject.tag == "Floor")
+            {
+                canSlide = true;
+                canJump = true;
+            }
+            else OnCollision?.Invoke(collision);
         }
 
         private void OnDrawGizmos()

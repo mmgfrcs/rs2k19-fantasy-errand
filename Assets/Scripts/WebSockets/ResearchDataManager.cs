@@ -57,16 +57,7 @@ namespace FantasyErrand.WebSockets
             partdata.name = GameDataManager.instance.PlayerName;
             partdata.age = GameDataManager.instance.Age;
             partdata.researchData = new List<ResearchData>();
-
-            PresetExpression expressionNeutral = new PresetExpression();
-            expressionNeutral.name = "Neutral";
-            if (GameDataManager.instance.NeutralPicture == null) expressionNeutral.value = "";
-            else expressionNeutral.value = Convert.ToBase64String(Compressor.Compress(GameDataManager.instance.NeutralPicture.EncodeToPNG()));
-            PresetExpression expressionHappy = new PresetExpression();
-            expressionHappy.name = "Happy";
-            if (GameDataManager.instance.HappyPicture == null) expressionHappy.value = "";
-            else expressionHappy.value = Convert.ToBase64String(Compressor.Compress(GameDataManager.instance.HappyPicture.EncodeToPNG()));
-            partdata.presetExpressions = new PresetExpression[] { expressionNeutral, expressionHappy };
+            partdata.presetExpressions = new List<ResearchData>() { GameDataManager.instance.NeutralData, GameDataManager.instance.HappyData };
 
             DataPacket packet = new DataPacket();
             packet.packetId = (int)PacketType.NewParticipant;

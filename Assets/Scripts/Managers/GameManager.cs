@@ -45,6 +45,8 @@ namespace FantasyErrand
         public void Start()
         {
             //Setup game
+            FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
+
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
@@ -134,8 +136,6 @@ namespace FantasyErrand
                 new Parameter("coins", Currency),
                 new Parameter("distance", Distance),
                 new Parameter("multiplier", Multiplier));
-
-            //UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
         }
 
         public void Update()

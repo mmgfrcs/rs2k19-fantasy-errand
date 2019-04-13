@@ -6,6 +6,7 @@ using System.IO;
 using FantomLib;
 using System;
 using Firebase.Analytics;
+using FantasyErrand.WebSockets.Models;
 
 namespace FantasyErrand
 {
@@ -26,9 +27,13 @@ namespace FantasyErrand
         internal int Age { get; private set; }
         internal Texture2D NeutralPicture { get; private set; }
         internal Texture2D HappyPicture { get; private set; }
+        internal ResearchData NeutralData { get; private set; }
+        internal ResearchData HappyData { get; private set; }
         string NeutralLocation { get; set; }
         string HappyLocation { get; set; }
 
+        bool NeutralModified { get; set; }
+        bool HappyModified { get; set; }
         internal static GameDataManager instance;
 
         private void Start()
@@ -87,20 +92,25 @@ namespace FantasyErrand
 
             if (!Directory.Exists(Application.persistentDataPath + "/img64")) Directory.CreateDirectory(Application.persistentDataPath + "/img64");
 
-            if (NeutralPicture != null && NeutralLocation == "")
+            if (NeutralPicture != null && NeutralModified)
             {
-                string path = Path.Combine(Application.persistentDataPath, ImagePath, "neutral", System.DateTime.Now.ToFileTimeUtc().ToString());
+                string path = Path.Combine(Application.persistentDataPath, ImagePath, "neutral");
+                print($"Saved Neutral Picture in {path}");
                 File.WriteAllBytes(path, NeutralPicture.EncodeToPNG());
+                
                 PlayerPrefs.SetString("NeutralPicture", path);
             }
-
-            if (HappyPicture != null && HappyLocation == "")
+            if (HappyPicture != null && HappyModified)
             {
-                string path = Path.Combine(Application.persistentDataPath, ImagePath, "happy", System.DateTime.Now.ToFileTimeUtc().ToString());
+                string path = Path.Combine(Application.persistentDataPath, ImagePath, "happy");
+                print($"Saved Happy Picture in {path}");
                 File.WriteAllBytes(path, HappyPicture.EncodeToPNG());
                 PlayerPrefs.SetString("HappyPicture", path);
             }
-
+            NeutralModified = false;
+            HappyModified = false;
+            PlayerPrefs.Save();
+            print($"Game Data Manager - Saved data: {PlayerName}, Age {Age}\nResearch: {ResearchMode}, Basic Gathering: {BasicGathering}, Expression Gathering: {ExpressionGathering} Server IP: {ServerAddress}\nNeutral Picture: {NeutralLocation}, Happy Picture: {HappyLocation}");
         }
 
         public void SaveBasicOptions(bool? research = null, bool? basicGather = null, bool? expGather = null, string serverAddr = "")
@@ -111,12 +121,23 @@ namespace FantasyErrand
             if (serverAddr != "") ServerAddress = serverAddr;
         }
 
-        public void SaveParticipantData(string name = "", int? age = null, Texture2D neutral = null, Texture2D happy = null)
+        public void SaveParticipantData(string name = "", int? age = null, Texture2D neutral = null, Texture2D happy = null, ResearchData neutralData = default(ResearchData), ResearchData happyData = default(ResearchData))
         {
             if (name != "") PlayerName = name;
             if (age.HasValue) Age = age.Value;
-            if (neutral != null) NeutralPicture = neutral;
-            if (happy != null) HappyPicture = happy;
+            if (neutral != null)
+            {
+                if (NeutralPicture != neutral) NeutralModified = true;
+                NeutralPicture = neutral;
+                if (neutralData.name != default(ResearchData).name) NeutralData = neutralData;
+            }
+            if (happy != null)
+            {
+                if (HappyPicture != happy) HappyModified = true;
+                HappyPicture = happy;
+                if (happyData.name != default(ResearchData).name) HappyData = happyData;
+            }
+            
         }
 
         public void LoadAllData()
@@ -162,6 +183,7 @@ namespace FantasyErrand
 
                 //TODO: Do something
             }
+            print($"Game Data Manager - Loaded data: {PlayerName}, Age {Age}\nResearch: {ResearchMode}, Basic Gathering: {BasicGathering}, Expression Gathering: {ExpressionGathering} Server IP: {ServerAddress}\nNeutral Picture: {NeutralLocation}, Happy Picture: {HappyLocation}");
         }
     }
 }

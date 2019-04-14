@@ -92,7 +92,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4242477774874888}
-  - component: {fileID: 114830209546506204}
   m_Layer: 0
   m_Name: SpawnBoulderLeft
   m_TagString: Untagged
@@ -388,25 +387,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114830209546506204
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1979753024873986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10a982cb2308c254d9e186c8073f0eee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnRate: 15
-  minSpeed: 5
-  moveSpeed: 10
-  rotateSpeed: {x: -180, y: 0, z: 0}
-  isHurdling: 0
-  movableObject: {fileID: 1348122156267072}
-  player: {fileID: 0}
-  minDistance: 10
 --- !u!135 &135936409826462854
 SphereCollider:
   m_ObjectHideFlags: 1

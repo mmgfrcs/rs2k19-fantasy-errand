@@ -45,6 +45,20 @@ public class LevelManagerUtil : MonoBehaviour {
     void Start () {
         StartCoroutine(InitialGeneration());
 	}
+
+    void OnGUI()
+    {
+        GUIStyle style = new GUIStyle();
+        style.normal.textColor = Color.white;
+        style.fontSize = 20;
+        GUILayout.BeginArea(new Rect(24, 24, 400, 240));
+        GUILayout.Label($"Poolers: {poolers.Count}", style);
+        foreach(var p in poolers)
+        {
+            GUILayout.Label($"> {p.PooledObjects[0].name}: {p.objects.Count}, Capacity {p.objects.Count + p.instantiatedObjects}", style);
+        }
+        GUILayout.EndArea();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -59,7 +73,7 @@ public class LevelManagerUtil : MonoBehaviour {
         }
         for (int i = 0; i < spawnedObjects.Count; i++)
         {
-            if (Vector3.Distance(player.transform.position, spawnedObjects[i].transform.position) > maxGeneratedTile * tileScale)
+            if (Vector3.Distance(player.transform.position, spawnedObjects[i].transform.position) > maxGeneratedTile * tileScale * 1.25f)
             {
                 //Check tile type by GetComponent
                 if (spawnedObjects[i].GetComponent<IObstacle>() != null)
@@ -96,11 +110,11 @@ public class LevelManagerUtil : MonoBehaviour {
         if(gameMode)
         {
             pooler = gameObject.AddComponent<ObjectPooler>();
-            pooler.Initialize(maxGeneratedTile * 3, obstaclePrefabs);
+            pooler.Initialize(pooledObstacles, obstaclePrefabs);
             poolers.Add(pooler);
 
             pooler = gameObject.AddComponent<ObjectPooler>();
-            pooler.Initialize(maxGeneratedTile * 3, coinPrefabs);
+            pooler.Initialize(pooledCoins, coinPrefabs);
             poolers.Add(pooler);
 
             pooler = gameObject.AddComponent<ObjectPooler>();
@@ -132,22 +146,34 @@ public class LevelManagerUtil : MonoBehaviour {
     public void Generate(Vector3 spawnPos)
     {
         int opt = MathRand.WeightedPick(tileSpawnRates);
-        print("Generating " + opt);
+        
         GenerateStraights(new Vector3(spawnPos.x, -0.5f, spawnPos.z));
-        if (coinRemaining != 0) GenerateCoins(new Vector3(continueCoinAt, 0.5f, spawnPos.z), coinRemaining);
+        if (coinRemaining != 0)
+        {
+            print($"Generating remaining {coinRemaining} coins");
+            GenerateCoins(new Vector3(continueCoinAt, 0.5f, spawnPos.z), coinRemaining);
+            
+        }
         else
         {
             float spawnX = MathRand.Pick(new float[] { -3, -1.5f, 0, 1.5f, 3 });
             if (opt == 1)
             {
                 GenerateObstacles(new Vector3(spawnX, 0.25f, spawnPos.z));
+                print("Generating Obstacle");
             }
             else if (opt == 2)
             {
                 int n = Random.Range(minCoins, maxCoins + 1);
+                print($"Generating {n} coins");
                 GenerateCoins(new Vector3(spawnX, 0.5f, spawnPos.z), n);
+                
             }
-            else if (opt == 3) spawnedObjects.Add(poolers[3].Instantiate(new Vector3(spawnPos.x, 1f, spawnPos.z)));
+            else if (opt == 3)
+            {
+                spawnedObjects.Add(poolers[3].Instantiate(new Vector3(spawnPos.x, 1f, spawnPos.z)));
+                print($"Generating power-ups");
+            }
 
         }
     }
@@ -170,11 +196,13 @@ public class LevelManagerUtil : MonoBehaviour {
         int i = 1;
         for (; i <= Mathf.Min(maxCoinSpawnPerTile, n); i++)
         {
+            print($"> Coin {i}: at ({pos.x.ToString("n3")}, {pos.y.ToString("n3")}, {start.ToString("n3")}), n is {n}, max is {maxCoinSpawnPerTile}");
             GameObject go = poolers[2].Instantiate(new Vector3(pos.x, pos.y, start));
             spawnedObjects.Add(go);
             start += step;
         }
-        n -= i;
+        n -= (i - 1);
+        print($"> Remaining: {n} coins");
         if (n > 0)
         {
             coinRemaining = n;

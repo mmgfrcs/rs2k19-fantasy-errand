@@ -145,7 +145,12 @@ public class LevelManagerUtil : MonoBehaviour {
 
     public void Generate(Vector3 spawnPos)
     {
-        int opt = MathRand.WeightedPick(tileSpawnRates);
+        int opt = MathRand.WeightedPick(new float[] {
+            tileSpawnRates.baseTile.Evaluate(player.transform.position.z),
+            tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z),
+            tileSpawnRates.coinsTile.Evaluate(player.transform.position.z),
+            tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)
+        });
         
         GenerateStraights(new Vector3(spawnPos.x, -0.5f, spawnPos.z));
         if (coinRemaining != 0)
@@ -219,9 +224,13 @@ public class LevelManagerUtil : MonoBehaviour {
 [System.Serializable]
 public class TileSpawnRates
 {
-    public float baseTile = 100, obstacleTile = 100, coinsTile = 100, powerupsTile = 100;
+    public AnimationCurve
+        baseTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100)),
+        obstacleTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100)),
+        coinsTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100)),
+        powerupsTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100));
 
-    public float this[int val]
+    public AnimationCurve this[int val]
     {
         get
         {
@@ -233,20 +242,20 @@ public class TileSpawnRates
         }
         set
         {
-            if (value == 0) baseTile = value;
-            else if (value == 1) obstacleTile = value;
-            else if (value == 2) coinsTile = value;
-            else if (value == 3) powerupsTile = value;
+            if (val == 0) baseTile = value;
+            else if (val == 1) obstacleTile = value;
+            else if (val == 2) coinsTile = value;
+            else if (val == 3) powerupsTile = value;
             else throw new System.IndexOutOfRangeException("There are only 4 rates in TileSpawnRates");
         }
     }
 
-    public float[] ToArray()
+    public AnimationCurve[] ToArray()
     {
-        return new float[] { baseTile, obstacleTile, coinsTile, powerupsTile };
+        return new AnimationCurve[] { baseTile, obstacleTile, coinsTile, powerupsTile };
     }
 
-    public static implicit operator float[](TileSpawnRates rate)
+    public static implicit operator AnimationCurve[](TileSpawnRates rate)
     {
         return rate.ToArray();
     }

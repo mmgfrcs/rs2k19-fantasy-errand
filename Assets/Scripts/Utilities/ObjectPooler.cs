@@ -17,6 +17,7 @@ public class ObjectPooler : MonoBehaviour {
     Vector3 poolPos = new Vector3(0, -10000, 0);
 
     bool init = false;
+    public int instantiatedObjects = 0;
 
     bool IsInitialized()
     {
@@ -32,6 +33,7 @@ public class ObjectPooler : MonoBehaviour {
     {
         if (IsInitialized())
         {
+            instantiatedObjects++;
             if (objects.Count > 0)
             {
                 GameObject go = objects.Pop();
@@ -44,6 +46,7 @@ public class ObjectPooler : MonoBehaviour {
                 GameObject go = Instantiate(MathRand.Pick(objectPrefab), pos, Quaternion.identity);
                 return go;
             }
+            
         }
         else return null;
         
@@ -54,6 +57,7 @@ public class ObjectPooler : MonoBehaviour {
         obj.SetActive(false);
         obj.transform.position = poolPos;
         objects.Push(obj);
+        instantiatedObjects--;
     }
 
     // Use this for initialization
@@ -70,5 +74,10 @@ public class ObjectPooler : MonoBehaviour {
         }
 
         init = true;
+    }
+
+    void Update()
+    {
+        debugObjects = objects.ToArray();
     }
 }

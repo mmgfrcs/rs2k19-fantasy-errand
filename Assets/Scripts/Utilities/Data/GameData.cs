@@ -227,6 +227,21 @@ namespace FantasyErrand.Utilities
             }
         }
 
+        public int Get(int id)
+        {
+            if (id == 0) return MagnetLevel;
+            else if (id == 1) return PhaseLevel;
+            else if (id == 2) return BoostLevel;
+            else if (id == 3) return GoldenCoinLevel;
+            else if (id == 4) return CoinValueLevel;
+            else if (id == 5) return LivesLevel;
+            else if (id == 6) return MultiplierLevel;
+            else {
+                Debug.LogError("Get Upgrade Levels: Invalid ID");
+                return -1;
+            }
+        }
+
         public void MagnetLevelUp() => MagnetLevel++;
         public void PhaseLevelUp() => PhaseLevel++;
         public void BoostLevelUp() => BoostLevel++;
@@ -234,6 +249,11 @@ namespace FantasyErrand.Utilities
         public void CoinValueLevelUp() => CoinValueLevel++;
         public void LivesLevelUp() => LivesLevel++;
         public void MultiplierLevelUp() => MultiplierLevel++;
+    }
+
+    public enum ItemID
+    {
+        Magnet, Phase, Boost, GoldenCoin, CoinValue, Lives, Multiplier
     }
 
     [Serializable]

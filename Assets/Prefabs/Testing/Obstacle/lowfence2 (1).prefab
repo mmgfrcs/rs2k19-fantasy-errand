@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4882741330634990}
   - component: {fileID: 65698191069313806}
+  - component: {fileID: 114114591943878942}
   m_Layer: 9
   m_Name: lowfence2 (1)
   m_TagString: Untagged
@@ -125,3 +126,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2741305, y: 3.4193795, z: 3.783696}
   m_Center: {x: 0.5476472, y: 1.5945935, z: -0.022333179}
+--- !u!114 &114114591943878942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1993373319727182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6143755080d482540973f3542150999d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0
+  minDistance: 0
+  player: {fileID: 0}
+  minSpeed: 0
+  spawnRate: 0
+  isHurdling: 0
+  rotateSpeed: {x: -180, y: 0, z: 0}
+  isStaticObstacle: 0
+  isRotatableObstacle: 0
+  isMovableObstacle: 0

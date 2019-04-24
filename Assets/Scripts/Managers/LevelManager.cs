@@ -73,7 +73,7 @@ namespace FantasyErrand
 		void setStraightPrefab(){
 			for(int i =0; i<30; i++)
 			{
-				GameObject a =Instantiate(straightPrefab,new Vector3(0,0,0),Quaternion.identity);
+				GameObject a =Instantiate(straightPrefab, new Vector3(0,0,0), Quaternion.identity);
 				a.SetActive(false);
 				straightPrefabQueue.Enqueue(a);
 			}

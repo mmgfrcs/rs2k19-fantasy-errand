@@ -4,6 +4,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/Scripts/JosephScript/
+/Assets/ViryaLocal/
 PathMaking.scene
 Assets/AssetStoreTools*
 
@@ -37,4 +38,5 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+google-services.json.meta
 google-services.json

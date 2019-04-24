@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 114851624720508418}
   m_Layer: 10
   m_Name: PlayerObject
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1468,7 +1468,6 @@ GameObject:
   - component: {fileID: 4952997248428574}
   - component: {fileID: 20710832540908204}
   - component: {fileID: 81922412804818104}
-  - component: {fileID: 114725809318673508}
   - component: {fileID: 95321190925528026}
   m_Layer: 10
   m_Name: Main Camera
@@ -4850,34 +4849,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff42d6345eb5d749b64395315c3e920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableNonGameMode: 0
+  enableNonGameMode: 1
   controlActive: 0
   sidestepSpeedThreshold: 1
   jumpSpeedThreshold: 0.6
   slideSpeedThreshold: 0.6
   turnThreshold: 4
---- !u!114 &114725809318673508
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1552234963141488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9db04d0f9cdf0c45bab39f4268dc6d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startOnWake: 1
-  discrete: 0
-  emotions: -1
-  expressions: -1
 --- !u!114 &114851624720508418
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1174167005643540}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 530cffc07d427274984e88bb9a232db7, type: 3}
   m_Name: 

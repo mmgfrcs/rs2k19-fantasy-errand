@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2550,14 +2550,17 @@ MonoBehaviour:
   obstaclePrefabs:
   - {fileID: 1993373319727182, guid: 345f53c0a49799d4b8d87ad520ff0327, type: 2}
   powerupsPrefabs:
-  - {fileID: 1004647927568446, guid: f789d228650c532449543d309728a171, type: 2}
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   coinPrefabs:
-  - {fileID: 100000, guid: 86af1bb0a9bb7ff4299c4f6e27515a00, type: 3}
+  - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
+  - {fileID: 1874862385252794, guid: dd6440393b30c65438ddfcb71fa73f14, type: 2}
+  - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
+  - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameMode: 1
   maxGeneratedTile: 10
   pooledObstacles: 20
-  pooledCoins: 40
+  pooledCoins: 80
   startTiles: 4
   tileSpawnRates:
     baseTile: 100
@@ -3041,23 +3044,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114473201696421098, guid: b13b99af3eb47364f9e6fec4347cee27,
-        type: 2}
-      propertyPath: enableNonGameMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114851624720508418, guid: b13b99af3eb47364f9e6fec4347cee27,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114725809318673508, guid: b13b99af3eb47364f9e6fec4347cee27,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114725809318673508, guid: b13b99af3eb47364f9e6fec4347cee27, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b13b99af3eb47364f9e6fec4347cee27, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1610604279

@@ -18,6 +18,7 @@ public class ObjectPooler : MonoBehaviour {
 
     bool init = false;
     public int instantiatedObjects = 0;
+    public List<float> obstacleSpawnRate = new List<float>();
 
     bool IsInitialized()
     {
@@ -34,16 +35,41 @@ public class ObjectPooler : MonoBehaviour {
         if (IsInitialized())
         {
             instantiatedObjects++;
-            if (objects.Count > 0)
+            if (objects.Count > 0 && obstacleSpawnRate.Count==0)
             {
                 GameObject go = objects.Pop();
                 go.transform.position = pos;
                 go.SetActive(true);
                 return go;
             }
+            else if (objects.Count > 0 && obstacleSpawnRate.Count != 0)
+            {
+                int searchIndex = MathRand.WeightedPick(obstacleSpawnRate)+1;
+                int pickIndex = obstacleSpawnRate.Count - searchIndex;
+                Stack<GameObject> tempStack = new Stack<GameObject>();
+                obstacleSpawnRate.RemoveAt(searchIndex-1);
+                for (int i = 0; i < pickIndex; i++)
+                {
+                    tempStack.Push(objects.Pop());
+                }
+                GameObject go = objects.Pop();
+                while (tempStack.Count != 0)
+                {
+                    objects.Push(tempStack.Pop());
+                }
+                go.transform.position = pos;
+                go.SetActive(true);
+                return go;
+
+            }
             else
             {
                 GameObject go = Instantiate(MathRand.Pick(objectPrefab), pos, Quaternion.identity);
+                IObstacle obs = go.GetComponent<IObstacle>();
+                if (obs != null)
+                {
+                    obstacleSpawnRate.Add(obs.SpawnRate);
+                }
                 return go;
             }
             
@@ -57,6 +83,11 @@ public class ObjectPooler : MonoBehaviour {
         obj.SetActive(false);
         obj.transform.position = poolPos;
         objects.Push(obj);
+        IObstacle obs = obj.GetComponent<IObstacle>();
+        if (obs != null)
+        {
+            obstacleSpawnRate.Add(obs.SpawnRate);
+        }
         instantiatedObjects--;
     }
 
@@ -70,6 +101,11 @@ public class ObjectPooler : MonoBehaviour {
         {
             GameObject go = Instantiate(MathRand.Pick(objectPrefab), poolPos, Quaternion.identity);
             go.SetActive(false);
+            IObstacle obs = go.GetComponent<IObstacle>();
+            if (obs != null)
+            {
+                obstacleSpawnRate.Add(obs.SpawnRate);
+            }
             objects.Push(go);
         }
 

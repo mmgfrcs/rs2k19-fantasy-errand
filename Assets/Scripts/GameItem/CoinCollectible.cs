@@ -37,7 +37,7 @@ namespace FantasyErrand
 
         public void CollectibleEffect()
         {
-            throw new System.NotImplementedException();
+
         }
 
         // Use this for initialization
@@ -58,6 +58,14 @@ namespace FantasyErrand
                 {
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, magnetSpeed * Time.deltaTime);
                 }
+            }
+        }
+
+        void OnCollisionEnter(Collision col)
+        {
+            if (col.gameObject.CompareTag("Player"))
+            {
+                transform.position = new Vector3(0, 0, -9999);
             }
         }
 

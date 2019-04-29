@@ -15,18 +15,26 @@ namespace FantasyErrand
     public class PowerUpsManager : MonoBehaviour
     {
         public static event MagnetBroadcast magnetBroadcast;
-        public GameObject gameDataManager;
-        public GameObject gameManager;
+        public GameManager gameManager;
+
         [Header("Magnet Attribute")]
         private int magnetRange;
         public int magnetSpeed=8;
         private float magnetDuration;
         private int magnetLevel;
+        private bool resetMagnet=false;
+        private bool magnetStarted=false;
+
         [Header("Phase Attribute")]
         private int phaseLevel;
         private float phaseDuration;
+        private bool resetPhase=false;
+        private bool phaseStarted=false;
+
         [Header("Boost Attribute")]
         private float boostDuration;
+        private bool resetBoost=false;
+        private bool boostStarted = false;
         // Use this for initialization
         void Start()
         {
@@ -37,7 +45,10 @@ namespace FantasyErrand
             //<-------------Phasing Part----------->
             SetPhase();
             PhaseCollectible.TurnPhasing += StartPhasePowerUps;
+
+            //<-------------Boost Part----------->
             SetBoost();
+            BoostCollectible.TurnBoost += StartBoostPowerUps;
         }
 
         // Update is called once per frame
@@ -48,7 +59,6 @@ namespace FantasyErrand
 
         public void StartMagnetPowerUps()
         {
-            print("Magnet Starts baby");
             StartCoroutine(MagnetPower());
         }
 
@@ -66,7 +76,7 @@ namespace FantasyErrand
 
         public void SetPhase()
         {
-            phaseLevel = gameDataManager.GetComponent<GameDataManager>().Data.UpgradeLevels.PhaseLevel;
+            phaseLevel = GameDataManager.instance.Data.UpgradeLevels.PhaseLevel;
             switch (phaseLevel)
             {
                 case 0:
@@ -100,7 +110,7 @@ namespace FantasyErrand
 
         public void SetBoost()
         {
-            int boostLvl = gameDataManager.GetComponent<GameDataManager>().Data.UpgradeLevels.BoostLevel;
+            int boostLvl = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
             switch (boostLvl)
             {
                 case 0:
@@ -132,7 +142,7 @@ namespace FantasyErrand
 
         public void SetMagnet()
         {
-            magnetLevel = gameDataManager.GetComponent<GameDataManager>().Data.UpgradeLevels.MagnetLevel;
+            magnetLevel = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
             switch (magnetLevel)
             {
                 case 0:
@@ -165,32 +175,85 @@ namespace FantasyErrand
 
         IEnumerator MagnetPower()
         {
-            float currTime = 0;
-            while (currTime < magnetDuration)
+            if (!magnetStarted)
             {
-                magnetBroadcast(true, magnetRange, magnetSpeed);
-                yield return new WaitForSeconds(0.25f);
-                currTime += 0.25f;
+                magnetStarted = true;
+                float duration = magnetDuration;
+                float timeStamp = Time.time;
+
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetMagnet)
+                    {
+                        resetMagnet = false;
+                        timeStamp = Time.time;
+                    }
+                    magnetBroadcast(true, magnetRange, magnetSpeed);
+                    yield return new WaitForSeconds(0.25f);
+                }
+                magnetStarted = false;
+                magnetBroadcast(false, magnetRange, magnetSpeed);
             }
-            magnetBroadcast(false, magnetRange, magnetSpeed);
+            else
+            {
+                resetMagnet = true;
+            }
         }
 
 
         IEnumerator PhasePower()
         {
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-            yield return new WaitForSeconds(phaseDuration);
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"),false);
+            if (!phaseStarted)
+            {
+                phaseStarted = true;
+                float duration = phaseDuration;
+                float timeStamp = Time.time;
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetPhase)
+                    {
+                        resetPhase = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                phaseStarted = false;
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+            }
+            else
+            {
+                resetPhase = true;
+            }
         }
 
         IEnumerator BoostPower()
         {
-            gameManager.GetComponent<GameManager>().SetPlayerSpeed(5,true);
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-            print("Boost activated");
-            yield return new WaitForSeconds(boostDuration);
-            gameManager.GetComponent<GameManager>().SetPlayerSpeed(0.2f,false);
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+            if (!boostStarted)
+            {
+                boostStarted = true;
+                float duration = boostDuration;
+                float timeStamp = Time.time;
+                gameManager.SetPlayerSpeed(5);
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetBoost)
+                    {
+                        resetBoost = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                boostStarted = false;
+                gameManager.SetPlayerSpeed(1f);
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+            }
+            else
+            {
+                resetBoost = true;
+            }
+            
         }
     }
 }

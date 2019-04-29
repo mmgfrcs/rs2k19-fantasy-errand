@@ -32,6 +32,7 @@ namespace FantasyErrand.Entities
         public void CollectibleEffect()
         {
             TurnPhasing?.Invoke();
+            transform.position = new Vector3(0, 0, -9999);
         }
 
         // Use this for initialization

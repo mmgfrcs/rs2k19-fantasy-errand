@@ -34,7 +34,8 @@ namespace FantasyErrand
         public bool IsGameRunning { get; private set; }
         public bool IsRollingStart { get; private set; }
 
-        private bool BoostActivated = false;
+        private float multiplierSpeed=1;
+
 
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event BaseGameEventDelegate OnGameStart;
@@ -87,7 +88,10 @@ namespace FantasyErrand
                 if (collectible != null)
                 {
                     if (collectible.Type == CollectibleType.Monetary)
+                    {
                         Currency += collectible.Value;
+                    }
+
                     if (collectible.Type != CollectibleType.None)
                         collectible.CollectibleEffect();
                 }
@@ -146,9 +150,8 @@ namespace FantasyErrand
             {
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
-                if (!BoostActivated) {
-                    if (IsGameRunning) player.speed = speedGraph.Evaluate(Distance);
-                }
+                if (IsGameRunning) player.speed = multiplierSpeed * speedGraph.Evaluate(Distance);
+                
                     
                   
             }
@@ -156,13 +159,9 @@ namespace FantasyErrand
             if(scoreText != null) scoreText.text = Score.ToString("n0");
         }
 
-        public void SetPlayerSpeed(float multiplier,bool isActivated) {
-            if (!BoostActivated)
-            {
-                player.speed *= multiplier;
-                BoostActivated = isActivated;
-            }
-            
+        public void SetPlayerSpeed(float multiplier)
+        {
+                multiplierSpeed= multiplier;
         }
     }
 

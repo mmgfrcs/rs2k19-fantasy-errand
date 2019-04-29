@@ -32,6 +32,7 @@ namespace FantasyErrand
         public void CollectibleEffect()
         {
             TurnMagnet?.Invoke();
+            transform.position=new Vector3(0, 0, -9999);
         }
 
         // Use this for initialization

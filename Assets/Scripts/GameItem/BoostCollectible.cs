@@ -4,8 +4,10 @@ using UnityEngine;
 using FantasyErrand.Entities.Interfaces;
 namespace FantasyErrand.Entities
 {
+    public delegate void startBoost();
     public class BoostCollectible : MonoBehaviour,ICollectible
     {
+        public static event startBoost TurnBoost;
         GameObject powerupsManager;
         public CollectibleType Type
         {
@@ -26,13 +28,14 @@ namespace FantasyErrand.Entities
 
         public void CollectibleEffect()
         {
-            powerupsManager.GetComponent<PowerUpsManager>().StartBoostPowerUps();
+            TurnBoost?.Invoke();
+            transform.position = new Vector3(0, 0, -9999);
         }
 
         // Use this for initialization
         void Start()
         {
-            powerupsManager = GameObject.FindGameObjectWithTag("Player");
+            
         }
 
         // Update is called once per frame

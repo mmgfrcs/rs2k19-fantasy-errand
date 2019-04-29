@@ -109,7 +109,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 10
-  player: {fileID: 0}
-  magnetGenerator: {fileID: 0}
-  magnetSpeed: 8
-  magnetRange: 10

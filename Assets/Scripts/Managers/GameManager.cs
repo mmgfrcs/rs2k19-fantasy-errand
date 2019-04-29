@@ -34,6 +34,8 @@ namespace FantasyErrand
         public bool IsGameRunning { get; private set; }
         public bool IsRollingStart { get; private set; }
 
+        private bool BoostActivated = false;
+
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
@@ -144,10 +146,23 @@ namespace FantasyErrand
             {
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
-                if (IsGameRunning) player.speed = speedGraph.Evaluate(Distance);
+                if (!BoostActivated) {
+                    if (IsGameRunning) player.speed = speedGraph.Evaluate(Distance);
+                }
+                    
+                  
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
+        }
+
+        public void SetPlayerSpeed(float multiplier,bool isActivated) {
+            if (!BoostActivated)
+            {
+                player.speed *= multiplier;
+                BoostActivated = isActivated;
+            }
+            
         }
     }
 

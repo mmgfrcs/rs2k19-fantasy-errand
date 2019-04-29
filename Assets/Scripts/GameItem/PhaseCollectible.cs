@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
-namespace FantasyErrand
+namespace FantasyErrand.Entities
 {
+
+    public delegate void startPhasing();
+   
     public class PhaseCollectible : MonoBehaviour,ICollectible
     {
+        public static event startPhasing TurnPhasing;
         GameObject player;
 
         public CollectibleType Type
@@ -27,7 +31,7 @@ namespace FantasyErrand
 
         public void CollectibleEffect()
         {
-            player.GetComponent<PowerUpsManager>().startPhasePowerUps();
+            TurnPhasing?.Invoke();
         }
 
         // Use this for initialization

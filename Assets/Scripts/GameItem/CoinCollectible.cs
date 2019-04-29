@@ -13,8 +13,8 @@ namespace FantasyErrand
         [SerializeField]
         private int value;
         CollectibleType type;
-        bool magnetPowerUps;
-        public GameObject player;
+        private bool magnetActivated;
+        private GameObject player;
         private float magnetSpeed;
         private float magnetRange;
         public CollectibleType Type
@@ -44,20 +44,28 @@ namespace FantasyErrand
         void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player");
-            magnetSpeed = player.GetComponent<PowerUpsManager>().magnetSpeed;
-            magnetRange = player.GetComponent<PowerUpsManager>().magnetRange;
+            PowerUpsManager.magnetBroadcast += setMagnet;
 
         }
 
         // Update is called once per frame
         void Update()
         {
-            bool activated = player.GetComponent<PowerUpsManager>().magnetActivated;
             transform.Rotate(0, 90 * Time.deltaTime, 0);
-            if (Vector3.Distance(player.transform.position, transform.position) < magnetRange && activated)
+            if (magnetActivated)
             {
-                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, magnetSpeed * Time.deltaTime);
+                if (Vector3.Distance(player.transform.position, transform.position) < magnetRange)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, magnetSpeed * Time.deltaTime);
+                }
             }
+        }
+
+        void setMagnet(bool activated, int range,int speed)
+        {
+            magnetActivated = activated;
+            magnetRange = range;
+            magnetSpeed = speed;
         }
     }
 }

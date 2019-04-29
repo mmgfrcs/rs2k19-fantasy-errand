@@ -55,7 +55,7 @@ public class LevelManagerUtil : MonoBehaviour {
         GUILayout.Label($"Poolers: {poolers.Count}", style);
         foreach(var p in poolers)
         {
-            GUILayout.Label($"> {p.PooledObjects[0].name}: {p.objects.Count}, Capacity {p.objects.Count + p.instantiatedObjects}", style);
+            //GUILayout.Label($"> {p.PooledObjects[0].name}: {p.objects.Count}, Capacity {p.objects.Count + p.instantiatedObjects}", style);
         }
         GUILayout.EndArea();
     }

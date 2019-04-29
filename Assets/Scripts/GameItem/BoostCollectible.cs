@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities.Interfaces;
-using FantasyErrand;
-using FantasyErrand.Entities;
-namespace FantasyErrand
+namespace FantasyErrand.Entities
 {
-    public delegate void startMagnet();
-    
-
-    public class MagnetCollectible : MonoBehaviour, ICollectible
+    public class BoostCollectible : MonoBehaviour,ICollectible
     {
-        public static event startMagnet TurnMagnet;
-
+        GameObject powerupsManager;
         public CollectibleType Type
         {
             get
@@ -27,17 +21,18 @@ namespace FantasyErrand
             {
                 return 0;
             }
+                
         }
 
         public void CollectibleEffect()
         {
-            TurnMagnet?.Invoke();
+            powerupsManager.GetComponent<PowerUpsManager>().StartBoostPowerUps();
         }
 
         // Use this for initialization
         void Start()
         {
-
+            powerupsManager = GameObject.FindGameObjectWithTag("Player");
         }
 
         // Update is called once per frame
@@ -46,6 +41,4 @@ namespace FantasyErrand
 
         }
     }
-
 }
-

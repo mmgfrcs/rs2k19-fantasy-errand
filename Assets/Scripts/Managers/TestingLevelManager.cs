@@ -31,13 +31,12 @@ public class TestingLevelManager : MonoBehaviour {
     public int maxCoinSpawnPerTile = 6;
     public int minCoins = 4, maxCoins = 24;
 
-
+    [Header("Power Ups")]
+    public int minTilesBeforeNextPowerUps = 8;
+    int currMinTilesBeforeNextPowerUps=0;
     [Header("Debug")]
     public bool showGizmos = true;
 
-    [Header("Player Data")]
-    public float maxSpeed;
-    public float minSpeed;
 
     [Header("Game Balancing")]
     public AnimationCurve CoinLane;
@@ -102,6 +101,7 @@ public class TestingLevelManager : MonoBehaviour {
 
     IEnumerator InitialGeneration()
     {
+        currMinTilesBeforeNextPowerUps = minTilesBeforeNextPowerUps;
         int tiles = 0;
         Vector3 spawnPos = startPosition;
 
@@ -151,32 +151,44 @@ public class TestingLevelManager : MonoBehaviour {
 
     public void Generate(Vector3 spawnPos)
     {
-        int opt = pickTile();
+
+        int opt=0;
+        do
+        {
+            opt = pickTile();
+        } while (opt == 3 && currMinTilesBeforeNextPowerUps != 0);
+
+        if (opt == 3 && currMinTilesBeforeNextPowerUps == 0)
+            currMinTilesBeforeNextPowerUps = minTilesBeforeNextPowerUps;
+
         GenerateStraights(new Vector3(spawnPos.x, -0.5f, spawnPos.z));
-            float spawnX = MathRand.Pick(new float[] { -3, -1.5f, 0, 1.5f, 3 });
+        float spawnX = MathRand.Pick(new float[] { -3, -1.5f, 0, 1.5f, 3 });
         if (coinRemaining != 0)
         {
             GenerateCoins(new Vector3(continueCoinAt, 0.5f, spawnPos.z), coinRemaining);
         }
         else
         {
-              if (opt == 1)
-              {
-                    int n = Random.Range(1,GetObstacleLane());
-                    GenerateObstacles(new Vector3(spawnX, 0.25f, spawnPos.z),n);
-              }
-              else if (opt == 2)
-              {
-                  setCoinXPos();
-                  int n = Random.Range(minCoins, maxCoins + 1);
-                  int lanenumber = Random.Range(1, GetCoinLane());
-                  GenerateCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
-              }
-              else if (opt == 3)
-                  spawnedObjects.Add(poolers[3].Instantiate(new Vector3(spawnPos.x, 1f, spawnPos.z)));
-
-            }    
+            if (opt == 1)
+            {
+                int n = Random.Range(1, GetObstacleLane());
+                GenerateObstacles(new Vector3(spawnX, 0.25f, spawnPos.z), n);
+            }
+            else if (opt == 2)
+            {
+                setCoinXPos();
+                int n = Random.Range(minCoins, maxCoins + 1);
+                int lanenumber = Random.Range(1, GetCoinLane());
+                GenerateCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
+            }
+            else if (opt == 3) {
+                int n = Random.Range(1, 3);
+                GeneratePowerUps(new Vector3(spawnPos.x, 1f, spawnPos.z), n);
+            }
         }
+        if ((opt == 1 || opt == 2) && currMinTilesBeforeNextPowerUps != 0)
+            currMinTilesBeforeNextPowerUps--;
+     }
 
     
 
@@ -233,11 +245,7 @@ public class TestingLevelManager : MonoBehaviour {
                 }
                 else
                 {
-                    int opt = pickTile();
-                    if (opt == 1)
-                        GenerateObstacles(new Vector3(mypos[i], pos.y, pos.z));
-                    else if (opt >1)
-                        spawnedObjects.Add(poolers[3].Instantiate(new Vector3(mypos[i], pos.y, pos.z)));
+                    GenerateObstacles(new Vector3(mypos[i], pos.y, pos.z));                    
                 }
             }
 
@@ -307,12 +315,10 @@ public class TestingLevelManager : MonoBehaviour {
                     GenerateCoins(new Vector3(mypos[i], pos.y, pos.z), n);
                 else {
                     int opt = pickTile();
-                    if (opt == 1)
+                    if (opt == 1 || opt ==3 || opt==0)
                         GenerateObstacles(new Vector3(mypos[i], pos.y,pos.z));
                     else if (opt==2)
                         GenerateCoins(new Vector3(mypos[i], pos.y, pos.z), n);
-                    else if(opt==3)
-                        spawnedObjects.Add(poolers[3].Instantiate(new Vector3(mypos[i], pos.y, pos.z)));
                 }
             }
         }

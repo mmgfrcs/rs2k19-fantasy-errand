@@ -9,16 +9,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bdbd875057d2dd44b4e8d24bb22916a, type: 3}
-  m_Name: Coin Value Upgrade
+  m_Name: Magnet Upgrade
   m_EditorClassIdentifier: 
-  itemId: 4
+  itemId: 0
   itemImage: {fileID: 0}
-  itemName: Coin Value
-  itemDescription: Increase coin value
+  itemName: Magnet
   upgrades: 5
+  itemDescriptions:
+  - 'Increases duration by 25%
+
+    Magnet pulls coins and power-ups'
+  - 
+  - 
+  - 
+  - 
+  - 
   itemPrices:
   - 1000
-  - 2500
+  - 2000
   - 5000
   - 10000
   - 20000

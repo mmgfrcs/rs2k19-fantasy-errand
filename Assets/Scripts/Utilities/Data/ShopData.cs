@@ -14,9 +14,11 @@ namespace FantasyErrand.Data
         public ItemID itemId = 0;
         public Sprite itemImage;
         public string itemName;
-        [TextArea]
-        public string itemDescription;
+
+        [Header("Upgrade-Specific")]
         public int upgrades;
+        [TextArea]
+        public string[] itemDescriptions;
         public float[] itemPrices;
     }
 }

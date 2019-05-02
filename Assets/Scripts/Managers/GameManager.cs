@@ -45,6 +45,7 @@ namespace FantasyErrand
         public void Start()
         {
             //Setup game
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
             Multiplier = startingMultiplier;

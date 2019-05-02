@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4edf4c94c7f2001429a968d530c97e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 0
+  data: {fileID: 0}
   itemNameText: {fileID: 114068598564975134}
   itemDescriptionText: {fileID: 114498231087598930}
   itemPriceText: {fileID: 114202972143004494}

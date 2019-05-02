@@ -32,7 +32,7 @@ Each run, these can be collected:
   - Magnet: Grab nearby coins automatically for a few seconds. Duration and range increases with upgrades 
   - Phase: Go through all obstacles for a few seconds. Does not include falls. Duration increases with upgrades
   - Boost: Move faster for a few seconds. While boosted, also gains Phase. Duration increases with upgrades
-  - Golden Coin: Increases coin value for a few seconds. Duration and Coin value multiplier increases with upgrades 
+  - Golden Coin: Turn all coins to Ruby coins, which worth 10 coins. Duration increases with upgrades.
 
 ### Stages
 There are 3 type of environments in this game: Forest, Volcano and Sea.
@@ -89,27 +89,27 @@ Upgrade Level | Effect | Cost (coins)
 5 | 10 seconds | 50,000
 
 #### Golden Coin
-Increase duration and coin value of Golden Coin power-up
+Increase duration of Golden Coin power-up
 
 Upgrade Level | Effect | Cost (coins)
 ---|---|---
-0 | 5 seconds, 2x value | -
-1 | 6.5 seconds, 2x value | 10,000
-2 | 8 seconds, 3x value | 20,000
-3 | 9.5 seconds, 3x value | 50,000
-4 | 12 seconds, 4x value | 100,000
-5 | 13.5 seconds, 4x value | 200,000
+0 | 4 seconds | -
+1 | 6 seconds | 10,000
+2 | 8 seconds | 20,000
+3 | 10 seconds | 50,000
+4 | 12 seconds | 100,000
+5 | 14 seconds | 200,000
 
 #### Coin Value
 Reduces distance before coin value increases and increase the coin's value itself
 
 Upgrade Level | Effect | Cost (coins)
 ---|---|---
-0 | 2x coin value in 1000m | -
-1 | 2x coin value in 500m | 1,000
-2 | 2x coin value in 500m, 3x coin value in 2000m | 2,500
-3 | 2x coin value in 500m, 3x coin value in 1500m | 5,000
-4 | 2x coin value in 500m, 3x coin value in 1000m | 10,000
+0 | 1x Coin Value all the way | -
+1 | 2x coin value in 2000m | 1,000
+2 | 2x coin value in 1000m, 3x coin value in 2500m | 2,500
+3 | 2x coin value in 1000m, 3x coin value in 2000m | 5,000
+4 | 2x coin value in 500m, 3x coin value in 1500m | 10,000
 5 | 2x coin value in 500m, 3x coin value in 1000m, 4x coin value in 3000m | 20,000
 
 #### Lives
@@ -121,8 +121,8 @@ Upgrade Level | Base Effect | Bonus Effect | Cost
 1 | 1.750 coins cost to continue, cost 2x per continue | - | 5,000
 2 | 1.500 coins cost to continue, cost 2x per continue | - | 10,000
 3 | 1.500 coins cost to continue, cost 2x per continue | Survive hurdling one time | 20,000
-4 | 1.500 coins cost to continue, cost 1.75x per continue | Survive hurdling one time | 50,000
-5 | 1.500 coins cost to continue, cost 1.5x per continue | Survive hurdling one time | 100,000
+4 | 1.500 coins cost to continue, cost 1.8x per continue | Survive hurdling one time | 50,000
+5 | 1.500 coins cost to continue, cost 1.65x per continue | Survive hurdling one time | 100,000
 
 #### Multiplier
 Increases score multiplier. Each upgrade increases multiplier by a certain amount.

@@ -10,7 +10,7 @@ public class ObjectPooler : MonoBehaviour {
     GameObject[] objectPrefab;
     int initialPoolSize = 20;
 
-    Stack<GameObject> objects = new Stack<GameObject>();
+    public Stack<GameObject> objects = new Stack<GameObject>();
 
     GameObject[] debugObjects;
 

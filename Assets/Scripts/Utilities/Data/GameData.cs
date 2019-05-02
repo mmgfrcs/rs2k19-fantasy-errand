@@ -227,18 +227,33 @@ namespace FantasyErrand.Utilities
             }
         }
 
-        public int Get(int id)
+        public int Get(ItemID id)
         {
-            if (id == 0) return MagnetLevel;
-            else if (id == 1) return PhaseLevel;
-            else if (id == 2) return BoostLevel;
-            else if (id == 3) return GoldenCoinLevel;
-            else if (id == 4) return CoinValueLevel;
-            else if (id == 5) return LivesLevel;
-            else if (id == 6) return MultiplierLevel;
+            if (id == ItemID.Magnet) return MagnetLevel;
+            else if ((int)id == 1) return PhaseLevel;
+            else if ((int)id == 2) return BoostLevel;
+            else if ((int)id == 3) return GoldenCoinLevel;
+            else if ((int)id == 4) return CoinValueLevel;
+            else if ((int)id == 5) return LivesLevel;
+            else if ((int)id == 6) return MultiplierLevel;
             else {
                 Debug.LogError("Get Upgrade Levels: Invalid ID");
                 return -1;
+            }
+        }
+
+        public void LevelUp(ItemID id)
+        {
+            if (id == ItemID.Magnet) MagnetLevelUp();
+            else if ((int)id == 1) PhaseLevelUp();
+            else if ((int)id == 2) BoostLevelUp();
+            else if ((int)id == 3) GoldenCoinLevelUp();
+            else if ((int)id == 4) CoinValueLevelUp();
+            else if ((int)id == 5) LivesLevelUp();
+            else if ((int)id == 6) MultiplierLevelUp();
+            else
+            {
+                Debug.LogError("Level Up: Invalid ID");
             }
         }
 

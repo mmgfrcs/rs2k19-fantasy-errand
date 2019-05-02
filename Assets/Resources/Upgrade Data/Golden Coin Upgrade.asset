@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bdbd875057d2dd44b4e8d24bb22916a, type: 3}
+  m_Name: Golden Coin Upgrade
+  m_EditorClassIdentifier: 
+  itemId: 3
+  itemImage: {fileID: 0}
+  itemName: Ruby Coins
+  upgrades: 5
+  itemDescriptions:
+  - Increase Ruby Coins powerup duration
+  - Increase Ruby Coins powerup duration
+  - Increase Ruby Coins powerup duration
+  - Increase Ruby Coins powerup duration
+  - Increase Ruby Coins powerup duration
+  - Increase Ruby Coins powerup duration
+  itemPrices:
+  - 10000
+  - 20000
+  - 50000
+  - 100000
+  - 200000

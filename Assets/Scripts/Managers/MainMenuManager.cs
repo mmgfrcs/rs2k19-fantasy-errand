@@ -25,6 +25,7 @@ namespace FantasyErrand
         public TextMeshProUGUI versionText;
         public Detector detector;
         public EmotionManager emotionManager;
+        public SceneChanger changer;
 
         [Header("Option Fields")]
         public TMP_InputField[] serverAddress;
@@ -45,7 +46,14 @@ namespace FantasyErrand
 
         public void OnPlay()
         {
-            StartCoroutine(LoadScene());
+            changer.OnSceneLoaded += () => 
+            
+            changer.ChangeScene("SampleScene");
+        }
+
+        public void OnUpgrades()
+        {
+            changer.ChangeScene("Shop");
         }
         
         public void OnTakeNeutralPicture()
@@ -155,24 +163,6 @@ namespace FantasyErrand
                
             }
             else AndroidPlugin.ShowToast("Not a portrait image");
-        }
-
-        IEnumerator LoadScene()
-        {
-            loadingSlider.maxValue = 0.9f;
-            var scene = SceneManager.LoadSceneAsync("SampleScene");
-            scene.allowSceneActivation = false;
-            do
-            {
-                loadingSlider.value = scene.progress;
-                yield return null;
-            }
-            while (scene.progress < 0.9f);
-            fader.gameObject.SetActive(true);
-            var tween = fader.GetComponent<Image>().DOFade(1f, 2f);
-            yield return tween.WaitForCompletion();
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
-            scene.allowSceneActivation = true;
         }
 
         public void OnOptions()

@@ -10,7 +10,7 @@ using FantasyErrand.WebSockets.Models;
 
 namespace FantasyErrand
 {
-    public class GameDataManager : MonoBehaviour
+    public sealed class GameDataManager : MonoBehaviour
     {
         [SerializeField]
         int targetFrameRate = 60;

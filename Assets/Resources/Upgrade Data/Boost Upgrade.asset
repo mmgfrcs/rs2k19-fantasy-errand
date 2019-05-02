@@ -9,21 +9,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bdbd875057d2dd44b4e8d24bb22916a, type: 3}
-  m_Name: Multiplier Upgrade
+  m_Name: Boost Upgrade
   m_EditorClassIdentifier: 
-  itemId: 6
+  itemId: 2
   itemImage: {fileID: 0}
-  itemName: Multiplier
-  itemDescription: Multiply your scores!
-  upgrades: 10
+  itemName: Boost
+  upgrades: 5
+  itemDescriptions:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   itemPrices:
-  - 500
-  - 1000
-  - 2000
-  - 5000
-  - 10000
-  - 25000
-  - 50000
-  - 100000
-  - 200000
-  - 400000
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0

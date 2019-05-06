@@ -1137,7 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c68641dff925384b9a2af0d254fba9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 10
+  coinType: 0
 --- !u!1 &124063343
 GameObject:
   m_ObjectHideFlags: 0
@@ -11452,18 +11452,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 924932966}
-  gameManager: {fileID: 234222590}
+  gameManager: {fileID: 234222591}
   startPrefab: {fileID: 1893105060871348, guid: f422498cc7c907d4880fe2adfffb7368,
     type: 2}
   straightPrefabs:
   - {fileID: 1893105060871348, guid: f422498cc7c907d4880fe2adfffb7368, type: 2}
   obstaclePrefabs:
-  - {fileID: 1028563887749222, guid: 09bc696ea6f84fc43862622ccde94d33, type: 2}
-  - {fileID: 1078253428871696, guid: 1f23855ea6c368648b4f074e612feb92, type: 2}
-  - {fileID: 1449321226400182, guid: 933820cee22e3ac43aad18b06ca2f4b2, type: 2}
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
   powerupsPrefabs:
-  - {fileID: 1005366773048372, guid: bd90311185e908f439a4c1777c119847, type: 2}
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   coinPrefabs:
+  - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  coinCopperPrefabs:
+  - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
+  coinSilverPrefabs:
+  - {fileID: 1464802851982736, guid: 34ae12d969e69264e9fe85b5d2672e7c, type: 2}
+  coinGoldPrefabs:
+  - {fileID: 1874862385252794, guid: dd6440393b30c65438ddfcb71fa73f14, type: 2}
+  coinPlatinumPrefabs:
+  - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
+  coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameMode: 1
@@ -11605,6 +11615,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  coinValueLevel: 0
   spawnedObjects: []
 --- !u!4 &2007859973
 Transform:

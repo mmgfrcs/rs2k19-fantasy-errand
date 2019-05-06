@@ -11,10 +11,12 @@ namespace FantasyErrand
         magnet,phase,coin
     };
     public delegate void MagnetBroadcast(bool mangetActive, int magnetRange, int magnetSpeed);
+    public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
     
     public class PowerUpsManager : MonoBehaviour
     {
         public static event MagnetBroadcast magnetBroadcast;
+        public static event GoldenCoinBroadcast goldenCoinBroadcast;
         public GameManager gameManager;
 
         [Header("Magnet Attribute")]
@@ -35,6 +37,11 @@ namespace FantasyErrand
         private float boostDuration;
         private bool resetBoost=false;
         private bool boostStarted = false;
+
+        [Header("Golden Coin Attribute")]
+        private float goldenCoinDuration;
+        private bool resetGoldenCoin = false;
+        private bool goldenCoinStarted = false;
         // Use this for initialization
         void Start()
         {
@@ -49,9 +56,11 @@ namespace FantasyErrand
             //<-------------Boost Part----------->
             SetBoost();
             BoostCollectible.TurnBoost += StartBoostPowerUps;
+
+            setGoldenCoin();
+            GoldenCoinCollectible.TurnGoldenCoin +=StartGoldenCoinPowerUps;
         }
 
-        // Update is called once per frame
         void Update()
         {
 
@@ -72,7 +81,10 @@ namespace FantasyErrand
             StartCoroutine(BoostPower());
         }
 
-
+        public void StartGoldenCoinPowerUps()
+        {
+            StartCoroutine(GoldenCoinPower());
+        }
 
         public void SetPhase()
         {
@@ -103,7 +115,6 @@ namespace FantasyErrand
                     phaseDuration = 3;
                     break;
             }
-
 
         }
 
@@ -140,6 +151,33 @@ namespace FantasyErrand
 
         }
 
+        public void setGoldenCoin()
+        {
+            int level = GameDataManager.instance.Data.UpgradeLevels.GoldenCoinLevel;
+            switch (level)
+            {
+                case 0:
+                    goldenCoinDuration = 4;
+                    break;
+                case 1:
+                    goldenCoinDuration = 6;
+                    break;
+                case 2:
+                    goldenCoinDuration = 8;
+                    break;
+                case 3:
+                    goldenCoinDuration = 10;
+                    break;
+                case 4:
+                    goldenCoinDuration = 12;
+                    break;
+                case 5:
+                    goldenCoinDuration = 14;
+                    break;
+            }
+
+
+        }
         public void SetMagnet()
         {
             magnetLevel = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
@@ -254,6 +292,32 @@ namespace FantasyErrand
                 resetBoost = true;
             }
             
+        }
+
+        IEnumerator GoldenCoinPower()
+        {
+            if (!goldenCoinStarted)
+            {
+                goldenCoinStarted = true;
+                float duration = goldenCoinDuration;
+                float timeStamp = Time.time;
+                goldenCoinBroadcast(true);
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetGoldenCoin)
+                    {
+                        resetGoldenCoin = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                goldenCoinBroadcast(false);
+                goldenCoinStarted = false;
+            }
+            else
+            {
+                resetGoldenCoin = true;
+            }
         }
     }
 }

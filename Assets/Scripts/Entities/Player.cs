@@ -4,14 +4,14 @@ using UnityEngine;
 using TMPro;
 using FantomLib;
 using DG.Tweening;
-
+using FantasyErrand.Entities.Interfaces;
 namespace FantasyErrand.Entities
 {
     public class Player : MonoBehaviour
     {
         [Header("Non-Game")]
         public bool enableNonGameMode;
-
+        public GameManager gameManager;
         [Header("Motion Configuration"), SerializeField]
         private bool controlActive;
         public float sidestepSpeedThreshold = 1f;
@@ -98,18 +98,18 @@ namespace FantasyErrand.Entities
             {
                 //Jump and disable player's capability to jump and slide while on air
                 Jump();
-                
+
             }
             else if (Input.GetKeyDown(KeyCode.S) && canSlide) //If Y velocity reaches the low threshold, provided it can slide...
             {
                 //Slide and disable player's capability to jump and slide while sliding
                 Slide();
             }
-            
+
             //Check slide direction from velocity. Also check if the player object is on the edge of the lane
             if (Input.GetKeyDown(KeyCode.D) && lane < 2) Sidestep(false);
             else if (Input.GetKeyDown(KeyCode.A) && lane > -2) Sidestep(true);
-            
+
         }
 
         /// <summary>
@@ -213,6 +213,18 @@ namespace FantasyErrand.Entities
         private void OnDrawGizmos()
         {
             Gizmos.DrawRay(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down * 0.2f);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            ICollectible collect = other.gameObject.GetComponent<ICollectible>();
+            if (collect != null)
+            {
+                if (collect.Type == CollectibleType.Powerups)
+                    collect.CollectibleEffect();
+                else
+                    gameManager.AddCurrency(collect.Value);
+            }
         }
     }
 }

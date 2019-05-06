@@ -84,19 +84,6 @@ namespace FantasyErrand
                 IsGameRunning = false;
                 StartCoroutine(EndGame());
             }
-            else {
-                ICollectible collectible = obj.gameObject.GetComponent<ICollectible>();
-                if (collectible != null)
-                {
-                    if (collectible.Type == CollectibleType.Monetary)
-                    {
-                        Currency += collectible.Value;
-                    }
-
-                    if (collectible.Type != CollectibleType.None)
-                        collectible.CollectibleEffect();
-                }
-            }
         }
 
         IEnumerator RollingStart()
@@ -163,6 +150,11 @@ namespace FantasyErrand
         public void SetPlayerSpeed(float multiplier)
         {
                 multiplierSpeed= multiplier;
+        }
+
+        public void AddCurrency(float value)
+        {
+            Currency += value;
         }
     }
 

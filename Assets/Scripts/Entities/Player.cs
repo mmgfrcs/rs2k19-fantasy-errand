@@ -7,11 +7,13 @@ using DG.Tweening;
 using FantasyErrand.Entities.Interfaces;
 namespace FantasyErrand.Entities
 {
+    public delegate void PlayerBroadcast(float coinValue);
     public class Player : MonoBehaviour
     {
+        public static event PlayerBroadcast coinAdded;
         [Header("Non-Game")]
         public bool enableNonGameMode;
-        public GameManager gameManager;
+        
         [Header("Motion Configuration"), SerializeField]
         private bool controlActive;
         public float sidestepSpeedThreshold = 1f;
@@ -223,7 +225,7 @@ namespace FantasyErrand.Entities
                 if (collect.Type == CollectibleType.Powerups)
                     collect.CollectibleEffect();
                 else
-                    gameManager.AddCurrency(collect.Value);
+                    coinAdded?.Invoke((float)collect.Value);
             }
         }
     }

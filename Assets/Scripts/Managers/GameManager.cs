@@ -51,6 +51,8 @@ namespace FantasyErrand
             FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
+            Player.coinAdded += AddCurrency;
+            PowerUpsManager.speedBroadcast += SetPlayerSpeed;
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
@@ -145,6 +147,7 @@ namespace FantasyErrand
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
+            print("Currency: " + Currency);
         }
 
         public void SetPlayerSpeed(float multiplier)

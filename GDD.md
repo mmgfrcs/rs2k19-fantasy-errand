@@ -105,7 +105,7 @@ Reduces distance before coin value increases and increase the coin's value itsel
 
 Upgrade Level | Effect | Cost (coins)
 ---|---|---
-0 | 1x(Bronze) Coin Value all the way | -
+0 | 1x(Copper) Coin Value all the way | -
 1 | 2x(Silver) coin value in 2000m | 1,000
 2 | 2x(Silver) coin value in 1000m, 3x(Gold) coin value in 2500m | 2,500
 3 | 2x(Silver) coin value in 1000m, 3x(Gold) coin value in 2000m | 5,000

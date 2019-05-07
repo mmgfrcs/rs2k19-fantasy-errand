@@ -43,6 +43,8 @@ namespace FantasyErrand
         private float goldenCoinDuration;
         private bool resetGoldenCoin = false;
         private bool goldenCoinStarted = false;
+
+        private int gameManagerBroadcastCount = 0;
         // Use this for initialization
         void Start()
         {
@@ -60,6 +62,8 @@ namespace FantasyErrand
 
             setGoldenCoin();
             GoldenCoinCollectible.TurnGoldenCoin +=StartGoldenCoinPowerUps;
+
+            GameManager.OnGameStart += StartTemporaryPhasePower;
         }
 
         void Update()
@@ -85,6 +89,16 @@ namespace FantasyErrand
         public void StartGoldenCoinPowerUps()
         {
             StartCoroutine(GoldenCoinPower());
+        }
+
+        public void StartTemporaryPhasePower()
+        {
+            if (gameManagerBroadcastCount == 0)
+            {
+                gameManagerBroadcastCount++;
+                return;
+            }
+            else StartCoroutine(TemporaryBoostPower());
         }
 
         public void SetPhase()
@@ -292,7 +306,13 @@ namespace FantasyErrand
             {
                 resetBoost = true;
             }
-            
+        }
+
+        IEnumerator TemporaryBoostPower()
+        {
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+            yield return new WaitForSeconds(3f);
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
         IEnumerator GoldenCoinPower()

@@ -106,7 +106,7 @@ namespace FantasyErrand
 
         IEnumerator EndGame()
         {
-            
+            print("Endgame Works Baby");
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
             UIManager.OnRestartGame += () => {
@@ -147,7 +147,6 @@ namespace FantasyErrand
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
-            print("Currency: " + Currency);
         }
 
         public void SetPlayerSpeed(float multiplier)
@@ -159,6 +158,16 @@ namespace FantasyErrand
         {
             Currency += value;
         }
+
+        public void RetryGame()
+        {
+            UIManager.DeactivateGameOver();
+            OnGameStart?.Invoke();
+            Camera.main.GetComponent<Animator>().enabled = true;
+            player.enabled = true;
+            IsGameRunning = true;
+        }
+
     }
 
     public class GameEndEventArgs

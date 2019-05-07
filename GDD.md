@@ -105,12 +105,12 @@ Reduces distance before coin value increases and increase the coin's value itsel
 
 Upgrade Level | Effect | Cost (coins)
 ---|---|---
-0 | 1x Coin Value all the way | -
-1 | 2x coin value in 2000m | 1,000
-2 | 2x coin value in 1000m, 3x coin value in 2500m | 2,500
-3 | 2x coin value in 1000m, 3x coin value in 2000m | 5,000
-4 | 2x coin value in 500m, 3x coin value in 1500m | 10,000
-5 | 2x coin value in 500m, 3x coin value in 1000m, 4x coin value in 3000m | 20,000
+0 | 1x(Copper) Coin Value all the way | -
+1 | 2x(Silver) coin value in 2000m | 1,000
+2 | 2x(Silver) coin value in 1000m, 3x(Gold) coin value in 2500m | 2,500
+3 | 2x(Silver) coin value in 1000m, 3x(Gold) coin value in 2000m | 5,000
+4 | 2x(Silver) coin value in 500m, 3x(Gold) coin value in 1500m | 10,000
+5 | 2x(Silver) coin value in 500m, 3x(Gold) coin value in 1000m, 4x(Platinum) coin value in 3000m | 20,000
 
 #### Lives
 Enable going again while reducing the costs to continue.

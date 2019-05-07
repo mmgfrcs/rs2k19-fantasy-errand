@@ -43,6 +43,12 @@ namespace FantasyErrand
             gameOverPanel.DOFade(1f, 1f);
         }
 
+        public void DeactivateGameOver()
+        {
+            gameOverPanel.blocksRaycasts = false;
+            gameOverPanel.alpha = 0;
+        }
+
         private void GetAllUIElements()
         {
             elements = new List<GameUIElement>();

@@ -108,8 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c68641dff925384b9a2af0d254fba9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinType: 2
   value: 3
-  player: {fileID: 0}
-  magnetGenerator: {fileID: 0}
-  magnetSpeed: 8
-  magnetRange: 15

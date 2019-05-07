@@ -51,6 +51,8 @@ namespace FantasyErrand
             FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
+            Player.coinAdded += AddCurrency;
+            PowerUpsManager.speedBroadcast += SetPlayerSpeed;
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
@@ -84,19 +86,6 @@ namespace FantasyErrand
                 IsGameRunning = false;
                 StartCoroutine(EndGame());
             }
-            else {
-                ICollectible collectible = obj.gameObject.GetComponent<ICollectible>();
-                if (collectible != null)
-                {
-                    if (collectible.Type == CollectibleType.Monetary)
-                    {
-                        Currency += collectible.Value;
-                    }
-
-                    if (collectible.Type != CollectibleType.None)
-                        collectible.CollectibleEffect();
-                }
-            }
         }
 
         IEnumerator RollingStart()
@@ -117,7 +106,7 @@ namespace FantasyErrand
 
         IEnumerator EndGame()
         {
-            
+            print("Endgame Works Baby");
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
             UIManager.OnRestartGame += () => {
@@ -164,6 +153,21 @@ namespace FantasyErrand
         {
                 multiplierSpeed= multiplier;
         }
+
+        public void AddCurrency(float value)
+        {
+            Currency += value;
+        }
+
+        public void RetryGame()
+        {
+            UIManager.DeactivateGameOver();
+            OnGameStart?.Invoke();
+            Camera.main.GetComponent<Animator>().enabled = true;
+            player.enabled = true;
+            IsGameRunning = true;
+        }
+
     }
 
     public class GameEndEventArgs

@@ -7,16 +7,24 @@ using FantasyErrand.Entities;
 
 namespace FantasyErrand
 {
+
+    public enum CoinType
+    {
+        Copper,Silver,Gold,Platinum,Ruby,None
+    };
+
     public class CoinCollectible : MonoBehaviour, ICollectible
     {
 
         [SerializeField]
-        private int value;
+        public CoinType coinType;
+        public int value;
         CollectibleType type;
         private bool magnetActivated;
         private GameObject player;
         private float magnetSpeed;
         private float magnetRange;
+
         public CollectibleType Type
         {
             get

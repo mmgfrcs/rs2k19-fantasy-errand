@@ -1,6 +1,4 @@
 ﻿using FantasyErrand.Entities.Interfaces;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // EXAMPLE CODE

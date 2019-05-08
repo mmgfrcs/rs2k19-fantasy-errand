@@ -1,10 +1,9 @@
-﻿using FantasyErrand.Data;
-using System.Collections;
+﻿using DG.Tweening;
+using FantasyErrand.Data;
 using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace FantasyErrand
 {

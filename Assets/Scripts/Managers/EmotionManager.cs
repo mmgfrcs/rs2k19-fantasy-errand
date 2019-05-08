@@ -1,8 +1,5 @@
-﻿using System.Collections;
+﻿using Affdex;
 using System.Collections.Generic;
-using Affdex;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace FantasyErrand
 {

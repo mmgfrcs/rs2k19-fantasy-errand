@@ -1,9 +1,8 @@
-﻿
-using FantasyErrand.Entities;
+﻿using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
+using FantasyErrand.Utilities;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class LevelManagerUtil : MonoBehaviour {

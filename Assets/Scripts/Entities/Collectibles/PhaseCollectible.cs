@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using FantasyErrand.Entities.Interfaces;
 using UnityEngine;
-using FantasyErrand.Entities;
-using FantasyErrand.Entities.Interfaces;
 namespace FantasyErrand.Entities
 {
-
-    public delegate void startPhasing();
    
     public class PhaseCollectible : MonoBehaviour,ICollectible
     {
-        public static event startPhasing TurnPhasing;
+        public static event System.Action TurnPhasing;
         GameObject player;
 
         public CollectibleType Type
@@ -35,16 +30,5 @@ namespace FantasyErrand.Entities
             transform.position = new Vector3(0, 0, -9999);
         }
 
-        // Use this for initialization
-        void Start()
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

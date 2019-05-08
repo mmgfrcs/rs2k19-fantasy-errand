@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine.UI;
-using UnityEngine;
-using DG.Tweening;
-using FantasyErrand.Data;
+﻿using DG.Tweening;
 using FantasyErrand;
+using FantasyErrand.Data;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopItem : MonoBehaviour {
     [HideInInspector]

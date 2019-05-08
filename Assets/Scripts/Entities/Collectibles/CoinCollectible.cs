@@ -1,16 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using FantasyErrand.Entities.Interfaces;
-using FantasyErrand;
-using FantasyErrand.Entities;
 
 namespace FantasyErrand
 {
 
     public enum CoinType
     {
-        Copper,Silver,Gold,Platinum,Ruby,None
+        None, Copper=3, Silver, Gold, Platinum, Ruby
     };
 
     public class CoinCollectible : MonoBehaviour, ICollectible
@@ -66,14 +62,6 @@ namespace FantasyErrand
                 {
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, magnetSpeed * Time.deltaTime);
                 }
-            }
-        }
-
-        void OnCollisionEnter(Collision col)
-        {
-            if (col.gameObject.CompareTag("Player"))
-            {
-                transform.position = new Vector3(0, 0, -9999);
             }
         }
 

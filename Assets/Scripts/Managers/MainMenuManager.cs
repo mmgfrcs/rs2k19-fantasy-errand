@@ -1,19 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using Affdex;
 using DG.Tweening;
-using Firebase.Analytics;
-using FantasyErrand.Entities.Interfaces;
 using FantasyErrand.WebSockets.Models;
-using System.Linq;
+using FantasyErrand.WebSockets.Utilities;
 using FantomLib;
+using Firebase.Analytics;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using TMPro;
-using Affdex;
-using FantasyErrand.WebSockets.Utilities;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace FantasyErrand
 {

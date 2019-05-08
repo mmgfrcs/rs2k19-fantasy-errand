@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using Firebase.Analytics;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class SceneChanger : MonoBehaviour {
 

@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using FantasyErrand.Utilities;
-using System.IO;
-using FantomLib;
-using System;
-using Firebase.Analytics;
+﻿using FantasyErrand.Utilities;
 using FantasyErrand.WebSockets.Models;
 using Newtonsoft.Json;
+using System.IO;
+using UnityEngine;
 
 namespace FantasyErrand
 {

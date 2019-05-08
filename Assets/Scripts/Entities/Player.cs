@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using FantomLib;
-using DG.Tweening;
+﻿using DG.Tweening;
 using FantasyErrand.Entities.Interfaces;
+using System.Collections;
+using UnityEngine;
 namespace FantasyErrand.Entities
 {
     public delegate void PlayerBroadcast(float coinValue);

@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using FantasyErrand.Entities.Interfaces;
 using UnityEngine;
-using FantasyErrand.Entities.Interfaces;
 namespace FantasyErrand.Entities
 {
     public delegate void startBoost();

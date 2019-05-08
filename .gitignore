@@ -5,6 +5,8 @@
 /[Bb]uilds/
 /Assets/Scripts/JosephScript/
 /Assets/ViryaLocal/
+/Assets/Scripts/JosephScript.meta
+/Assets/ViryaLocal.meta
 PathMaking.scene
 Assets/AssetStoreTools*
 

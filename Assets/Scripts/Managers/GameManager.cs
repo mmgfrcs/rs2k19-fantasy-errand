@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using DG.Tweening;
-using UnityEngine.SceneManagement;
+﻿using DG.Tweening;
 using FantasyErrand.Entities;
-using FantasyErrand.Entities.Interfaces;
 using Firebase.Analytics;
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace FantasyErrand
 {
@@ -141,9 +138,6 @@ namespace FantasyErrand
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
                 if (IsGameRunning) player.speed = multiplierSpeed * speedGraph.Evaluate(Distance);
-                
-                    
-                  
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");

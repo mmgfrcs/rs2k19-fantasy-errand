@@ -1,10 +1,8 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
 using System.Collections.Generic;
-using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
 
 namespace FantasyErrand
 {
@@ -13,9 +11,9 @@ namespace FantasyErrand
         public CanvasGroup gameOverPanel;
         List<GameUIElement> elements;
 
-        public event System.Action OnRetryGame;
-        public event System.Action OnRestartGame;
-        public event System.Action OnBackToMainMenu;
+        public event BaseGameEventDelegate OnRetryGame;
+        public event BaseGameEventDelegate OnRestartGame;
+        public event BaseGameEventDelegate OnBackToMainMenu;
 
         public enum UIType
         {

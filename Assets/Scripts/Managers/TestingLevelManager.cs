@@ -70,7 +70,7 @@ public class TestingLevelManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        PowerUpsManager.goldenCoinBroadcast += setGoldenCoin;
+        Player.goldenCoinBroadcast += setGoldenCoin;
         StartCoroutine(InitialGeneration());
     }
 

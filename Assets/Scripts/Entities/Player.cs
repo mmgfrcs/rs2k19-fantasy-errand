@@ -8,6 +8,8 @@ using FantasyErrand.Entities.Interfaces;
 namespace FantasyErrand.Entities
 {
     public delegate void PlayerBroadcast(float coinValue);
+    public delegate void SpeedBroadcast(float multiplier);
+    public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
     public class Player : MonoBehaviour
     {
         public static event PlayerBroadcast coinAdded;
@@ -28,7 +30,27 @@ namespace FantasyErrand.Entities
         public delegate void TurnEventDelegate(int direction);
         public event System.Action<Collision> OnCollision;
         public event TurnEventDelegate OnTurn;
+        public LayerMask layerMask;
 
+        //----[Magnet Attribute]
+        private int magnetRange;
+        public int magnetSpeed = 8;
+        private bool resetMagnet = false;
+        private bool magnetStarted = false;
+
+        //---[Phase Attribute]
+        private bool resetPhase = false;
+        private bool phaseStarted = false;
+
+        //--[Boost Powerups Attribute]
+        private bool resetBoost = false;
+        private bool boostStarted = false;
+        public static event SpeedBroadcast speedBroadcast;
+
+        //--[GoldenCoinCollectibe Attribute]
+        private bool resetGoldenCoin = false;
+        private bool goldenCoinStarted = false;
+        public static event GoldenCoinBroadcast goldenCoinBroadcast;
         /// <summary>
         /// Can the player be controlled by motion controls?
         /// </summary>
@@ -46,11 +68,13 @@ namespace FantasyErrand.Entities
         bool canSlide = true;
         bool canSidestep = true;
 
+        private bool magnetActivated = false;
         int lane = 0;
 
         // Use this for initialization
         void Start()
         {
+            PowerUpsManager.magnetBroadcast += SetMagnetProperty;
             if (enableNonGameMode)
             {
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
@@ -79,12 +103,26 @@ namespace FantasyErrand.Entities
                 if (Application.platform == RuntimePlatform.WindowsEditor)
                     ProcessKeyControls();
                 else ProcessControls();
-                RaycastHit hit;
+                
                 //if(Physics.Raycast(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down, out hit, 0.18f)){
 
                 //}
             }
 
+            if (magnetStarted)
+            {
+                RaycastHit[] hits = Physics.SphereCastAll(transform.position, magnetRange, transform.forward, magnetRange, layerMask, QueryTriggerInteraction.UseGlobal);
+                foreach (RaycastHit hit in hits)
+                {
+                    GameObject currObj = hit.transform.gameObject;
+                    ICollectible collect = currObj.GetComponent<ICollectible>();
+                    if (collect != null)
+                    {
+                        if (collect.Type == CollectibleType.Monetary)
+                            currObj.GetComponent<CoinCollectible>().SetTarget(gameObject, magnetSpeed);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -225,8 +263,148 @@ namespace FantasyErrand.Entities
                 if (collect.Type == CollectibleType.Powerups)
                     collect.CollectibleEffect();
                 else
+                {
                     coinAdded?.Invoke((float)collect.Value);
+                    other.gameObject.transform.position = new Vector3(0, 0, -9999);
+                    other.gameObject.GetComponent<CoinCollectible>().SetMagnet(false);
+                }
             }
         }
+
+        private void SetMagnetProperty(bool activated, int range, int speed)
+        {
+            magnetActivated = activated;
+            magnetRange = range;
+            magnetSpeed = speed;
+        }
+
+
+        public void StartMagnetPowerUps(float magnetDuration,int Range)
+        {
+            StartCoroutine(MagnetPower(magnetDuration));
+            magnetRange = Range;
+        }
+
+        public void StartPhasePowerUps(float phaseDuration)
+        {
+            StartCoroutine(PhasePower(phaseDuration));
+        }
+
+        public void StartBoostPowerUps(float boostDuration)
+        {
+            StartCoroutine(BoostPower(boostDuration));
+        }
+
+        public void StartGoldenCoinPowerUps(float goldenCoinDuration)
+        {
+            StartCoroutine(GoldenCoinPower(goldenCoinDuration));
+        }
+        IEnumerator PhasePower(float phaseDuration)
+        {
+            print("Phase Worked");
+            if (!phaseStarted)
+            {
+                phaseStarted = true;
+                float duration = phaseDuration;
+                float timeStamp = Time.time;
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetPhase)
+                    {
+                        resetPhase = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                phaseStarted = false;
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+            }
+            else
+            {
+                resetPhase = true;
+            }
+        }
+
+        IEnumerator MagnetPower(float magnetDuration)
+        {
+            if (!magnetStarted)
+            {
+                magnetStarted = true;
+                float duration = magnetDuration;
+                float timeStamp = Time.time;
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetMagnet)
+                    {
+                        resetMagnet = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                magnetStarted = false;
+            }
+            else
+            {
+                resetMagnet = true;
+            }
+        }
+
+        IEnumerator BoostPower(float boostDuration)
+        {
+            print("Boost PLayer started");
+            if (!boostStarted)
+            {
+                boostStarted = true;
+                float duration = boostDuration;
+                float timeStamp = Time.time;
+                speedBroadcast?.Invoke(5);
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetBoost)
+                    {
+                        resetBoost = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                boostStarted = false;
+                speedBroadcast?.Invoke(1);
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+            }
+            else
+            {
+                resetBoost = true;
+            }
+        }
+
+        IEnumerator GoldenCoinPower(float goldenCoinDuration)
+        {
+            print("Golden Coin Player Started");
+            if (!goldenCoinStarted)
+            {
+                goldenCoinStarted = true;
+                float duration = goldenCoinDuration;
+                float timeStamp = Time.time;
+                goldenCoinBroadcast?.Invoke(true);
+                while (Time.time < timeStamp + duration)
+                {
+                    if (resetGoldenCoin)
+                    {
+                        resetGoldenCoin = false;
+                        timeStamp = Time.time;
+                    }
+                    yield return null;
+                }
+                goldenCoinBroadcast?.Invoke(false);
+                goldenCoinStarted = false;
+            }
+            else
+            {
+                resetGoldenCoin = true;
+            }
+        }
+
     }
 }

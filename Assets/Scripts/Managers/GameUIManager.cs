@@ -13,6 +13,7 @@ namespace FantasyErrand
         public CanvasGroup gameOverPanel;
         List<GameUIElement> elements;
 
+        public event System.Action OnRetryGame;
         public event System.Action OnRestartGame;
         public event System.Action OnBackToMainMenu;
 
@@ -77,6 +78,11 @@ namespace FantasyErrand
                     elements.Add(new GameUIElement(UIType.PowerupSlider, graphicElement));
             }
             print($"UI Manager: {sceneElements.Length} Scripts detected, { elements.Count } UI elements detected");
+        }
+
+        public void OnRetry()
+        {
+            OnRetryGame?.Invoke();
         }
         
         public void OnRestart()

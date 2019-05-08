@@ -1,0 +1,40 @@
+{
+  "MagnetDuration": [
+    1.0,
+    2.0
+  ],
+  "MagnetRange": [
+    1.0
+  ],
+  "PhaseDuration": [
+    1.0
+  ],
+  "BoostDuration": [
+    1.0
+  ],
+  "GoldenCoinDuration": [
+    1.0
+  ],
+  "MultiplierIncrease": [
+    1.0
+  ],
+  "CoinValueUpgrades": [
+    {
+      "SilverDistance": 1.0,
+      "GoldDistance": 1.0,
+      "PlatinumDistance": "Infinity"
+    }
+  ],
+  "LivesUpgrades": [
+    {
+      "ContinueCoinCost": 1.0,
+      "ContinueCostMultiplier": 1.0,
+      "HurdleLives": 1
+    },
+    {
+      "ContinueCoinCost": 2.0,
+      "ContinueCostMultiplier": 1.0,
+      "HurdleLives": 1
+    }
+  ]
+}

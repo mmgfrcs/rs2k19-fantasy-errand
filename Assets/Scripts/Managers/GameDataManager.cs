@@ -7,6 +7,7 @@ using FantomLib;
 using System;
 using Firebase.Analytics;
 using FantasyErrand.WebSockets.Models;
+using Newtonsoft.Json;
 
 namespace FantasyErrand
 {
@@ -18,6 +19,7 @@ namespace FantasyErrand
         internal static string SaveFileName { get; private set; } = "saves";
         internal static string ImagePath { get; private set; } = "img64";
 
+        internal UpgradeEffects UpgradeEffects { get; private set; }
         internal GameData Data { get; private set; }
         internal bool ResearchMode { get; private set; }
         internal bool BasicGathering { get; private set; }
@@ -60,12 +62,16 @@ namespace FantasyErrand
 
         private void GameManager_OnGameEnd(GameEndEventArgs args)
         {
-            Data.SetRecord(new GameRecord(Mathf.FloorToInt(args.Score), Mathf.FloorToInt(args.Distance), Mathf.FloorToInt(args.Currency), args.Multiplier));
-            Data.CumulativeRuns++;
-            Data.CumulativeScore += args.Score;
-            Data.CumulativeCoins += args.Currency;
-            Data.CumulativeDistance += args.Distance;
-            SaveGameDataToFile();
+            if (args.IsEnded)
+            {
+                Data.SetRecord(new GameRecord(Mathf.FloorToInt(args.Score), Mathf.FloorToInt(args.Distance), Mathf.FloorToInt(args.Currency), args.Multiplier));
+                Data.CumulativeRuns++;
+                Data.CumulativeScore += args.Score;
+                Data.CumulativeCoins += args.Currency;
+                Data.CumulativeDistance += args.Distance;
+                SaveGameDataToFile();
+            }
+
         }
 
         public void SaveAllDataToFile()
@@ -142,8 +148,16 @@ namespace FantasyErrand
 
         public void LoadAllData()
         {
+            LoadUpgradesData();
             LoadResearchData();
             LoadGameData();
+        }
+
+        public void LoadUpgradesData()
+        {
+            TextAsset text = Resources.Load<TextAsset>("upgrades.json");
+            UpgradeEffects = JsonConvert.DeserializeObject<UpgradeEffects>(text.text);
+            print("Game Data Manager - Loaded Upgrades data");
         }
 
         public void LoadGameData()
@@ -154,6 +168,7 @@ namespace FantasyErrand
                 Data = new GameData("Researcher");
                 Data.SetRecord(new GameRecord(0, 0, 0, 10));
             }
+            print("Game Data Manager - Loaded Game data");
         }
 
         public void LoadResearchData()
@@ -183,7 +198,7 @@ namespace FantasyErrand
 
                 //TODO: Do something
             }
-            print($"Game Data Manager - Loaded data: {PlayerName}, Age {Age}\nResearch: {ResearchMode}, Basic Gathering: {BasicGathering}, Expression Gathering: {ExpressionGathering} Server IP: {ServerAddress}\nNeutral Picture: {NeutralLocation}, Happy Picture: {HappyLocation}");
+            print($"Game Data Manager - Loaded Research data: {PlayerName}, Age {Age}\nResearch: {ResearchMode}, Basic Gathering: {BasicGathering}, Expression Gathering: {ExpressionGathering} Server IP: {ServerAddress}\nNeutral Picture: {NeutralLocation}, Happy Picture: {HappyLocation}");
         }
     }
 }

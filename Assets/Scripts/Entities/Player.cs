@@ -79,10 +79,6 @@ namespace FantasyErrand.Entities
                 if (Application.platform == RuntimePlatform.WindowsEditor)
                     ProcessKeyControls();
                 else ProcessControls();
-                RaycastHit hit;
-                //if(Physics.Raycast(new Vector3(transform.position.x, 0.1f, transform.position.z), Vector3.down, out hit, 0.18f)){
-
-                //}
             }
 
         }

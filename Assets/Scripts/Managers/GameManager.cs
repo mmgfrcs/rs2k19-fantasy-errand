@@ -52,7 +52,7 @@ namespace FantasyErrand
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
             Player.coinAdded += AddCurrency;
-            PowerUpsManager.speedBroadcast += SetPlayerSpeed;
+            PowerUpsManager.SpeedBroadcast += SetPlayerSpeed;
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
@@ -79,7 +79,7 @@ namespace FantasyErrand
         {
             if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
-                OnGameEnd?.Invoke(new GameEndEventArgs() { Score = Score, Distance = Distance, Currency = Currency, Multiplier = Multiplier });
+                OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
                 player.enabled = false;
@@ -109,15 +109,20 @@ namespace FantasyErrand
             print("Endgame Works Baby");
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
+
+            UIManager.OnRetryGame += RetryGame;
+
             UIManager.OnRestartGame += () => {
                 fader.gameObject.SetActive(true);
                 fader.DOFade(1f, 2f).onComplete = () => SceneManager.LoadScene("SampleScene");
+                EndGameTruly();
             };
 
             UIManager.OnBackToMainMenu += () =>
             {
                 fader.gameObject.SetActive(true);
                 fader.DOFade(1f, 2f).onComplete = () => SceneManager.LoadScene("Main");
+                EndGameTruly();
             };
 
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverScore).text = Score.ToString("n0");
@@ -126,12 +131,7 @@ namespace FantasyErrand
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverMultiplier).text = "x" + Multiplier.ToString("n0");
 
             UIManager.ActivateGameOver();
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelEnd,
-                new Parameter("level", "Easy"),
-                new Parameter("score", Score),
-                new Parameter("coins", Currency),
-                new Parameter("distance", Distance),
-                new Parameter("multiplier", Multiplier));
+
         }
 
         public void Update()
@@ -163,15 +163,29 @@ namespace FantasyErrand
         {
             UIManager.DeactivateGameOver();
             OnGameStart?.Invoke();
-            Camera.main.GetComponent<Animator>().enabled = true;
             player.enabled = true;
             IsGameRunning = true;
+        }
+
+        /// <summary>
+        /// Called when the game ends by restarting/going to the main menu
+        /// </summary>
+        public void EndGameTruly()
+        {
+            OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = true, Score = Score, Distance = Distance, Currency = Currency, Multiplier = Multiplier });
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelEnd,
+                new Parameter("level", "Easy"),
+                new Parameter("score", Score),
+                new Parameter("coins", Currency),
+                new Parameter("distance", Distance),
+                new Parameter("multiplier", Multiplier));
         }
 
     }
 
     public class GameEndEventArgs
     {
+        public bool IsEnded { get; set; }
         public float Score { get; set; }
         public float Distance { get; set; }
         public float Currency { get; set; }

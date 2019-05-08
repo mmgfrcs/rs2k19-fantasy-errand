@@ -52,7 +52,7 @@ namespace FantasyErrand
         void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player");
-            PowerUpsManager.magnetBroadcast += setMagnet;
+            PowerUpsManager.MagnetBroadcast += setMagnet;
 
         }
 

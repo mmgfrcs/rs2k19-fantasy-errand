@@ -6,7 +6,6 @@ namespace FantasyErrand.Entities
     public class PhaseCollectible : MonoBehaviour,ICollectible
     {
         public static event System.Action TurnPhasing;
-        GameObject player;
 
         public CollectibleType Type
         {
@@ -27,7 +26,6 @@ namespace FantasyErrand.Entities
         public void CollectibleEffect()
         {
             TurnPhasing?.Invoke();
-            transform.position = new Vector3(0, 0, -9999);
         }
 
     }

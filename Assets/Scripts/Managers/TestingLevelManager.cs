@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
+using FantasyErrand;
 using FantasyErrand.Utilities;
+
 
 namespace FantasyErrand
 {
-    public class TestingLevelManager : MonoBehaviour
-    {
+    public class TestingLevelManager : MonoBehaviour {
 
         /// <summary>
         /// catatan(ini sesudah diganti, pas sebelum pooler[2]=coin, pooler 3 = powerups
@@ -28,7 +29,7 @@ namespace FantasyErrand
         [Header("Level Objects")]
         public GameObject startPrefab;
         public GameObject[] straightPrefabs, obstaclePrefabs, powerupsPrefabs, coinPrefabs;
-        public GameObject[] coinCopperPrefabs, coinSilverPrefabs, coinGoldPrefabs, coinPlatinumPrefabs, coinRubyPrefabs;
+        public GameObject[] coinCopperPrefabs, coinSilverPrefabs,coinGoldPrefabs,coinPlatinumPrefabs,coinRubyPrefabs;
         public Vector3 startPosition;
 
         [Header("Tile Generation")]
@@ -47,7 +48,7 @@ namespace FantasyErrand
 
         [Header("Power Ups")]
         public int minTilesBeforeNextPowerUps = 8;
-        int currMinTilesBeforeNextPowerUps = 0;
+        int currMinTilesBeforeNextPowerUps=0;
         [Header("Debug")]
         public bool showGizmos = true;
 
@@ -56,9 +57,9 @@ namespace FantasyErrand
         public AnimationCurve CoinLane;
         public AnimationCurve ObstacleLane;
 
-        public int coinValueLevel = 0;
+        public int coinValueLevel=0;
         //public UnityEngine.UI.Text text;
-
+        
         List<ObjectPooler> poolers = new List<ObjectPooler>();
         List<GameObject> startObjects = new List<GameObject>();
         [SerializeField]
@@ -69,11 +70,11 @@ namespace FantasyErrand
         float continueCoinAt = -99;
 
         bool turnGoldenCoin = false;
-        float coinXLastPos = 1.5f;
+        float coinXLastPos=1.5f;
         // Use this for initialization
         void Start()
         {
-            PowerUpsManager.GoldenCoinActivated += SetGoldenCoin;
+            Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
         }
 

@@ -49,7 +49,7 @@ namespace FantasyErrand
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
             Player.coinAdded += AddCurrency;
-            PowerUpsManager.SpeedBroadcast += SetPlayerSpeed;
+            Player.speedBroadcast += SetPlayerSpeed;
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);

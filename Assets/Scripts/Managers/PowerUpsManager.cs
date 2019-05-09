@@ -13,14 +13,15 @@ namespace FantasyErrand
         GoldenCoin
     };
     public delegate void MagnetBroadcast(bool mangetActive, int magnetRange, int magnetSpeed);
-    public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
-    public delegate void SpeedBroadcast(float multiplier);
+    
     
     public class PowerUpsManager : MonoBehaviour
     {
-        public static event MagnetBroadcast MagnetBroadcast;
-        public static event GoldenCoinBroadcast GoldenCoinActivated;
-        public static event SpeedBroadcast SpeedBroadcast;
+        [SerializeField]
+        private Player player;
+        public static event MagnetBroadcast magnetBroadcast;
+        
+        
 
         [Header("Magnet Attribute")]
         private int magnetRange;
@@ -75,22 +76,22 @@ namespace FantasyErrand
 
         public void StartMagnetPowerUps()
         {
-            StartCoroutine(ActivateMagnetPower());
+            player.StartMagnetPowerUps(magnetDuration,magnetRange);
         }
 
         public void StartPhasePowerUps()
         {
-            StartCoroutine(ActivatePhasePower());
+            player.StartPhasePowerUps(phaseDuration);
         }
 
         public void StartBoostPowerUps()
         {
-            StartCoroutine(ActivateBoostPower());
+            player.StartBoostPowerUps(boostDuration);
         }
 
         public void StartGoldenCoinPowerUps()
         {
-            StartCoroutine(ActivateGoldenCoinPower());
+            player.StartGoldenCoinPowerUps(goldenCoinDuration);
         }
 
         public void StartTemporaryPhasePower()
@@ -222,84 +223,7 @@ namespace FantasyErrand
                     break;
             } 
         }
-
-        IEnumerator ActivateMagnetPower()
-        {
-            if (!magnetStarted)
-            {
-                magnetStarted = true;
-                float duration = magnetDuration;
-                float timeStamp = Time.time;
-
-                while (Time.time < timeStamp + duration)
-                {
-                    if (resetMagnet)
-                    {
-                        resetMagnet = false;
-                        timeStamp = Time.time;
-                    }
-                    MagnetBroadcast?.Invoke(true, magnetRange, magnetSpeed);
-                    yield return new WaitForSeconds(0.25f);
-                }
-
-                magnetStarted = false;
-                MagnetBroadcast?.Invoke(false, magnetRange, magnetSpeed);
-            }
-            else resetMagnet = true;
-            
-        }
-        IEnumerator ActivatePhasePower()
-        {
-            if (!phaseStarted)
-            {
-                phaseStarted = true;
-                float duration = phaseDuration;
-                float timeStamp = Time.time;
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                while (Time.time < timeStamp + duration)
-                {
-                    if (resetPhase)
-                    {
-                        resetPhase = false;
-                        timeStamp = Time.time;
-                    }
-                    yield return null;
-                }
-                phaseStarted = false;
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
-            }
-            else
-            {
-                resetPhase = true;
-            }
-        }
-        IEnumerator ActivateBoostPower()
-        {
-            if (!boostStarted)
-            {
-                boostStarted = true;
-                float duration = boostDuration;
-                float timeStamp = Time.time;
-                SpeedBroadcast?.Invoke(5);
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                while (Time.time < timeStamp + duration)
-                {
-                    if (resetBoost)
-                    {
-                        resetBoost = false;
-                        timeStamp = Time.time;
-                    }
-                    yield return null;
-                }
-                boostStarted = false;
-                SpeedBroadcast?.Invoke(1);
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
-            }
-            else
-            {
-                resetBoost = true;
-            }
-        }
+        
         IEnumerator ActivateTemporaryPhasePower()
         {
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
@@ -307,31 +231,7 @@ namespace FantasyErrand
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
-        IEnumerator ActivateGoldenCoinPower()
-        {
-            if (!goldenCoinStarted)
-            {
-                goldenCoinStarted = true;
-                float duration = goldenCoinDuration;
-                float timeStamp = Time.time;
-                GoldenCoinActivated?.Invoke(true);
-                while (Time.time < timeStamp + duration)
-                {
-                    if (resetGoldenCoin)
-                    {
-                        resetGoldenCoin = false;
-                        timeStamp = Time.time;
-                    }
-                    yield return null;
-                }
-                GoldenCoinActivated?.Invoke(false);
-                goldenCoinStarted = false;
-            }
-            else
-            {
-                resetGoldenCoin = true;
-            }
-        }
+        
     }
 }
 

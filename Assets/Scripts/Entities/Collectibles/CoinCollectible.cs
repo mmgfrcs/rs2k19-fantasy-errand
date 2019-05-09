@@ -16,7 +16,7 @@ namespace FantasyErrand
         public CoinType coinType;
         public int value;
         CollectibleType type;
-        private bool magnetActivated;
+        bool magnetActivated=false;
         private GameObject player;
         private float magnetSpeed;
         private float magnetRange;
@@ -47,8 +47,8 @@ namespace FantasyErrand
         // Use this for initialization
         void Start()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            PowerUpsManager.MagnetBroadcast += setMagnet;
+            //player = GameObject.FindGameObjectWithTag("Player");
+            PowerUpsManager.magnetBroadcast += setMagnet;
 
         }
 
@@ -58,10 +58,7 @@ namespace FantasyErrand
             transform.Rotate(0, 90 * Time.deltaTime, 0);
             if (magnetActivated)
             {
-                if (Vector3.Distance(player.transform.position, transform.position) < magnetRange)
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, magnetSpeed * Time.deltaTime);
-                }
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 10 * Time.deltaTime);
             }
         }
 
@@ -70,6 +67,18 @@ namespace FantasyErrand
             magnetActivated = activated;
             magnetRange = range;
             magnetSpeed = speed;
+        }
+
+        public void SetTarget(GameObject obj,float speed)
+        {
+            player = obj;
+            magnetActivated=true;
+            magnetSpeed = speed;
+        }
+
+        public void SetMagnet(bool test)
+        {
+            magnetActivated = test;
         }
     }
 }

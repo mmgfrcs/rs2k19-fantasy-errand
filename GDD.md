@@ -152,7 +152,7 @@ Upgrade Level | Multiplier Increase | Cost
 ## Game Item
 ### Power-Ups
 - Potion Magent, a potion bottle with a magnet symbol
-- Potion Phase, a potion bottle with boots symbol 
+- Potion Phase, a potion bottle with horizontal-wave symbol 
 - Potion Boost, a potion bottle with lightning symbol
 - Potion Guld, a potion bottle with Golden coin symbol
 

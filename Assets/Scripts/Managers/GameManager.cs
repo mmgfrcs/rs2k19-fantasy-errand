@@ -42,6 +42,8 @@ namespace FantasyErrand
         UnityEngine.UI.Image fader;
         float startTime;
 
+        private Vector3 playerCurrPos;
+
         public void Start()
         {
             //Setup game
@@ -76,9 +78,11 @@ namespace FantasyErrand
         {
             if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
+                playerCurrPos = player.transform.position;
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
+                player.transform.position = playerCurrPos;
                 player.enabled = false;
                 IsGameRunning = false;
                 StartCoroutine(EndGame());
@@ -155,6 +159,8 @@ namespace FantasyErrand
 
         public void RetryGame()
         {
+            player.transform.position = playerCurrPos;
+            player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
             OnGameStart?.Invoke();
             player.enabled = true;

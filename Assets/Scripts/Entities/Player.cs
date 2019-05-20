@@ -30,11 +30,11 @@ namespace FantasyErrand.Entities
         public LayerMask layerMask;
 
         //----[Magnet Attribute]
-        private int magnetRange;
+        private float magnetRange;
         public int magnetSpeed = 8;
         private bool resetMagnet = false;
         private bool magnetStarted = false;
-
+       
         //---[Phase Attribute]
         private bool resetPhase = false;
         private bool phaseStarted = false;
@@ -65,6 +65,14 @@ namespace FantasyErrand.Entities
         bool canSlide = true;
         bool canSidestep = true;
 
+        [HideInInspector]
+        public float magnetTime = 0;
+        [HideInInspector]
+        public float goldenCoinTime = 0;
+        [HideInInspector]
+        public float phaseTime = 0;
+        [HideInInspector]
+        public float boostTime = 0;
         private bool magnetActivated = false;
         int lane = 0;
 
@@ -272,7 +280,7 @@ namespace FantasyErrand.Entities
         }
 
 
-        public void StartMagnetPowerUps(float magnetDuration,int Range)
+        public void StartMagnetPowerUps(float magnetDuration,float Range)
         {
             StartCoroutine(MagnetPower(magnetDuration));
             magnetRange = Range;
@@ -283,9 +291,9 @@ namespace FantasyErrand.Entities
             StartCoroutine(PhasePower(phaseDuration));
         }
 
-        public void StartBoostPowerUps(float boostDuration)
+        public void StartBoostPowerUps(float boostDuration,float boostPhaseDuration)
         {
-            StartCoroutine(BoostPower(boostDuration));
+            StartCoroutine(BoostPower(boostDuration,boostPhaseDuration));
         }
 
         public void StartGoldenCoinPowerUps(float goldenCoinDuration)
@@ -303,6 +311,7 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    phaseTime = Time.time - timeStamp;
                     if (resetPhase)
                     {
                         resetPhase = false;
@@ -310,6 +319,7 @@ namespace FantasyErrand.Entities
                     }
                     yield return null;
                 }
+                phaseTime = 0;
                 phaseStarted = false;
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
             }
@@ -328,6 +338,7 @@ namespace FantasyErrand.Entities
                 float timeStamp = Time.time;
                 while (Time.time < timeStamp + duration)
                 {
+                    magnetTime = Time.time - timeStamp;
                     if (resetMagnet)
                     {
                         resetMagnet = false;
@@ -343,7 +354,7 @@ namespace FantasyErrand.Entities
             }
         }
 
-        IEnumerator BoostPower(float boostDuration)
+        IEnumerator BoostPower(float boostDuration,float boostPhaseDuration)
         {
             print("Boost PLayer started");
             if (!boostStarted)
@@ -355,6 +366,7 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    boostTime = Time.time - timeStamp;
                     if (resetBoost)
                     {
                         resetBoost = false;
@@ -365,6 +377,7 @@ namespace FantasyErrand.Entities
                 boostStarted = false;
                 speedBroadcast?.Invoke(1);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+                StartCoroutine(PhasePower(boostPhaseDuration));
             }
             else
             {
@@ -383,6 +396,7 @@ namespace FantasyErrand.Entities
                 goldenCoinBroadcast?.Invoke(true);
                 while (Time.time < timeStamp + duration)
                 {
+                    goldenCoinTime = Time.time - timeStamp;
                     if (resetGoldenCoin)
                     {
                         resetGoldenCoin = false;
@@ -398,6 +412,8 @@ namespace FantasyErrand.Entities
                 resetGoldenCoin = true;
             }
         }
+
+      
 
     }
 }

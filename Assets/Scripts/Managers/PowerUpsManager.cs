@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities;
 using FantasyErrand.Utilities;
-
+using UnityEngine.UI;
 namespace FantasyErrand
 {
     public enum PowerUpsType {
@@ -20,32 +20,37 @@ namespace FantasyErrand
         [SerializeField]
         private Player player;
         public static event MagnetBroadcast magnetBroadcast;
-        
-        
+
+        private bool boostPhase = false;
+        private float boostPhaseDuration = 2f;
 
         [Header("Magnet Attribute")]
-        private int magnetRange;
+        private float magnetRange;
         public int magnetSpeed = 8;
         private float magnetDuration;
         private int magnetLevel;
         private bool resetMagnet=false;
         private bool magnetStarted=false;
-
+        public Image magnetBar;
+        private float magnetTime;
         [Header("Phase Attribute")]
         private int phaseLevel;
         private float phaseDuration;
         private bool resetPhase=false;
         private bool phaseStarted=false;
-
+        public Image phaseBar;
         [Header("Boost Attribute")]
         private float boostDuration;
         private bool resetBoost=false;
         private bool boostStarted = false;
-
+        public Image boostBar;
         [Header("Golden Coin Attribute")]
         private float goldenCoinDuration;
         private bool resetGoldenCoin = false;
         private bool goldenCoinStarted = false;
+        public Image goldenCoinBar;
+
+
 
         private int gameManagerBroadcastCount = 0;
         // Use this for initialization
@@ -71,6 +76,46 @@ namespace FantasyErrand
 
         void Update()
         {
+            SetPowerUpsBar();
+        }
+
+        void SetPowerUpsBar()
+        {
+            if (player.magnetTime == 0)
+                magnetBar.GetComponent<Image>().fillAmount = 0;
+            else
+                magnetBar.GetComponent<Image>().fillAmount = 1 - (player.magnetTime / magnetDuration);
+
+            if (player.phaseTime <= 0.1)
+            {
+                phaseBar.GetComponent<Image>().fillAmount = 0;
+            }
+            else if (boostPhase)
+            {
+                phaseBar.GetComponent<Image>().fillAmount = 1 - (player.phaseTime / boostPhaseDuration);
+                if (player.phaseTime>=1.9)
+                {
+                    phaseBar.GetComponent<Image>().fillAmount = 0;
+                    player.phaseTime = 0;
+                    boostPhase = false;
+                }
+            }
+            else
+            {
+                phaseBar.GetComponent<Image>().fillAmount = 1 - (player.phaseTime / phaseDuration);
+                boostPhase = false;
+            }
+
+            if (player.goldenCoinTime == 0)
+                goldenCoinBar.GetComponent<Image>().fillAmount = 0;
+            else
+                goldenCoinBar.GetComponent<Image>().fillAmount = 1 - (player.goldenCoinTime / goldenCoinDuration);
+
+            if (player.boostTime == 0)
+                boostBar.GetComponent<Image>().fillAmount = 0;
+            else
+                boostBar.GetComponent<Image>().fillAmount = 1 - (player.boostTime / boostDuration);
+
 
         }
 
@@ -86,7 +131,9 @@ namespace FantasyErrand
 
         public void StartBoostPowerUps()
         {
-            player.StartBoostPowerUps(boostDuration);
+            boostPhase = true;
+            player.StartBoostPowerUps(boostDuration,boostPhaseDuration);
+            
         }
 
         public void StartGoldenCoinPowerUps()
@@ -101,127 +148,30 @@ namespace FantasyErrand
                 gameManagerBroadcastCount++;
                 return;
             }
-            else StartCoroutine(ActivateTemporaryPhasePower());
+            else
+                player.StartPhasePowerUps(phaseDuration);
         }
 
         public void SetPhaseEffect()
         {
             phaseLevel = GameDataManager.instance.Data.UpgradeLevels.PhaseLevel;
-            switch (phaseLevel)
-            {
-                case 0:
-                    phaseDuration = 3;
-                    break;
-                case 1:
-                    phaseDuration = 3.75f;
-                    break;
-                case 2:
-                    phaseDuration = 4.5f;
-                    break;
-                case 3:
-                    phaseDuration = 5.25f;
-                    break;
-
-                case 4:
-                    phaseDuration = 6;
-                    break;
-                case 5:
-                    phaseDuration = 7;
-                    break;
-                default:
-                    phaseDuration = 3;
-                    break;
-            }
-
+            phaseDuration = GameDataManager.instance.UpgradeEffects.PhaseDuration[phaseLevel];
         }
         public void SetBoostEffect()
         {
             int boostLvl = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
-            switch (boostLvl)
-            {
-                case 0:
-                    boostDuration = 4;
-                    break;
-
-                case 1:
-                    boostDuration = 5;
-                    break;
-
-                case 2:
-                    boostDuration = 6;
-                    break;
-
-                case 3:
-                    boostDuration = 7;
-                    break;
-
-                case 4:
-                    boostDuration = 8;
-                    break;
-
-                case 5:
-                    boostDuration = 10;
-                    break;
-            }
-
+            boostDuration = GameDataManager.instance.UpgradeEffects.BoostDuration[boostLvl];
         }
         public void SetGoldenCoinEffect()
         {
             int level = GameDataManager.instance.Data.UpgradeLevels.GoldenCoinLevel;
-            switch (level)
-            {
-                case 0:
-                    goldenCoinDuration = 4;
-                    break;
-                case 1:
-                    goldenCoinDuration = 6;
-                    break;
-                case 2:
-                    goldenCoinDuration = 8;
-                    break;
-                case 3:
-                    goldenCoinDuration = 10;
-                    break;
-                case 4:
-                    goldenCoinDuration = 12;
-                    break;
-                case 5:
-                    goldenCoinDuration = 14;
-                    break;
-            }
-
-
+            goldenCoinDuration = GameDataManager.instance.UpgradeEffects.GoldenCoinDuration[level];
         }
         public void SetMagnetEffect()
         {
             magnetLevel = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
-            switch (magnetLevel)
-            {
-                case 0:
-                    magnetRange = 50;
-                    magnetDuration = 6;
-                    break;
-                case 1:
-                    magnetRange = 50;
-                    magnetDuration = 7.5f;
-                    break;
-                case 2:
-                    magnetRange = 60;
-                    magnetDuration = 9;
-                    break;
-                case 3:
-                    magnetRange = 60;
-                    magnetDuration = 10.5f;
-                    break;
-                case 4:
-                    magnetRange = 70;
-                    magnetDuration = 12;
-                    break;
-                case 5:
-                    magnetRange = 70;
-                    magnetDuration = 15f;
-                    break;
-            } 
+            magnetDuration= GameDataManager.instance.UpgradeEffects.MagnetDuration[magnetLevel];
+            magnetRange = GameDataManager.instance.UpgradeEffects.MagnetRange[magnetLevel];
         }
         
         IEnumerator ActivateTemporaryPhasePower()

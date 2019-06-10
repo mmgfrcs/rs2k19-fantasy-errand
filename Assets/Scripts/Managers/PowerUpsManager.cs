@@ -31,26 +31,26 @@ namespace FantasyErrand
         private int magnetLevel;
         private bool resetMagnet=false;
         private bool magnetStarted=false;
-        public Image magnetBar;
         private float magnetTime;
         [Header("Phase Attribute")]
         private int phaseLevel;
         private float phaseDuration;
         private bool resetPhase=false;
         private bool phaseStarted=false;
-        public Image phaseBar;
         [Header("Boost Attribute")]
         private float boostDuration;
         private bool resetBoost=false;
         private bool boostStarted = false;
-        public Image boostBar;
         [Header("Golden Coin Attribute")]
         private float goldenCoinDuration;
         private bool resetGoldenCoin = false;
         private bool goldenCoinStarted = false;
-        public Image goldenCoinBar;
+        
 
-
+        public Slider magnetSlider;
+        public Slider boostSlider;
+        public Slider phaseSlider;
+        public Slider goldenCoinSlider;
 
         private int gameManagerBroadcastCount = 0;
         // Use this for initialization
@@ -81,40 +81,48 @@ namespace FantasyErrand
 
         void SetPowerUpsBar()
         {
+            //Magnet Power
             if (player.magnetTime == 0)
-                magnetBar.GetComponent<Image>().fillAmount = 0;
-            else
-                magnetBar.GetComponent<Image>().fillAmount = 1 - (player.magnetTime / magnetDuration);
-
-            if (player.phaseTime <= 0.1)
             {
-                phaseBar.GetComponent<Image>().fillAmount = 0;
+                magnetSlider.value = 0;
+            }
+
+            else
+            {
+                magnetSlider.value = 1 - (player.magnetTime / magnetDuration);
+            }
+                
+            ///Phasing power
+            if (player.phaseTime <= 0)
+            {
+                phaseSlider.value = 0;
             }
             else if (boostPhase)
             {
-                phaseBar.GetComponent<Image>().fillAmount = 1 - (player.phaseTime / boostPhaseDuration);
+                phaseSlider.value = 1 - (player.phaseTime / boostPhaseDuration);
                 if (player.phaseTime>=1.9)
                 {
-                    phaseBar.GetComponent<Image>().fillAmount = 0;
+                    phaseSlider.value = 0;
                     player.phaseTime = 0;
                     boostPhase = false;
                 }
             }
             else
             {
-                phaseBar.GetComponent<Image>().fillAmount = 1 - (player.phaseTime / phaseDuration);
+                phaseSlider.value = 1 - (player.phaseTime / phaseDuration);
                 boostPhase = false;
             }
-
+            //Gold coin
             if (player.goldenCoinTime == 0)
-                goldenCoinBar.GetComponent<Image>().fillAmount = 0;
+                goldenCoinSlider.value = 0;
             else
-                goldenCoinBar.GetComponent<Image>().fillAmount = 1 - (player.goldenCoinTime / goldenCoinDuration);
+                goldenCoinSlider.value = 1 - (player.goldenCoinTime / goldenCoinDuration);
 
+            //Boost Power
             if (player.boostTime == 0)
-                boostBar.GetComponent<Image>().fillAmount = 0;
+                boostSlider.value = 0;
             else
-                boostBar.GetComponent<Image>().fillAmount = 1 - (player.boostTime / boostDuration);
+                boostSlider.value = 1- (player.boostTime / boostDuration);
 
 
         }

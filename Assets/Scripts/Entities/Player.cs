@@ -261,8 +261,12 @@ namespace FantasyErrand.Entities
             ICollectible collect = other.gameObject.GetComponent<ICollectible>();
             if (collect != null)
             {
+
                 if (collect.Type == CollectibleType.Powerups)
+                {
                     collect.CollectibleEffect();
+                    SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Gulp);
+                }
                 else
                 {
                     coinAdded?.Invoke((float)collect.Value);
@@ -359,6 +363,7 @@ namespace FantasyErrand.Entities
             print("Boost PLayer started");
             if (!boostStarted)
             {
+                SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Boost);
                 boostStarted = true;
                 float duration = boostDuration;
                 float timeStamp = Time.time;
@@ -366,6 +371,7 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Boost);
                     boostTime = Time.time - timeStamp;
                     if (resetBoost)
                     {

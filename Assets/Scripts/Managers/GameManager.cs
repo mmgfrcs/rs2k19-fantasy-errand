@@ -107,7 +107,7 @@ namespace FantasyErrand
 
         IEnumerator EndGame()
         {
-            print("Endgame Works Baby");
+            SoundManager.Instance.PlayEnemySound(EnemySoundsType.Bite);
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
 

@@ -44,6 +44,12 @@ namespace FantasyErrand
 
         private Vector3 playerCurrPos;
 
+        [HideInInspector]
+        public float DynamicSpeedModifier=0;
+
+
+
+
         public void Start()
         {
             //Setup game
@@ -141,7 +147,7 @@ namespace FantasyErrand
             {
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
-                if (IsGameRunning) player.speed = multiplierSpeed * speedGraph.Evaluate(Distance);
+                if (IsGameRunning) player.speed = multiplierSpeed * (speedGraph.Evaluate(Distance)+DynamicSpeedModifier);
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
@@ -150,6 +156,11 @@ namespace FantasyErrand
         public void SetPlayerSpeed(float multiplier)
         {
                 multiplierSpeed= multiplier;
+        }
+
+        public float GetCurrSpeed()
+        {
+            return multiplierSpeed * speedGraph.Evaluate(Distance);
         }
 
         public void AddCurrency(float value)

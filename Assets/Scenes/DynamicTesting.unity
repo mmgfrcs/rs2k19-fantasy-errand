@@ -287,25 +287,26 @@ MonoBehaviour:
   rateBaseTile: 30
   rateCoin: 30
   ratePowerUps: 30
-  emotionUpdateInterval: 0.5
+  rateSpeed: 0.5
+  emotionUpdateInterval: 0.8
   rateBottomLimit: 10
   rateUpperLimit: 200
-  speedUpperLimit: 30
-  speedBottomLimit: 30
-  posEmoCoin: 1
-  posEmoPowerUps: 1
-  posEmoBaseTile: 1
-  posEmoObstacle: 1
+  speedUpperLimit: 10
+  speedBottomLimit: 35
+  posEmoCoin: -2
+  posEmoPowerUps: -1
+  posEmoBaseTile: -0.5
+  posEmoObstacle: 2
   posEmoSpeedMult: 0.2
-  negEmoCoin: 1
-  negEmoObstacle: 1
+  negEmoCoin: 2
+  negEmoObstacle: -2
   negEmoBaseTile: 1
-  negEmoPowerUps: 1
-  negEmoSpeedMult: 0.1
+  negEmoPowerUps: 1.2
+  negEmoSpeedMult: -0.4
   spawnedObjects: []
   emotionManager: {fileID: 1054653656}
-  positiveEmotions: 0400000005000000
-  negativeEmotions: 0600000003000000
+  positiveEmotions: 00000000
+  negativeEmotions: 02000000
 --- !u!4 &70835560
 Transform:
   m_ObjectHideFlags: 0
@@ -3699,7 +3700,7 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1042183309}
     - target: {fileID: 114682429634898534, guid: c2085aa881ed268499b7c9737851f1fd,
         type: 2}
       propertyPath: m_havePropertiesChanged
@@ -3980,6 +3981,11 @@ Prefab:
     - target: {fileID: 1386070750477006, guid: c2085aa881ed268499b7c9737851f1fd, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114558051985646274, guid: c2085aa881ed268499b7c9737851f1fd,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RetryGame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c2085aa881ed268499b7c9737851f1fd, type: 2}

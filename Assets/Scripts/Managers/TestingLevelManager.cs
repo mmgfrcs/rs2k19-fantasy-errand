@@ -87,6 +87,7 @@ namespace FantasyErrand
         {
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
+            
         }
 
         // Update is called once per frame

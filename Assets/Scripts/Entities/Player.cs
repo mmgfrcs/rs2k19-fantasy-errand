@@ -2,8 +2,18 @@
 using FantasyErrand.Entities.Interfaces;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 namespace FantasyErrand.Entities
 {
+    public enum swipeDirection
+    {
+        None,
+        Left,
+        Right,
+        Up,
+        Down,
+    }
+
     public delegate void PlayerBroadcast(float coinValue);
     public delegate void SpeedBroadcast(float multiplier);
     public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
@@ -76,6 +86,22 @@ namespace FantasyErrand.Entities
         private bool magnetActivated = false;
         int lane = 0;
 
+        //Swipe Attribute
+        public swipeDirection Direction { set; get; }
+        private Vector3 touchPosition;
+        private float swipeResistanceX = 50.0f;
+        private float swipeResistanceY = 50.0f;
+
+
+        //Swipe Attribute
+        private Vector2 fingerDownPosition;
+        private Vector2 fingerUpPosition;
+        public swipeDirection currSwipe = swipeDirection.None;
+
+        [SerializeField]
+        private float SwipeMinimumTreshold = 200f;
+
+
         // Use this for initialization
         void Start()
         {
@@ -102,12 +128,18 @@ namespace FantasyErrand.Entities
             //speed -= rate * emotionManager.DisgustRatio * Time.deltaTime;
 
             transform.Translate(transform.forward * speed * Time.deltaTime);
-
+            
             if (IsControlActive && !enableNonGameMode)
             {
                 if (Application.platform == RuntimePlatform.WindowsEditor)
                     ProcessKeyControls();
-                else ProcessControls();
+                else if (!MainMenuManager.isSwipeModeOn)
+                    ProcessControls();
+                else
+                {
+                    ProcessSwipe();
+                    DetectSwipe();
+                }    
             }
 
             if (magnetStarted)
@@ -192,6 +224,7 @@ namespace FantasyErrand.Entities
             }
             else if (velocityX < 0.05f && velocityX > -0.05f) canSidestep = true;
         }
+
 
         void Jump()
         {
@@ -419,7 +452,80 @@ namespace FantasyErrand.Entities
             }
         }
 
-      
+        
+
+
+        public void ProcessSwipe()
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                if (touch.phase == TouchPhase.Began)
+                {
+                    fingerUpPosition = touch.position;
+                    fingerDownPosition = touch.position;
+                }
+
+                if (touch.phase == TouchPhase.Moved)
+                {
+                   fingerDownPosition = touch.position;
+                }
+
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    fingerDownPosition = touch.position;
+                }
+            }
+            
+        }
+
+        private void DetectSwipe()
+        {
+            currSwipe = swipeDirection.None;
+            if (SwipeCompromised())
+            {
+                if (IsVerticalSwipe())
+                {
+                    currSwipe = fingerDownPosition.y - fingerUpPosition.y > 0 ? swipeDirection.Up : swipeDirection.Down;
+                }
+                else
+                {
+                    currSwipe = fingerDownPosition.x - fingerUpPosition.x > 0 ? swipeDirection.Right : swipeDirection.Left;
+                }
+                fingerUpPosition = fingerDownPosition;
+                Debug.Log("swipe Compromised");
+            }
+
+            if (currSwipe.Equals(swipeDirection.Left) && lane > -2) 
+                Sidestep(true);
+            else if (currSwipe.Equals(swipeDirection.Right) && lane < 2)
+                Sidestep(false);
+            else if (currSwipe.Equals(swipeDirection.Up) && canJump)
+                Jump();
+            else if (currSwipe.Equals(swipeDirection.Down) && canSlide)
+                Slide();
+
+        }
+
+        private bool IsVerticalSwipe()
+        {
+            return VerticalMovementDistance() > HorizontalMovementDistance();
+        }
+
+        private bool SwipeCompromised()
+        {
+            return VerticalMovementDistance() > SwipeMinimumTreshold || HorizontalMovementDistance() > SwipeMinimumTreshold;
+        }
+
+        private float VerticalMovementDistance()
+        {
+            return Mathf.Abs(fingerDownPosition.y - fingerUpPosition.y);
+        }
+
+        private float HorizontalMovementDistance()
+        {
+            return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
+        }
+
 
     }
 }

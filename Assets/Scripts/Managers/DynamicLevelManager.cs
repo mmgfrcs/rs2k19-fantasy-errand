@@ -100,10 +100,10 @@ namespace FantasyErrand
                 float totalPosEmotions = 0, totalNegEmotions = 0;
 
                 for (int i = 0; i < positiveEmotions.Length; i++)
-                    totalPosEmotions = GetEmotion(positiveEmotions[i]);
+                    totalPosEmotions += GetEmotion(positiveEmotions[i]);
 
                 for (int i = 0; i < negativeEmotions.Length; i++)
-                    totalNegEmotions = GetEmotion(negativeEmotions[i]);
+                    totalNegEmotions += GetEmotion(negativeEmotions[i]);
 
                 float temp = rateBaseTile + (totalPosEmotions * posEmoBaseTile) + (totalNegEmotions * negEmoBaseTile);
                     if (temp > rateBottomLimit && temp < rateUpperLimit)
@@ -446,10 +446,12 @@ namespace FantasyErrand
 
         public float GetEmotion(Affdex.Emotions emo)
         {
-            if (emo.Equals(Affdex.Emotions.Disgust))
-                return emotionManager.EmotionsList[0][Affdex.Emotions.Disgust];
-            else if (emo.Equals(Affdex.Emotions.Joy))
-                return emotionManager.EmotionsList[0][Affdex.Emotions.Joy];
+            if (emotionManager.FaceStatus.Equals("Tracking"))
+            {
+                print("Bagian ini Jalan");
+                return emotionManager.EmotionsList[0][emo];
+                
+            }
             else
                 return 0;
         }

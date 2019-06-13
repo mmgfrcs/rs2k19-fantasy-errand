@@ -41,6 +41,8 @@ namespace FantasyErrand
         int pickMode = 0;
         int errors = 0;
 
+        public static bool isSwipeModeOn=true;
+
         public void OnPlay()
         {
             changer.OnSceneLoaded += () => 

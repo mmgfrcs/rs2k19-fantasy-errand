@@ -2,8 +2,18 @@
 using FantasyErrand.Entities.Interfaces;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 namespace FantasyErrand.Entities
 {
+    public enum swipeDirection
+    {
+        None,
+        Left,
+        Right,
+        Up,
+        Down,
+    }
+
     public delegate void PlayerBroadcast(float coinValue);
     public delegate void SpeedBroadcast(float multiplier);
     public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
@@ -30,11 +40,11 @@ namespace FantasyErrand.Entities
         public LayerMask layerMask;
 
         //----[Magnet Attribute]
-        private int magnetRange;
+        private float magnetRange;
         public int magnetSpeed = 8;
         private bool resetMagnet = false;
         private bool magnetStarted = false;
-
+       
         //---[Phase Attribute]
         private bool resetPhase = false;
         private bool phaseStarted = false;
@@ -65,8 +75,32 @@ namespace FantasyErrand.Entities
         bool canSlide = true;
         bool canSidestep = true;
 
+        [HideInInspector]
+        public float magnetTime = 0;
+        [HideInInspector]
+        public float goldenCoinTime = 0;
+        [HideInInspector]
+        public float phaseTime = 0;
+        [HideInInspector]
+        public float boostTime = 0;
         private bool magnetActivated = false;
         int lane = 0;
+
+        //Swipe Attribute
+        public swipeDirection Direction { set; get; }
+        private Vector3 touchPosition;
+        private float swipeResistanceX = 50.0f;
+        private float swipeResistanceY = 50.0f;
+
+
+        //Swipe Attribute
+        private Vector2 fingerDownPosition;
+        private Vector2 fingerUpPosition;
+        public swipeDirection currSwipe = swipeDirection.None;
+
+        [SerializeField]
+        private float SwipeMinimumTreshold = 200f;
+
 
         // Use this for initialization
         void Start()
@@ -94,12 +128,18 @@ namespace FantasyErrand.Entities
             //speed -= rate * emotionManager.DisgustRatio * Time.deltaTime;
 
             transform.Translate(transform.forward * speed * Time.deltaTime);
-
+            
             if (IsControlActive && !enableNonGameMode)
             {
                 if (Application.platform == RuntimePlatform.WindowsEditor)
                     ProcessKeyControls();
-                else ProcessControls();
+                else if (!MainMenuManager.isSwipeModeOn)
+                    ProcessControls();
+                else
+                {
+                    ProcessSwipe();
+                    DetectSwipe();
+                }    
             }
 
             if (magnetStarted)
@@ -185,6 +225,7 @@ namespace FantasyErrand.Entities
             else if (velocityX < 0.05f && velocityX > -0.05f) canSidestep = true;
         }
 
+
         void Jump()
         {
             GetComponent<Rigidbody>().AddForce(Vector3.up * 7, ForceMode.Impulse);
@@ -253,8 +294,12 @@ namespace FantasyErrand.Entities
             ICollectible collect = other.gameObject.GetComponent<ICollectible>();
             if (collect != null)
             {
+
                 if (collect.Type == CollectibleType.Powerups)
+                {
                     collect.CollectibleEffect();
+                    SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Gulp);
+                }
                 else
                 {
                     coinAdded?.Invoke((float)collect.Value);
@@ -272,7 +317,7 @@ namespace FantasyErrand.Entities
         }
 
 
-        public void StartMagnetPowerUps(float magnetDuration,int Range)
+        public void StartMagnetPowerUps(float magnetDuration,float Range)
         {
             StartCoroutine(MagnetPower(magnetDuration));
             magnetRange = Range;
@@ -283,9 +328,9 @@ namespace FantasyErrand.Entities
             StartCoroutine(PhasePower(phaseDuration));
         }
 
-        public void StartBoostPowerUps(float boostDuration)
+        public void StartBoostPowerUps(float boostDuration,float boostPhaseDuration)
         {
-            StartCoroutine(BoostPower(boostDuration));
+            StartCoroutine(BoostPower(boostDuration,boostPhaseDuration));
         }
 
         public void StartGoldenCoinPowerUps(float goldenCoinDuration)
@@ -303,6 +348,7 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    phaseTime = Time.time - timeStamp;
                     if (resetPhase)
                     {
                         resetPhase = false;
@@ -310,6 +356,7 @@ namespace FantasyErrand.Entities
                     }
                     yield return null;
                 }
+                phaseTime = 0;
                 phaseStarted = false;
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
             }
@@ -328,6 +375,7 @@ namespace FantasyErrand.Entities
                 float timeStamp = Time.time;
                 while (Time.time < timeStamp + duration)
                 {
+                    magnetTime = Time.time - timeStamp;
                     if (resetMagnet)
                     {
                         resetMagnet = false;
@@ -343,11 +391,12 @@ namespace FantasyErrand.Entities
             }
         }
 
-        IEnumerator BoostPower(float boostDuration)
+        IEnumerator BoostPower(float boostDuration,float boostPhaseDuration)
         {
             print("Boost PLayer started");
             if (!boostStarted)
             {
+                SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Boost);
                 boostStarted = true;
                 float duration = boostDuration;
                 float timeStamp = Time.time;
@@ -355,6 +404,8 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Boost);
+                    boostTime = Time.time - timeStamp;
                     if (resetBoost)
                     {
                         resetBoost = false;
@@ -365,6 +416,7 @@ namespace FantasyErrand.Entities
                 boostStarted = false;
                 speedBroadcast?.Invoke(1);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+                StartCoroutine(PhasePower(boostPhaseDuration));
             }
             else
             {
@@ -383,6 +435,7 @@ namespace FantasyErrand.Entities
                 goldenCoinBroadcast?.Invoke(true);
                 while (Time.time < timeStamp + duration)
                 {
+                    goldenCoinTime = Time.time - timeStamp;
                     if (resetGoldenCoin)
                     {
                         resetGoldenCoin = false;
@@ -398,6 +451,81 @@ namespace FantasyErrand.Entities
                 resetGoldenCoin = true;
             }
         }
+
+        
+
+
+        public void ProcessSwipe()
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                if (touch.phase == TouchPhase.Began)
+                {
+                    fingerUpPosition = touch.position;
+                    fingerDownPosition = touch.position;
+                }
+
+                if (touch.phase == TouchPhase.Moved)
+                {
+                   fingerDownPosition = touch.position;
+                }
+
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    fingerDownPosition = touch.position;
+                }
+            }
+            
+        }
+
+        private void DetectSwipe()
+        {
+            currSwipe = swipeDirection.None;
+            if (SwipeCompromised())
+            {
+                if (IsVerticalSwipe())
+                {
+                    currSwipe = fingerDownPosition.y - fingerUpPosition.y > 0 ? swipeDirection.Up : swipeDirection.Down;
+                }
+                else
+                {
+                    currSwipe = fingerDownPosition.x - fingerUpPosition.x > 0 ? swipeDirection.Right : swipeDirection.Left;
+                }
+                fingerUpPosition = fingerDownPosition;
+                Debug.Log("swipe Compromised");
+            }
+
+            if (currSwipe.Equals(swipeDirection.Left) && lane > -2) 
+                Sidestep(true);
+            else if (currSwipe.Equals(swipeDirection.Right) && lane < 2)
+                Sidestep(false);
+            else if (currSwipe.Equals(swipeDirection.Up) && canJump)
+                Jump();
+            else if (currSwipe.Equals(swipeDirection.Down) && canSlide)
+                Slide();
+
+        }
+
+        private bool IsVerticalSwipe()
+        {
+            return VerticalMovementDistance() > HorizontalMovementDistance();
+        }
+
+        private bool SwipeCompromised()
+        {
+            return VerticalMovementDistance() > SwipeMinimumTreshold || HorizontalMovementDistance() > SwipeMinimumTreshold;
+        }
+
+        private float VerticalMovementDistance()
+        {
+            return Mathf.Abs(fingerDownPosition.y - fingerUpPosition.y);
+        }
+
+        private float HorizontalMovementDistance()
+        {
+            return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
+        }
+
 
     }
 }

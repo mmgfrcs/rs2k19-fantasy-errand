@@ -4,7 +4,6 @@ using UnityEngine;
 using FantasyErrand.Entities;
 using FantasyErrand.Utilities;
 using FantasyErrand.Entities.Interfaces;
-
 namespace FantasyErrand
 {
     public class DynamicLevelManager : MonoBehaviour {
@@ -33,12 +32,35 @@ namespace FantasyErrand
         public int minimumObstacleLane = 1;
         public int minTilesBeforeOverhead = 8;
         public int obstacleTolerance = 4;
+        public int LessPosMinObs = 1;
+        public int LessPosMaxObs = 1;
+        public int LessNegMinObs = 1;
+        public int LessNegMaxObs = 1;
+        public int MorePosMinObs = 1;
+        public int MorePosMaxObs = 1;
+        public int MoreNegMinObs = 1;
+        public int MoreNegMaxObs = 1;
+        public int EqualMinObs = 1;
+        public int EqualMaxObs = 1;
+
+
         [Header("Coins")]
         float continueCoinAt = -99;
         int coinRemaining = 0;
         public int maxCoinSpawnPerTile = 6;
         public int minCoins = 4, maxCoins = 24;
         public int minimumCoinLane = 1;
+        public int LessPosMinCoins= 1;
+        public int LessPosMaxCoins = 1;
+        public int LessNegMinCoins = 1;
+        public int LessNegMaxCoins = 1;
+        public int MorePosMinCoins = 1;
+        public int MorePosMaxCoins= 1;
+        public int MoreNegMinCoins= 1;
+        public int MoreNegMaxCoins = 1;
+        public int EqualMinCoins= 1;
+        public int EqualMaxCoins= 1;
+
 
         [Header("Power Ups")]
         public int minTilesBeforeNextPowerUps = 8;
@@ -94,11 +116,13 @@ namespace FantasyErrand
 
         IEnumerator SetRateByEmotion()
         {
-
+            
             while (true)
             {
+                print("Ienum Jalan");
                 float totalPosEmotions = 0, totalNegEmotions = 0;
 
+                
                 for (int i = 0; i < positiveEmotions.Length; i++)
                     totalPosEmotions += GetEmotion(positiveEmotions[i]);
 
@@ -124,6 +148,7 @@ namespace FantasyErrand
                     gameManager.DynamicSpeedModifier = rateSpeed;
 
                 }
+                print("Ienum Jalan");
                 yield return new WaitForSeconds(emotionUpdateInterval);
             }
 
@@ -230,7 +255,7 @@ namespace FantasyErrand
                 if (opt == 1)
                 {
                     currminTilesBeforeOverhead--;
-                    int n = Random.Range(minimumObstacleLane, GetObstacleLane());
+                    int n = Random.Range(GetMinObstacleLane(), GetMaxObstacleLane());
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
                     if (currminTilesBeforeOverhead <= 0) currminTilesBeforeOverhead = minTilesBeforeOverhead;
                     if (n >= obstacleTolerance)
@@ -242,8 +267,8 @@ namespace FantasyErrand
                 else if (opt == 2)
                 {
                     SetCoinXPos();
-                    int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(minimumCoinLane, GetCoinLane());
+                    int n = Random.Range(minimumCoinLane, minimumCoinLane);
+                    int lanenumber = Random.Range(GetMinCoinLane(), GetMaxCoinLane());
                     GenerateConstantCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
                 }
                 else if (opt == 3)
@@ -446,11 +471,16 @@ namespace FantasyErrand
 
         public float GetEmotion(Affdex.Emotions emo)
         {
-            if (emotionManager.FaceStatus.Equals("Tracking"))
+            if (emotionManager.EmotionsList != null)
             {
-                print("Bagian ini Jalan");
-                return emotionManager.EmotionsList[0][emo];
-                
+                if (emotionManager.FaceStatus.Equals("Tracking"))
+                {
+                    print("Bagian ini Jalan");
+                    return emotionManager.EmotionsList[0][emo];
+
+                }
+                else
+                    return 0;
             }
             else
                 return 0;
@@ -475,15 +505,100 @@ namespace FantasyErrand
             return i;
         }
 
-        public int GetObstacleLane()
+        public int GetMinObstacleLane()
         {
-            return 2;  
+            float totalPosEmotions = 0, totalNegEmotions = 0;
+            for (int i = 0; i < positiveEmotions.Length; i++)
+                totalPosEmotions += GetEmotion(positiveEmotions[i]);
+            totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
+
+            for (int i = 0; i < negativeEmotions.Length; i++)
+                totalNegEmotions += GetEmotion(negativeEmotions[i]);
+            totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+
+            ///4 case positive emotion dominasi diatas 50%, positive emo dominasi dbawah 50%,negatie emo diatas 50, negative emo dibawah 50, positiv dan negativ equals
+            if (totalPosEmotions > totalNegEmotions && totalPosEmotions >= 0.5)
+                return MorePosMinObs;
+            else if (totalPosEmotions > totalNegEmotions && totalPosEmotions < 0.5)
+                return LessPosMinObs;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions >= 0.5)
+                return MoreNegMinObs;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions < 0.5)
+                return LessNegMinObs;
+            else
+                return EqualMinObs;
         }
 
-        public int GetCoinLane()
+
+        public int GetMaxObstacleLane()
         {
-            return 2; 
+            float totalPosEmotions = 0, totalNegEmotions = 0;
+            for (int i = 0; i < positiveEmotions.Length; i++)
+                totalPosEmotions += GetEmotion(positiveEmotions[i]);
+            totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
+
+            for (int i = 0; i < negativeEmotions.Length; i++)
+                totalNegEmotions += GetEmotion(negativeEmotions[i]);
+            totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+
+            ///4 case positive emotion dominasi diatas 50%, positive emo dominasi dbawah 50%,negatie emo diatas 50, negative emo dibawah 50, positiv dan negativ equals
+            if (totalPosEmotions > totalNegEmotions && totalPosEmotions >= 0.5)
+                return MorePosMaxObs;
+            else if (totalPosEmotions > totalNegEmotions && totalPosEmotions < 0.5)
+                return LessPosMaxObs;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions >= 0.5)
+                return MoreNegMaxObs;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions < 0.5)
+                return LessNegMaxObs;
+            else
+                return EqualMaxObs;
         }
+
+        public int GetMinCoinLane()
+        {
+            float totalPosEmotions = 0, totalNegEmotions = 0;
+            for (int i = 0; i < positiveEmotions.Length; i++)
+                totalPosEmotions += GetEmotion(positiveEmotions[i]);
+            totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
+
+            for (int i = 0; i < negativeEmotions.Length; i++)
+                totalNegEmotions += GetEmotion(negativeEmotions[i]);
+            totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+            if (totalPosEmotions > totalNegEmotions && totalPosEmotions >= 0.5)
+                return MorePosMinCoins;
+            else if (totalPosEmotions > totalNegEmotions && totalPosEmotions < 0.5)
+                return LessPosMinCoins;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions >= 0.5)
+                return MoreNegMinCoins;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions < 0.5)
+                return LessNegMinCoins;
+            else
+                return EqualMinCoins;
+        }
+
+        public int GetMaxCoinLane()
+        {
+            float totalPosEmotions = 0, totalNegEmotions = 0;
+            for (int i = 0; i < positiveEmotions.Length; i++)
+                totalPosEmotions += GetEmotion(positiveEmotions[i]);
+            totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
+
+            for (int i = 0; i < negativeEmotions.Length; i++)
+                totalNegEmotions += GetEmotion(negativeEmotions[i]);
+            totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+            if (totalPosEmotions > totalNegEmotions && totalPosEmotions >= 0.5)
+                return MorePosMaxCoins;
+            else if (totalPosEmotions > totalNegEmotions && totalPosEmotions < 0.5)
+                return LessPosMaxCoins;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions >= 0.5)
+                return MoreNegMaxCoins;
+            else if (totalNegEmotions > totalPosEmotions && totalNegEmotions < 0.5)
+                return LessNegMaxCoins;
+            else
+                return EqualMaxCoins;
+        }
+
+        
 
         public void SetCoinXPos()
         {

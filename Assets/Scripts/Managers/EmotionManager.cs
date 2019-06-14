@@ -5,8 +5,8 @@ namespace FantasyErrand
 {
     public class EmotionManager : ImageResultsListener
     {
-        public string FaceStatus { get; private set; }
-        public float LastAcquiredTimestamp { get; private set; }
+        public string FaceStatus { get; private set; } = "Standby";
+        public float LastAcquiredTimestamp { get; private set; } = 0;
         public List<Dictionary<Emotions, float>> EmotionsList { get; private set; } = new List<Dictionary<Emotions, float>>();
         public List<Dictionary<Expressions, float>> ExpressionsList { get; private set; } = new List<Dictionary<Expressions, float>>();
 

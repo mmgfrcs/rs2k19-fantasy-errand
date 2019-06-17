@@ -14197,6 +14197,7 @@ GameObject:
   - component: {fileID: 1869478380}
   - component: {fileID: 1869478383}
   - component: {fileID: 1869478384}
+  - component: {fileID: 1869478382}
   m_Layer: 8
   m_Name: Generator
   m_TagString: Untagged
@@ -14228,6 +14229,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1869478382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1869478379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af0f1ecbb195cd40a0f7174c8ab2baf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fader: {fileID: 139791583}
+  loadingSlider: {fileID: 841631250}
 --- !u!114 &1869478383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14264,7 +14278,7 @@ MonoBehaviour:
   versionText: {fileID: 1324099016}
   detector: {fileID: 0}
   emotionManager: {fileID: 0}
-  changer: {fileID: 0}
+  changer: {fileID: 1869478382}
   serverAddress:
   - {fileID: 1658775098}
   - {fileID: 1823800484}

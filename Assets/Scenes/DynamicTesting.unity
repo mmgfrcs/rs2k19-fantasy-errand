@@ -278,10 +278,30 @@ MonoBehaviour:
   minimumObstacleLane: 1
   minTilesBeforeOverhead: 8
   obstacleTolerance: 4
+  LessPosMinObs: 2
+  LessPosMaxObs: 3
+  LessNegMinObs: 1
+  LessNegMaxObs: 2
+  MorePosMinObs: 3
+  MorePosMaxObs: 5
+  MoreNegMinObs: 3
+  MoreNegMaxObs: 4
+  EqualMinObs: 2
+  EqualMaxObs: 3
   maxCoinSpawnPerTile: 6
   minCoins: 4
   maxCoins: 24
   minimumCoinLane: 1
+  LessPosMinCoins: 1
+  LessPosMaxCoins: 2
+  LessNegMinCoins: 2
+  LessNegMaxCoins: 3
+  MorePosMinCoins: 4
+  MorePosMaxCoins: 2
+  MoreNegMinCoins: 5
+  MoreNegMaxCoins: 3
+  EqualMinCoins: 2
+  EqualMaxCoins: 3
   minTilesBeforeNextPowerUps: 8
   rateObstacle: 30
   rateBaseTile: 30

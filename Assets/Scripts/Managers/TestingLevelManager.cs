@@ -209,7 +209,7 @@ namespace FantasyErrand
                 spawnPos += Vector3.forward * tileScale;
                 yield return new WaitForEndOfFrame();
             }
-
+            ///Startpos=spawnpos    
             startPosition = spawnPos;
             initialized = true;
         }

@@ -45,29 +45,25 @@ namespace FantasyErrand
 
         public void OnPlay()
         {
-            changer.OnSceneLoaded += () => 
+            //changer.OnSceneLoaded += () => 
             
             changer.ChangeScene("SampleScene");
         }
 
         public void OnPlayEasy()
         {
-            changer.OnSceneLoaded += () =>
             changer.ChangeScene("EasyTesting");
         }
         public void OnPlayNormal()
         {
-            changer.OnSceneLoaded += () =>
             changer.ChangeScene("NormalTesting");
         }
         public void OnPlayHard()
         {
-            changer.OnSceneLoaded += () =>
             changer.ChangeScene("HardTesting");
         }
         public void OnPlayDynamic()
         {
-            changer.OnSceneLoaded += () =>
             changer.ChangeScene("DynamicTesting");
         }
 

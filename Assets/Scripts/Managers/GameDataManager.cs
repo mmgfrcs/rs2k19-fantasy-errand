@@ -24,8 +24,8 @@ namespace FantasyErrand
         internal int Age { get; private set; }
         internal Texture2D NeutralPicture { get; private set; }
         internal Texture2D HappyPicture { get; private set; }
-        internal ResearchData NeutralData { get; private set; }
-        internal ResearchData HappyData { get; private set; }
+        internal PresetExpressionData NeutralData { get; private set; }
+        internal PresetExpressionData HappyData { get; private set; }
         string NeutralLocation { get; set; }
         string HappyLocation { get; set; }
 
@@ -129,7 +129,7 @@ namespace FantasyErrand
             if (serverAddr != "") ServerAddress = serverAddr;
         }
 
-        public void SaveParticipantData(string name = "", int? age = null, Texture2D neutral = null, Texture2D happy = null, ResearchData neutralData = default(ResearchData), ResearchData happyData = default(ResearchData))
+        public void SaveParticipantData(string name = "", int? age = null, Texture2D neutral = null, Texture2D happy = null, PresetExpressionData neutralData = default(PresetExpressionData), PresetExpressionData happyData = default(PresetExpressionData))
         {
             if (name != "") PlayerName = name;
             if (age.HasValue) Age = age.Value;
@@ -187,7 +187,7 @@ namespace FantasyErrand
             if (neutralLocation != string.Empty)
             {
                 byte[] neutralPic = File.ReadAllBytes(neutralLocation);
-                NeutralData = JsonConvert.DeserializeObject<ResearchData>(File.ReadAllText(neutralLocation + "data"));
+                NeutralData = JsonConvert.DeserializeObject<PresetExpressionData>(File.ReadAllText(neutralLocation + "data"));
                 NeutralLocation = neutralLocation;
                 NeutralPicture = new Texture2D(1, 1);
                 NeutralPicture.LoadImage(neutralPic);
@@ -197,7 +197,7 @@ namespace FantasyErrand
             if (happyLocation != string.Empty)
             {
                 byte[] happyPic = File.ReadAllBytes(happyLocation);
-                HappyData = JsonConvert.DeserializeObject<ResearchData>(File.ReadAllText(happyLocation + "data"));
+                HappyData = JsonConvert.DeserializeObject<PresetExpressionData>(File.ReadAllText(happyLocation + "data"));
                 HappyLocation = happyLocation;
                 HappyPicture = new Texture2D(1, 1);
                 HappyPicture.LoadImage(happyPic);

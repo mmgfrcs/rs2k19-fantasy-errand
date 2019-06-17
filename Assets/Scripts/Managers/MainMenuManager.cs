@@ -26,7 +26,7 @@ namespace FantasyErrand
 
         [Header("Option Fields")]
         public TMP_InputField[] serverAddress;
-        public Toggle researchToggle, basicGatherToggle, expressionToggle;
+        public Toggle researchToggle, basicGatherToggle, expressionToggle,swipeToggle;
         public TMP_InputField nameField, ageField;
         public Image neutralImage, happyImage;
         public Button backButton;
@@ -41,9 +41,32 @@ namespace FantasyErrand
         int pickMode = 0;
         int errors = 0;
 
+        public static bool isSwipeModeOn=true;
+
         public void OnPlay()
         {
             changer.ChangeScene("SampleScene");
+        }
+
+        public void OnPlayEasy()
+        {
+            changer.OnSceneLoaded += () =>
+            changer.ChangeScene("EasyTesting");
+        }
+        public void OnPlayNormal()
+        {
+            changer.OnSceneLoaded += () =>
+            changer.ChangeScene("NormalTesting");
+        }
+        public void OnPlayHard()
+        {
+            changer.OnSceneLoaded += () =>
+            changer.ChangeScene("HardTesting");
+        }
+        public void OnPlayDynamic()
+        {
+            changer.OnSceneLoaded += () =>
+            changer.ChangeScene("DynamicTesting");
         }
 
         public void OnUpgrades()
@@ -190,6 +213,7 @@ namespace FantasyErrand
                 researchToggle.isOn = GameDataManager.instance.ResearchMode;
                 basicGatherToggle.isOn = GameDataManager.instance.BasicGathering;
                 expressionToggle.isOn = GameDataManager.instance.ExpressionGathering;
+                swipeToggle.isOn = MainMenuManager.isSwipeModeOn;
                 neutral = GameDataManager.instance.NeutralPicture;
                 if (neutral != null)
                 {
@@ -226,6 +250,13 @@ namespace FantasyErrand
             else expressionFrame.SetActive(false);
         }
 
+        public void OnSwipeToggle(bool state)
+        {
+            if (state)
+                isSwipeModeOn = true;
+            else
+                isSwipeModeOn = false;
+        }
         public void CheckNameEmpty(string text)
         {
             if (text == "") errors++;

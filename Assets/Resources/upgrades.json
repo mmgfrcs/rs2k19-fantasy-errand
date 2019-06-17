@@ -1,40 +1,118 @@
 {
   "MagnetDuration": [
-    1.0,
-    2.0
+    6.0,
+    7.5,
+    9.0,
+    10.5,
+    12.0,
+    15.0
   ],
   "MagnetRange": [
-    1.0
+    50.0,
+    50.0,
+    60.0,
+    60.0,
+    70.0,
+    70.0
   ],
   "PhaseDuration": [
-    1.0
+    3.0,
+    3.75,
+    4.5,
+    5.25,
+    6.0,
+    7.0
   ],
   "BoostDuration": [
-    1.0
+    4.0,
+    5.0,
+    6.0,
+    7.0,
+    8.0,
+    10.0
   ],
   "GoldenCoinDuration": [
-    1.0
+    4.0,
+    6.0,
+    8.0,
+    10.0,
+    12.0,
+    14.0
   ],
   "MultiplierIncrease": [
-    1.0
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    2.0,
+    2.0,
+    2.0,
+    2.0,
+    2.0,
   ],
   "CoinValueUpgrades": [
     {
-      "SilverDistance": 1.0,
-      "GoldDistance": 1.0,
+      "SilverDistance": "Infinity",
+      "GoldDistance": "Infinity",
       "PlatinumDistance": "Infinity"
-    }
+    },
+    {
+      "SilverDistance": 2000.0,
+      "GoldDistance": "Infinity",
+      "PlatinumDistance": "Infinity"
+    },
+    {
+      "SilverDistance": 1000.0,
+      "GoldDistance": 2500.0,
+      "PlatinumDistance": "Infinity"
+    },
+    {
+      "SilverDistance": 1000.0,
+      "GoldDistance": 2000.0,
+      "PlatinumDistance": "Infinity"
+    },
+    {
+      "SilverDistance": 500.0,
+      "GoldDistance": 1500.0,
+      "PlatinumDistance": "Infinity"
+    },
+    {
+      "SilverDistance": 500.0,
+      "GoldDistance": 1000.0,
+      "PlatinumDistance": 3000.0
+    },
   ],
   "LivesUpgrades": [
     {
-      "ContinueCoinCost": 1.0,
-      "ContinueCostMultiplier": 1.0,
+      "ContinueCoinCost": 2000.0,
+      "ContinueCostMultiplier": 2.0,
+      "HurdleLives": 0
+    },
+    {
+      "ContinueCoinCost": 1750.0,
+      "ContinueCostMultiplier": 2.0,
+      "HurdleLives": 0
+    },
+    {
+      "ContinueCoinCost": 1500.0,
+      "ContinueCostMultiplier": 2.0,
+      "HurdleLives": 0
+    },
+    {
+      "ContinueCoinCost": 1500.0,
+      "ContinueCostMultiplier": 2.0,
       "HurdleLives": 1
     },
     {
-      "ContinueCoinCost": 2.0,
-      "ContinueCostMultiplier": 1.0,
+      "ContinueCoinCost": 1500.0,
+      "ContinueCostMultiplier": 1.8,
       "HurdleLives": 1
-    }
+    },
+    {
+      "ContinueCoinCost": 1500.0,
+      "ContinueCostMultiplier": 1.65,
+      "HurdleLives": 1
+    },
   ]
 }

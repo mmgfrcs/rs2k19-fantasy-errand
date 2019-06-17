@@ -156,8 +156,12 @@ namespace FantasyErrand
         public void LoadUpgradesData()
         {
             TextAsset text = Resources.Load<TextAsset>("upgrades");
-            UpgradeEffects = JsonConvert.DeserializeObject<UpgradeEffects>(text.text);
-            print("Game Data Manager - Loaded Upgrades data");
+            if (text != null)
+            {
+                UpgradeEffects = JsonConvert.DeserializeObject<UpgradeEffects>(text.text);
+                print("Game Data Manager - Loaded Upgrades data");
+            }
+            else print("Game Data Manager - Upgrades data cannot be loaded");
         }
 
         public void LoadGameData()

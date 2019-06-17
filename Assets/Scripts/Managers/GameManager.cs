@@ -42,6 +42,14 @@ namespace FantasyErrand
         UnityEngine.UI.Image fader;
         float startTime;
 
+        private Vector3 playerCurrPos;
+
+        [HideInInspector]
+        public float DynamicSpeedModifier=0;
+
+
+
+
         public void Start()
         {
             //Setup game
@@ -76,9 +84,11 @@ namespace FantasyErrand
         {
             if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
+                playerCurrPos = player.transform.position;
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
+                player.transform.position = playerCurrPos;
                 player.enabled = false;
                 IsGameRunning = false;
                 StartCoroutine(EndGame());
@@ -103,7 +113,7 @@ namespace FantasyErrand
 
         IEnumerator EndGame()
         {
-            print("Endgame Works Baby");
+            SoundManager.Instance.PlayEnemySound(EnemySoundsType.Bite);
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
 
@@ -137,7 +147,7 @@ namespace FantasyErrand
             {
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
-                if (IsGameRunning) player.speed = multiplierSpeed * speedGraph.Evaluate(Distance);
+                if (IsGameRunning) player.speed = multiplierSpeed * (speedGraph.Evaluate(Distance)+DynamicSpeedModifier);
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
@@ -148,6 +158,11 @@ namespace FantasyErrand
                 multiplierSpeed= multiplier;
         }
 
+        public float GetCurrSpeed()
+        {
+            return multiplierSpeed * speedGraph.Evaluate(Distance);
+        }
+
         public void AddCurrency(float value)
         {
             Currency += value;
@@ -155,6 +170,8 @@ namespace FantasyErrand
 
         public void RetryGame()
         {
+            player.transform.position = playerCurrPos;
+            player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
             OnGameStart?.Invoke();
             player.enabled = true;

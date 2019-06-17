@@ -11791,6 +11791,10 @@ MonoBehaviour:
   jumpSpeedThreshold: 0.6
   slideSpeedThreshold: 0.6
   turnThreshold: 4
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  magnetSpeed: 8
 --- !u!4 &1749062288
 Transform:
   m_ObjectHideFlags: 0
@@ -13151,6 +13155,9 @@ GameObject:
   - component: {fileID: 1869478380}
   - component: {fileID: 1869478383}
   - component: {fileID: 1869478384}
+  - component: {fileID: 1869478386}
+  - component: {fileID: 1869478385}
+  - component: {fileID: 1869478382}
   m_Layer: 8
   m_Name: Generator
   m_TagString: Untagged
@@ -13166,26 +13173,147 @@ MonoBehaviour:
   m_GameObject: {fileID: 1869478379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92a54884e662bb6419b444af41ebee2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9691ad8dd8f33cc4394289dbde486cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1749062287}
+  gameManager: {fileID: 0}
   startPrefab: {fileID: 1948696765878014, guid: fcf03c1c960700a47b08733176d331cd,
     type: 2}
-  straightPrefab: {fileID: 1948696765878014, guid: fcf03c1c960700a47b08733176d331cd,
-    type: 2}
-  obstaclePrefab: []
+  straightPrefabs:
+  - {fileID: 1948696765878014, guid: fcf03c1c960700a47b08733176d331cd, type: 2}
+  obstaclePrefabs: []
+  powerupsPrefabs: []
+  coinPrefabs: []
+  coinCopperPrefabs: []
+  coinSilverPrefabs: []
+  coinGoldPrefabs: []
+  coinPlatinumPrefabs: []
+  coinRubyPrefabs: []
   startPosition: {x: 0, y: 0, z: 0}
+  gameMode: 0
   maxGeneratedTile: 10
-  startTiles: 0
+  pooledObstacles: 20
+  pooledCoins: 40
+  startTiles: 2
+  tileSpawnRates:
+    baseTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    obstacleTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    coinsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    powerupsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   tileScale: 8
   baseObstacleRatio: 100
-  showGizmos: 0
-  coinPrefab: []
-  obstacleList: []
-  coinList: []
-  SpawnedObstacle: 0
-  prefabMultiplier: 5
+  maxCoinSpawnPerTile: 6
+  minCoins: 4
+  maxCoins: 24
+  minTilesBeforeNextPowerUps: 8
+  showGizmos: 1
+  CoinLane:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ObstacleLane:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  coinValueLevel: 0
+  spawnedObjects: []
 --- !u!4 &1869478381
 Transform:
   m_ObjectHideFlags: 0
@@ -13199,6 +13327,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1869478382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1869478379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af0f1ecbb195cd40a0f7174c8ab2baf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fader: {fileID: 139791583}
+  loadingSlider: {fileID: 302017639}
 --- !u!114 &1869478383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13227,14 +13368,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingSlider: {fileID: 841631250}
-  faderSlider: {fileID: 0}
+  faderSlider: {fileID: 302017639}
   optionsPanel: {fileID: 2021106383}
   researchModeFrame: {fileID: 867035228}
   basicInfoFrame: {fileID: 1020957718}
   expressionFrame: {fileID: 138871422}
   versionText: {fileID: 1324099016}
-  detector: {fileID: 0}
-  emotionManager: {fileID: 0}
+  detector: {fileID: 1869478386}
+  emotionManager: {fileID: 1869478385}
+  changer: {fileID: 1869478382}
   serverAddress:
   - {fileID: 1658775098}
   - {fileID: 1823800484}
@@ -13247,6 +13389,32 @@ MonoBehaviour:
   happyImage: {fileID: 90231703}
   backButton: {fileID: 0}
   fader: {fileID: 139791583}
+--- !u!114 &1869478385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1869478379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64fda1334f578ce49bcdd6f68d6ea257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1869478386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1869478379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9db04d0f9cdf0c45bab39f4268dc6d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOnWake: 0
+  discrete: 0
+  emotions: -1
+  expressions: -1
 --- !u!1 &1874570425
 GameObject:
   m_ObjectHideFlags: 0

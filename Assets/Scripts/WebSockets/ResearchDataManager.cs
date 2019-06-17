@@ -10,11 +10,18 @@ using Affdex;
 using Newtonsoft.Json;
 using FantasyErrand.WebSockets.Utilities;
 using FantasyErrand.WebSockets.Models;
+using UnityEngine.UI;
+using FantomLib;
+using System.Runtime;
+using NatCamU.Core;
+using NatCamU.Extended;
+using NatCamU.Professional;
 
 namespace FantasyErrand.WebSockets
 {
     public class ResearchDataManager : MonoBehaviour
     {
+        public RawImage img;
         [Header("Options"), SerializeField]
         private string opcode = "684F2BA5B03585274A874D21BB6B16B802227A081577946A82E14EED9A4468DB";
         public bool dataTransmission = true;
@@ -25,7 +32,7 @@ namespace FantasyErrand.WebSockets
         public Detector detector;
 
         WebSocket webSocket;
-        WebCamTexture texture;
+        DeviceCamera cam;
 
         Queue<Action> mainThreadActionQueue = new Queue<Action>();
         private readonly object actionQueueLock = new object();
@@ -33,94 +40,147 @@ namespace FantasyErrand.WebSockets
         bool collecting = false;
         bool opened = false;
         bool identified = false;
-        string nonce = "";
+
+        int collections = 0;
 
         private void Start()
         {
-            //TODO: Only record if FER is enabled
-            if (Application.platform == RuntimePlatform.WindowsEditor)
-                texture = new WebCamTexture(WebCamTexture.devices.FirstOrDefault(x => x.name.Contains("RGB")).name, 640, 480, 50);
-            else if (Application.platform == RuntimePlatform.Android)
-                texture = new WebCamTexture(WebCamTexture.devices.FirstOrDefault(x => x.isFrontFacing).name, 640, 480, 50);
-
-            texture.Play();
-            StartCoroutine(AffdexProcessFace());
-
-            InitiateWebsocket();
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                cam = DeviceCamera.FrontCamera;
+                cam.SetFramerate(FrameratePreset.Smooth);
+                cam.SetPhotoResolution(768, 1366);
+                cam.SetPreviewResolution(768, 1366);
+                
+                NatCam.OnStart += NatCam_OnStart;
+                NatCam.OnFrame += NatCam_OnFrame;
+                NatCam.Verbose = Switch.On;
+                NatCam.Play(cam);
+                print("NatCam Playing: " + NatCam.IsPlaying);
+            }
+            else enabled = false;
         }
 
-        IEnumerator CollectData()
+
+        private void NatCam_OnStart()
         {
-            int n = 1;
+            img.GetComponent<AspectRatioFitter>().aspectRatio = cam.PreviewResolution.x / cam.PreviewResolution.y;
+            img.texture = NatCam.Preview;
+            GameManager.OnGameEnd += GameManager_OnGameEnd;
+            //InitiateWebsocket();
+        }
+
+        private void NatCam_OnFrame()
+        {
+            Texture2D frameTex = NatCam.Preview.ToTexture2D();
+
+            Frame frame = new Frame(frameTex.GetPixels32(), frameTex.width, frameTex.height, Frame.Orientation.Upright, Time.realtimeSinceStartup);
+            detector.ProcessFrame(frame);
+
+            if (frameTex != null) Destroy(frameTex);
+        }
+
+        private void GameManager_OnGameEnd(GameEndEventArgs args)
+        {
+            if (args.IsEnded)
+            {
+                NatCam.Release();
+                cam = null;
+                enabled = false;
+
+            }
+        }
+
+        void CollectParticipantData()
+        {
             //First send the participant data
             ParticipantData partdata = new ParticipantData();
+            partdata.versionCode = 2;
             partdata.name = GameDataManager.instance.PlayerName;
             partdata.age = GameDataManager.instance.Age;
             partdata.researchData = new List<ResearchData>();
-            partdata.presetExpressions = new List<ResearchData>() { GameDataManager.instance.NeutralData, GameDataManager.instance.HappyData };
+            List<ResearchData> presetData = new List<ResearchData>();
+            
+            if (GameDataManager.instance.NeutralPicture != null) presetData.Add(GameDataManager.instance.NeutralData);
+            if (GameDataManager.instance.HappyPicture != null) presetData.Add(GameDataManager.instance.HappyData);
+            partdata.presetExpressions = presetData;
 
             DataPacket packet = new DataPacket();
             packet.packetId = (int)PacketType.NewParticipant;
             packet.packetData = JsonConvert.SerializeObject(partdata);
             webSocket.Send(JsonConvert.SerializeObject(packet));
+        }
 
-            yield return new WaitForSecondsRealtime(0.25f);
+        private void OnCapture(Texture2D photo, Orientation orientation)
+        {
+            StartCoroutine(CollectGameData(photo));
+            Texture2D.Destroy(photo);
+        }
 
+        IEnumerator CollectGameData(Texture2D photo)
+        {
+            print($"Preparing data collection {collections}");
+            
+            string imgStr = Convert.ToBase64String(Compressor.Compress(photo.EncodeToPNG()));
+            
+            yield return null;
+            ResearchData data = new ResearchData()
+            {
+                name = GameDataManager.instance.PlayerName,
+                isImage = true,
+                imageData = imgStr,
+                emotions = new Dictionary<string, float>(),
+                expressions = new Dictionary<string, float>()
+            };
+
+            if (emotionManager.ExpressionsList.Count > 0)
+            {
+                foreach (var val in emotionManager.ExpressionsList[0])
+                {
+                    data.expressions.Add(val.Key.ToString(), val.Value);
+                }
+            }
+
+            if (emotionManager.EmotionsList.Count > 0)
+            {
+                foreach (var val in emotionManager.EmotionsList[0])
+                {
+                    data.emotions.Add(val.Key.ToString(), val.Value);
+                }
+            }
+
+            print($"JSON: Sent {emotionManager.EmotionsList.Count} face");
+
+            string json = JsonConvert.SerializeObject(data);
+
+            DataPacket packet = new DataPacket()
+            {
+                packetId = (int)PacketType.GameData,
+                packetData = json
+            };
+
+            webSocket.Send(JsonConvert.SerializeObject(packet));
+        }
+
+        IEnumerator ProcessAndSendData()
+        {
+            CollectParticipantData();
+            yield return new WaitForSeconds(0.25f);
             while (webSocket.ReadyState == WebSocketState.Open)
             {
-                yield return new WaitForSecondsRealtime(2f);
-                yield return new WaitForEndOfFrame();
-                Texture2D photo = new Texture2D(texture.width, texture.height);
-                photo.SetPixels(texture.GetPixels());
-                photo.Apply();
-
-                string imgStr = Convert.ToBase64String(Compressor.Compress(photo.EncodeToPNG()));
-                ResearchData data = new ResearchData() {
-                    name = GameDataManager.instance.PlayerName,
-                    pictureNo = n++,
-                    imageData = imgStr,
-                    emotions = new Dictionary<string, float>(),
-                    expressions = new Dictionary<string, float>()
-                };
-
-                if(emotionManager.ExpressionsList.Count > 0)
-                {
-                    foreach (var val in emotionManager.ExpressionsList[0])
-                    {
-                        data.expressions.Add(val.Key.ToString(), val.Value);
-                    }
-                }
-
-                if(emotionManager.EmotionsList.Count > 0)
-                {
-                    foreach (var val in emotionManager.EmotionsList[0])
-                    {
-                        data.emotions.Add(val.Key.ToString(), val.Value);
-                    }
-                }
-
-                print($"JSON: Sent {emotionManager.EmotionsList.Count} face");
-
-                string json = JsonConvert.SerializeObject(data);
-
-                packet = new DataPacket()
-                {
-                    packetId = (int)PacketType.GameData,
-                    packetData = json
-                };
-
-
-                webSocket.Send(JsonConvert.SerializeObject(packet));
+                
+                NatCam.CapturePhoto(OnCapture);
+                yield return new WaitForSeconds(2f);
             }
-            texture.Stop();
             enabled = false;
             collecting = false;
+
         }
 
         void InitiateWebsocket()
         {
             Debug.Log("Initiating Websocket");
-            webSocket = new WebSocket("ws://localhost/ws");
+            webSocket = new WebSocket($"ws://{GameDataManager.instance.ServerAddress}:5002/ws");
 
             webSocket.WaitTime = TimeSpan.FromSeconds(10);
 
@@ -175,11 +235,11 @@ namespace FantasyErrand.WebSockets
                             {
                                 identified = true;
                                 collecting = true;
-                                mainThreadActionQueue.Enqueue(() => StartCoroutine(CollectData()));
+                                mainThreadActionQueue.Enqueue(() => StartCoroutine(ProcessAndSendData()));
                             }
-                            else throw new Exception();
+                            else throw new ArgumentException($"Data received invalid: Length {data.Length}, Opcode: {data[1]}");
                         }
-                        catch (Exception)
+                        catch (ArgumentException)
                         {
                             webSocket.CloseAsync(CloseStatusCode.InvalidData);
                         }
@@ -196,17 +256,6 @@ namespace FantasyErrand.WebSockets
             print("Reconnecting in 5 seconds");
             yield return new WaitForSecondsRealtime(5f);
             InitiateWebsocket();
-        }
-
-        IEnumerator AffdexProcessFace()
-        {
-            while(texture.isPlaying)
-            {
-                yield return new WaitForEndOfFrame();
-                Frame frame = new Frame(texture.GetPixels32(), texture.width, texture.height, Frame.Orientation.Upright, Time.realtimeSinceStartup);
-                detector.ProcessFrame(frame);
-                yield return new WaitForSecondsRealtime(1 / texture.requestedFPS);
-            }
         }
 
         private void Update()

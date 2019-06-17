@@ -47,7 +47,7 @@ namespace FantasyErrand
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
                 print($"Game Data Manager - Save path is in {Path.Combine(Application.persistentDataPath, SaveFileName)}");
-
+            
             GameManager.OnGameEnd += GameManager_OnGameEnd;
 
             //Load all PlayerPrefs
@@ -93,20 +93,27 @@ namespace FantasyErrand
 
             if (!Directory.Exists(Application.persistentDataPath + "/img64")) Directory.CreateDirectory(Application.persistentDataPath + "/img64");
 
-            if (NeutralPicture != null && NeutralModified)
+            if (NeutralPicture != null)
             {
-                string path = Path.Combine(Application.persistentDataPath, ImagePath, "neutral");
+                string path = Path.Combine(Application.persistentDataPath, ImagePath, "neutral.b64");
                 print($"Saved Neutral Picture in {path}");
                 File.WriteAllBytes(path, NeutralPicture.EncodeToPNG());
-                
-                PlayerPrefs.SetString("NeutralPicture", path);
+                NeutralLocation = path;
+                PlayerPrefs.SetString("NeutralPicture", NeutralLocation);
+
+                path += "data";
+                File.WriteAllText(path, JsonConvert.SerializeObject(NeutralData));
             }
-            if (HappyPicture != null && HappyModified)
+            if (HappyPicture != null)
             {
-                string path = Path.Combine(Application.persistentDataPath, ImagePath, "happy");
+                string path = Path.Combine(Application.persistentDataPath, ImagePath, "happy.b64");
                 print($"Saved Happy Picture in {path}");
                 File.WriteAllBytes(path, HappyPicture.EncodeToPNG());
-                PlayerPrefs.SetString("HappyPicture", path);
+                HappyLocation = path;
+                PlayerPrefs.SetString("HappyPicture", HappyLocation);
+
+                path += "data";
+                File.WriteAllText(path, JsonConvert.SerializeObject(HappyData));
             }
             NeutralModified = false;
             HappyModified = false;
@@ -128,15 +135,13 @@ namespace FantasyErrand
             if (age.HasValue) Age = age.Value;
             if (neutral != null)
             {
-                if (NeutralPicture != neutral) NeutralModified = true;
                 NeutralPicture = neutral;
-                if (neutralData.name != default(ResearchData).name) NeutralData = neutralData;
+                NeutralData = neutralData;
             }
             if (happy != null)
             {
-                if (HappyPicture != happy) HappyModified = true;
                 HappyPicture = happy;
-                if (happyData.name != default(ResearchData).name) HappyData = happyData;
+                HappyData = happyData;
             }
             
         }
@@ -150,7 +155,7 @@ namespace FantasyErrand
 
         public void LoadUpgradesData()
         {
-            TextAsset text = Resources.Load<TextAsset>("upgrades.json");
+            TextAsset text = Resources.Load<TextAsset>("upgrades");
             UpgradeEffects = JsonConvert.DeserializeObject<UpgradeEffects>(text.text);
             print("Game Data Manager - Loaded Upgrades data");
         }
@@ -178,6 +183,7 @@ namespace FantasyErrand
             if (neutralLocation != string.Empty)
             {
                 byte[] neutralPic = File.ReadAllBytes(neutralLocation);
+                NeutralData = JsonConvert.DeserializeObject<ResearchData>(File.ReadAllText(neutralLocation + "data"));
                 NeutralLocation = neutralLocation;
                 NeutralPicture = new Texture2D(1, 1);
                 NeutralPicture.LoadImage(neutralPic);
@@ -187,6 +193,7 @@ namespace FantasyErrand
             if (happyLocation != string.Empty)
             {
                 byte[] happyPic = File.ReadAllBytes(happyLocation);
+                HappyData = JsonConvert.DeserializeObject<ResearchData>(File.ReadAllText(happyLocation + "data"));
                 HappyLocation = happyLocation;
                 HappyPicture = new Texture2D(1, 1);
                 HappyPicture.LoadImage(happyPic);

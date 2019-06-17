@@ -201,33 +201,37 @@ namespace FantasyErrand
                 currMinTilesBeforeNextPowerUps = minTilesBeforeNextPowerUps;
 
             GenerateStraights(new Vector3(spawnPos.x, -0.5f, spawnPos.z));
-            float spawnX = MathRand.Pick(new float[] { -3, -1.5f, 0, 1.5f, 3 });
-            if (coinRemaining != 0)
+            if(gameMode)
             {
-                GenerateCoins(new Vector3(continueCoinAt, 0.5f, spawnPos.z), coinRemaining);
+                float spawnX = MathRand.Pick(new float[] { -3, -1.5f, 0, 1.5f, 3 });
+                if (coinRemaining != 0)
+                {
+                    GenerateCoins(new Vector3(continueCoinAt, 0.5f, spawnPos.z), coinRemaining);
+                }
+                else
+                {
+                    if (opt == 1)
+                    {
+                        int n = Random.Range(1, GetObstacleLane());
+                        GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
+                    }
+                    else if (opt == 2)
+                    {
+                        SetCoinXPos();
+                        int n = Random.Range(minCoins, maxCoins + 1);
+                        int lanenumber = Random.Range(1, GetCoinLane());
+                        GenerateCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
+                    }
+                    else if (opt == 3)
+                    {
+                        int n = Random.Range(1, 3);
+                        GeneratePowerUps(new Vector3(spawnPos.x, 0.5f, spawnPos.z), n);
+                    }
+                }
+                if ((opt == 1 || opt == 2) && currMinTilesBeforeNextPowerUps != 0)
+                    currMinTilesBeforeNextPowerUps--;
             }
-            else
-            {
-                if (opt == 1)
-                {
-                    int n = Random.Range(1, GetObstacleLane());
-                    GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
-                }
-                else if (opt == 2)
-                {
-                    SetCoinXPos();
-                    int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(1, GetCoinLane());
-                    GenerateCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
-                }
-                else if (opt == 3)
-                {
-                    int n = Random.Range(1, 3);
-                    GeneratePowerUps(new Vector3(spawnPos.x, 0.5f, spawnPos.z), n);
-                }
-            }
-            if ((opt == 1 || opt == 2) && currMinTilesBeforeNextPowerUps != 0)
-                currMinTilesBeforeNextPowerUps--;
+
         }
 
 

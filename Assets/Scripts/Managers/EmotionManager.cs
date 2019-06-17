@@ -23,7 +23,6 @@ namespace FantasyErrand
 
         public override void onImageResults(Dictionary<int, Face> faces)
         {
-            print($"Face results! Faces: {faces.Count}");
             List<Dictionary<Emotions, float>> emoListTemp = new List<Dictionary<Emotions, float>>();
             List<Dictionary<Expressions, float>> expListTemp = new List<Dictionary<Expressions, float>>();
             for (int i = 0; i < faces.Count; i++)

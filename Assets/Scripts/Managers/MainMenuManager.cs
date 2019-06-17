@@ -43,8 +43,6 @@ namespace FantasyErrand
 
         public void OnPlay()
         {
-            changer.OnSceneLoaded += () => 
-            
             changer.ChangeScene("SampleScene");
         }
 
@@ -69,6 +67,7 @@ namespace FantasyErrand
         {
             AndroidPlugin.ShowToast("Loading Image...");
             faderSlider.value = 0;
+            faderSlider.gameObject.SetActive(true);
             StartCoroutine(LoadImage(path, pickMode == 0 ? neutralImage : happyImage));
         }
 
@@ -98,9 +97,11 @@ namespace FantasyErrand
 
                 //Process Texture2D using Affdex and load the results
                 detector.ProcessFrame(new Frame(t2d.GetPixels32(), t2d.width, t2d.height, Time.unscaledTime));
+                yield return null;
                 if (pickMode == 0)
                 {
-                    nData = new ResearchData() {name = "Neutral" + DateTime.Now.ToFileTimeUtc(), emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
+                    print($"Neutral Image loaded: {emotionManager.EmotionsList.Count} emotions and {emotionManager.ExpressionsList.Count} expressions captured.");
+                    nData = new ResearchData() {isImage = true, name = "Neutral-" + DateTime.Now.ToFileTimeUtc(), emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
                     nData.imageData = Convert.ToBase64String(Compressor.Compress(t2d.EncodeToPNG()));
                     if (emotionManager.EmotionsList.Count > 0)
                     {
@@ -119,7 +120,7 @@ namespace FantasyErrand
                 }
                 else
                 {
-                    hData = new ResearchData() { name = "Happy" + DateTime.Now.ToFileTimeUtc(), emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
+                    hData = new ResearchData() { isImage = true, name = "Happy-" + DateTime.Now.ToFileTimeUtc(), emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
                     hData.imageData = Convert.ToBase64String(Compressor.Compress(t2d.EncodeToPNG()));
                     if (emotionManager.EmotionsList.Count > 0)
                     {
@@ -156,8 +157,9 @@ namespace FantasyErrand
                         fader.gameObject.SetActive(false);
                     };
                 faderSlider.value += 1 / 6f;
+
                 yield return null;
-               
+                faderSlider.gameObject.SetActive(false);
             }
             else AndroidPlugin.ShowToast("Not a portrait image");
         }
@@ -167,7 +169,6 @@ namespace FantasyErrand
             if(isPanelOpen)
             {
                 FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
-                print($"GameData - Saving Data: {nameField.text}, Age {ageField.text}\nResearch Mode is {(researchToggle.isOn ? "on" : "off")} at 192.168.{serverAddress[0].text}.{serverAddress[1].text}");
                 GameDataManager.instance.SaveParticipantData(nameField.text, ageField.text == "" ? 0 : int.Parse(ageField.text), neutral, happy, nData, hData);
                 GameDataManager.instance.SaveBasicOptions(researchToggle.isOn, basicGatherToggle.isOn, 
                     expressionToggle.isOn, $"192.168.{serverAddress[0].text}.{serverAddress[1].text}");
@@ -202,7 +203,7 @@ namespace FantasyErrand
                     hData = GameDataManager.instance.HappyData;
                 }
 
-                print($"GameData - Loading Data: {GameDataManager.instance.PlayerName}, Age {GameDataManager.instance.Age}\nResearch Mode is {(GameDataManager.instance.ResearchMode ? "on" : "off")} at {GameDataManager.instance.ServerAddress}");
+                print($"Main Menu - Loading Data: {GameDataManager.instance.PlayerName}, Age {GameDataManager.instance.Age}\nResearch Mode is {(GameDataManager.instance.ResearchMode ? "on" : "off")} at {GameDataManager.instance.ServerAddress}");
             }
             isPanelOpen = !isPanelOpen;
         }

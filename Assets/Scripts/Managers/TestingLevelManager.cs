@@ -87,7 +87,7 @@ namespace FantasyErrand
         {
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
-            
+            SoundManager.Instance.playBackSound();
         }
 
         // Update is called once per frame

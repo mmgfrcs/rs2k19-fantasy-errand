@@ -111,7 +111,7 @@ namespace FantasyErrand
         public Affdex.Emotions[] positiveEmotions;
         public Affdex.Emotions[] negativeEmotions;
 
-
+        private bool isGameEnd=false;
 
 
         IEnumerator SetRateByEmotion()
@@ -119,36 +119,38 @@ namespace FantasyErrand
             
             while (true)
             {
-                print("Ienum Jalan");
-                float totalPosEmotions = 0, totalNegEmotions = 0;
+                if (!isGameEnd)
+                {
+                    float totalPosEmotions = 0, totalNegEmotions = 0;
 
-                
-                for (int i = 0; i < positiveEmotions.Length; i++)
-                    totalPosEmotions += GetEmotion(positiveEmotions[i]);
+                    for (int i = 0; i < positiveEmotions.Length; i++)
+                        totalPosEmotions += GetEmotion(positiveEmotions[i]);
 
-                for (int i = 0; i < negativeEmotions.Length; i++)
-                    totalNegEmotions += GetEmotion(negativeEmotions[i]);
+                    for (int i = 0; i < negativeEmotions.Length; i++)
+                        totalNegEmotions += GetEmotion(negativeEmotions[i]);
 
-                float temp = rateBaseTile + (totalPosEmotions * posEmoBaseTile) + (totalNegEmotions * negEmoBaseTile);
+                    float temp = rateBaseTile + (totalPosEmotions * posEmoBaseTile) + (totalNegEmotions * negEmoBaseTile);
                     if (temp > rateBottomLimit && temp < rateUpperLimit)
                         rateBaseTile = temp;
-                temp = ratePowerUps + (totalPosEmotions * posEmoPowerUps) + (totalNegEmotions * negEmoPowerUps);
+                    temp = ratePowerUps + (totalPosEmotions * posEmoPowerUps) + (totalNegEmotions * negEmoPowerUps);
                     if (temp > rateBottomLimit && temp < rateUpperLimit)
                         ratePowerUps = temp;
-                temp = rateCoin + (totalPosEmotions * posEmoCoin) + (totalNegEmotions * negEmoCoin);
+                    temp = rateCoin + (totalPosEmotions * posEmoCoin) + (totalNegEmotions * negEmoCoin);
                     if (temp > rateBottomLimit && temp < rateUpperLimit)
                         rateCoin = temp;
-                temp = rateObstacle + (totalPosEmotions * rateObstacle) + (totalNegEmotions * rateObstacle);
+                    temp = rateObstacle + (totalPosEmotions * rateObstacle) + (totalNegEmotions * rateObstacle);
                     if (temp > rateBottomLimit && temp < rateUpperLimit)
                         rateObstacle = temp;
-                temp = rateSpeed + (totalPosEmotions * posEmoSpeedMult) + (totalNegEmotions * negEmoSpeedMult);
-                if ((gameManager.GetCurrSpeed() + temp) > speedBottomLimit && (gameManager.GetCurrSpeed() + temp) < rateUpperLimit)
-                {
-                    rateSpeed = temp;
-                    gameManager.DynamicSpeedModifier = rateSpeed;
-
+                    temp = rateSpeed + (totalPosEmotions * posEmoSpeedMult) + (totalNegEmotions * negEmoSpeedMult);
+                    if ((gameManager.GetCurrSpeed() + temp) > speedBottomLimit && (gameManager.GetCurrSpeed() + temp) < rateUpperLimit)
+                    {
+                        rateSpeed = temp;
+                        gameManager.DynamicSpeedModifier = rateSpeed;
+                    }
+                    print("Ienum Worked");
                 }
-                print("Ienum Jalan");
+
+                
                 yield return new WaitForSeconds(emotionUpdateInterval);
             }
 
@@ -414,6 +416,9 @@ namespace FantasyErrand
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
             StartCoroutine(SetRateByEmotion());
+            GameManager.OnGameEnd += CheckGameEnd;
+            GameManager.OnGameStart += CheckGameStart;
+            SoundManager.Instance.playBackSound();
         }
 
         // Update is called once per frame
@@ -646,6 +651,16 @@ namespace FantasyErrand
             }
 
             return val + 3;
+        }
+
+        public void CheckGameEnd(GameEndEventArgs args)
+        {
+            isGameEnd = true;
+        }
+
+        public void CheckGameStart()
+        {
+            isGameEnd = false;
         }
 
         public void SetGoldenCoin(bool isSwitched)

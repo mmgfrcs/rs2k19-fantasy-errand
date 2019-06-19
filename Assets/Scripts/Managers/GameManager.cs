@@ -113,7 +113,7 @@ namespace FantasyErrand
 
         IEnumerator EndGame()
         {
-            SoundManager.Instance.PlayEnemySound(EnemySoundsType.Bite);
+            SoundManager.Instance.PlaySound("Bite");
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
 
@@ -160,7 +160,7 @@ namespace FantasyErrand
 
         public float GetCurrSpeed()
         {
-            return multiplierSpeed * speedGraph.Evaluate(Distance);
+            return multiplierSpeed * (speedGraph.Evaluate(Distance) + DynamicSpeedModifier);
         }
 
         public void AddCurrency(float value)

@@ -58,6 +58,8 @@ namespace FantasyErrand.Entities
         private bool resetGoldenCoin = false;
         private bool goldenCoinStarted = false;
         public static event GoldenCoinBroadcast goldenCoinBroadcast;
+
+        private bool resetAllPowerUps = false;
         /// <summary>
         /// Can the player be controlled by motion controls?
         /// </summary>
@@ -86,6 +88,9 @@ namespace FantasyErrand.Entities
         private bool magnetActivated = false;
         int lane = 0;
 
+       
+
+
         //Swipe Attribute
         public swipeDirection Direction { set; get; }
         private Vector3 touchPosition;
@@ -102,10 +107,14 @@ namespace FantasyErrand.Entities
         private float SwipeMinimumTreshold = 200f;
 
 
+        
+
+
         // Use this for initialization
         void Start()
         {
             PowerUpsManager.magnetBroadcast += SetMagnetProperty;
+            GameManager.OnGameEnd += StartResetingPowerUps;
             if (enableNonGameMode)
             {
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
@@ -298,13 +307,14 @@ namespace FantasyErrand.Entities
                 if (collect.Type == CollectibleType.Powerups)
                 {
                     collect.CollectibleEffect();
-                    SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Gulp);
+                    SoundManager.Instance.PlaySound("Gulp");
                 }
                 else
                 {
                     coinAdded?.Invoke((float)collect.Value);
                     other.gameObject.transform.position = new Vector3(0, 0, -9999);
                     other.gameObject.GetComponent<CoinCollectible>().SetMagnet(false);
+                    SoundManager.Instance.PlaySound("Coin");
                 }
             }
         }
@@ -354,6 +364,11 @@ namespace FantasyErrand.Entities
                         resetPhase = false;
                         timeStamp = Time.time;
                     }
+                    if (resetAllPowerUps)
+                    {
+                        phaseTime = 0;
+                        break;
+                    }
                     yield return null;
                 }
                 phaseTime = 0;
@@ -381,6 +396,11 @@ namespace FantasyErrand.Entities
                         resetMagnet = false;
                         timeStamp = Time.time;
                     }
+                    if (resetAllPowerUps)
+                    {
+                        magnetTime = 0;
+                        break;
+                    }
                     yield return null;
                 }
                 magnetStarted = false;
@@ -396,7 +416,7 @@ namespace FantasyErrand.Entities
             print("Boost PLayer started");
             if (!boostStarted)
             {
-                SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Boost);
+                SoundManager.Instance.PlaySound("Boost");
                 boostStarted = true;
                 float duration = boostDuration;
                 float timeStamp = Time.time;
@@ -404,12 +424,17 @@ namespace FantasyErrand.Entities
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
-                    SoundManager.Instance.PlayPowerUpsSound(PowerUpsSoundsType.Boost);
+                    //SoundManager.Instance.PlaySound("Boost");
                     boostTime = Time.time - timeStamp;
                     if (resetBoost)
                     {
                         resetBoost = false;
                         timeStamp = Time.time;
+                    }
+                    if (resetAllPowerUps)
+                    {
+                        boostTime = 0;
+                        break;
                     }
                     yield return null;
                 }
@@ -440,6 +465,11 @@ namespace FantasyErrand.Entities
                     {
                         resetGoldenCoin = false;
                         timeStamp = Time.time;
+                    }
+                    if (resetAllPowerUps)
+                    {
+                        goldenCoinTime = 0;
+                        break;
                     }
                     yield return null;
                 }
@@ -526,6 +556,18 @@ namespace FantasyErrand.Entities
             return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
         }
 
+        IEnumerator ResetPowerUps()
+        {
+            resetAllPowerUps = true;
+            yield return new WaitForSeconds(2f);
+            resetAllPowerUps = false;
+        
+        }
+
+        void StartResetingPowerUps(GameEndEventArgs abc)
+        {
+            StartCoroutine(ResetPowerUps());
+        }
 
     }
 }

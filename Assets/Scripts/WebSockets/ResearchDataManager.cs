@@ -53,7 +53,7 @@ namespace FantasyErrand.WebSockets
                 cam.SetPreviewResolution(768, 1366);
                 
                 NatCam.OnStart += NatCam_OnStart;
-                NatCam.OnFrame += NatCam_OnFrame;
+                //NatCam.OnFrame += NatCam_OnFrame;
                 NatCam.Verbose = Switch.On;
                 NatCam.Play(cam);
                 print("NatCam Playing: " + NatCam.IsPlaying);
@@ -70,15 +70,15 @@ namespace FantasyErrand.WebSockets
             //InitiateWebsocket();
         }
 
-        private void NatCam_OnFrame()
-        {
-            Texture2D frameTex = NatCam.Preview.ToTexture2D();
+        //private void NatCam_OnFrame()
+        //{
+        //    Texture2D frameTex = NatCam.Preview.ToTexture2D();
 
-            Frame frame = new Frame(frameTex.GetPixels32(), frameTex.width, frameTex.height, Frame.Orientation.Upright, Time.realtimeSinceStartup);
-            detector.ProcessFrame(frame);
+        //    Frame frame = new Frame(frameTex.GetPixels32(), frameTex.width, frameTex.height, Frame.Orientation.Upright, Time.realtimeSinceStartup);
+        //    detector.ProcessFrame(frame);
 
-            if (frameTex != null) Destroy(frameTex);
-        }
+        //    if (frameTex != null) Destroy(frameTex);
+        //}
 
         private void GameManager_OnGameEnd(GameEndEventArgs args)
         {

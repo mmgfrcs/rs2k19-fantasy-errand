@@ -42,23 +42,37 @@ namespace FantasyErrand
         int errors = 0;
 
         public static bool isSwipeModeOn=true;
-
+        public static String difficultyLevel="easy";
         public void OnPlay()
         {
             changer.ChangeScene("SampleScene");
         }
 
+        public void playTap()
+        {
+            SoundManager.Instance.PlaySound("Tap");
+        }
+
+        public void playBack()
+        {
+            SoundManager.Instance.PlaySound("Back");
+        }
+
         public void OnPlayEasy()
         {
-            changer.ChangeScene("EasyTesting");
+            changer.ChangeScene("StaticTesting");
+            
+            difficultyLevel = "easy";
         }
         public void OnPlayNormal()
         {
-            changer.ChangeScene("NormalTesting");
+            changer.ChangeScene("StaticTesting");
+            difficultyLevel = "normal";
         }
         public void OnPlayHard()
         {
-            changer.ChangeScene("HardTesting");
+            changer.ChangeScene("StaticTesting");
+            difficultyLevel = "hard";
         }
         public void OnPlayDynamic()
         {

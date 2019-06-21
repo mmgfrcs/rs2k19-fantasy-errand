@@ -45,6 +45,7 @@ namespace FantasyErrand
         private float goldenCoinDuration;
         private bool resetGoldenCoin = false;
         private bool goldenCoinStarted = false;
+
         
 
         public Slider magnetSlider;
@@ -100,12 +101,12 @@ namespace FantasyErrand
             else if (boostPhase)
             {
                 phaseSlider.value = 1 - (player.phaseTime / boostPhaseDuration);
-                if (player.phaseTime>=1.9)
-                {
-                    phaseSlider.value = 0;
-                    player.phaseTime = 0;
-                    boostPhase = false;
-                }
+                //if (player.phaseTime>=1.9)
+                //{
+                //    phaseSlider.value = 0;
+                //    player.phaseTime = 0;
+                //    boostPhase = false;
+                //}
             }
             else
             {

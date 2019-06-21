@@ -10,8 +10,7 @@ namespace FantasyErrand
     public class SoundManager : MonoBehaviour
     {
 
-        public AudioClip[] EnemyClipList;
-        public AudioClip[] PowerUpsClipList;
+        public AudioClip[] AudioClipList;
         public AudioSource[] AudioSourceList;
         // Audio players components.
         public AudioSource EffectsSource;
@@ -54,23 +53,17 @@ namespace FantasyErrand
         public void PlaySound(string soundName)
         {
             AudioSource audio = AudioSourceList[counter];
-            for (int i = 0; i < EnemyClipList.Length; i++)
+            for (int i = 0; i < AudioClipList.Length; i++)
             {
-                if (soundName.Equals(EnemyClipList[i].name))
+                if (soundName.Equals(AudioClipList[i].name))
                 {
-                    audio.clip = EnemyClipList[i];
+                    audio.clip = AudioClipList[i];
                 }
-                if (soundName.Equals(PowerUpsClipList[i].name))
-                {
-                    audio.clip = PowerUpsClipList[i];
-
-                }
-                audio.Play();
-                counter++;
-                if (counter >= AudioSourceList.Length)
-                    counter = 0;
             }
-
+            audio.Play();
+            counter++;
+            if (counter >= AudioSourceList.Length)
+                counter = 0;
         }
 
         IEnumerator PlayBackSound()

@@ -2142,18 +2142,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 505de51ba8f54bb45809cc34eb908d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyClipList:
+  AudioClipList:
   - {fileID: 8300000, guid: 25c0b8d4a3541944aaebb8162790b730, type: 3}
   - {fileID: 8300000, guid: 75544ee01539da1428975eb14451fef0, type: 3}
   - {fileID: 8300000, guid: 437c7ff53142e0045bce751d3a66ff00, type: 3}
   - {fileID: 8300000, guid: 66c26b1f39a3a5c46909d229c8651ee3, type: 3}
   - {fileID: 8300000, guid: f10e055552302194287309bf9e2ed8cb, type: 3}
-  PowerUpsClipList:
   - {fileID: 8300000, guid: ac44245b8b4a35e45ba124f379d2246e, type: 3}
   - {fileID: 8300000, guid: e449701b7f4ec3a41b9c27a4ce9628ba, type: 3}
   - {fileID: 8300000, guid: 678fde40925f2e44aa32195e6b14c3e7, type: 3}
   - {fileID: 8300000, guid: 5f6847d90f85fd140aabc842734e9f21, type: 3}
   - {fileID: 8300000, guid: 6e4430d4e5ca7444fa3040a156238252, type: 3}
+  - {fileID: 8300000, guid: 53645a4f83cd7e64aaa859c52afeda03, type: 3}
   AudioSourceList:
   - {fileID: 1026271087}
   - {fileID: 587150094}

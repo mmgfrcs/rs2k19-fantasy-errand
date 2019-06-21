@@ -48,9 +48,20 @@ namespace FantasyErrand
             changer.ChangeScene("SampleScene");
         }
 
+        public void playTap()
+        {
+            SoundManager.Instance.PlaySound("Tap");
+        }
+
+        public void playBack()
+        {
+            SoundManager.Instance.PlaySound("Back");
+        }
+
         public void OnPlayEasy()
         {
             changer.ChangeScene("StaticTesting");
+            
             difficultyLevel = "easy";
         }
         public void OnPlayNormal()

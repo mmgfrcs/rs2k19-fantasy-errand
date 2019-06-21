@@ -32,7 +32,7 @@ namespace FantasyErrand
         public Button backButton;
 
         Texture2D neutral, happy;
-        ResearchData nData, hData;
+        PresetExpressionData nData, hData;
 
         public Image fader;
 
@@ -134,8 +134,8 @@ namespace FantasyErrand
                 if (pickMode == 0)
                 {
                     print($"Neutral Image loaded: {emotionManager.EmotionsList.Count} emotions and {emotionManager.ExpressionsList.Count} expressions captured.");
-                    nData = new ResearchData() {isImage = true, name = "Neutral-" + DateTime.Now.ToFileTimeUtc(), emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
-                    nData.imageData = Convert.ToBase64String(Compressor.Compress(t2d.EncodeToPNG()));
+                    nData = new PresetExpressionData() {emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
+                    nData.imageData = Compressor.Compress(t2d.EncodeToPNG());
                     if (emotionManager.EmotionsList.Count > 0)
                     {
                         foreach (var emo in emotionManager.EmotionsList[0])
@@ -153,8 +153,8 @@ namespace FantasyErrand
                 }
                 else
                 {
-                    hData = new ResearchData() { isImage = true, name = "Happy-" + DateTime.Now.ToFileTimeUtc(), emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
-                    hData.imageData = Convert.ToBase64String(Compressor.Compress(t2d.EncodeToPNG()));
+                    hData = new PresetExpressionData() { emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
+                    hData.imageData = Compressor.Compress(t2d.EncodeToPNG());
                     if (emotionManager.EmotionsList.Count > 0)
                     {
                         foreach (var emo in emotionManager.EmotionsList[0])

@@ -29,10 +29,10 @@ namespace FantasyErrand.WebSockets
 
         [Header("Scripts")]
         public EmotionManager emotionManager;
+        public GameManager gameManager;
         public Detector detector;
 
         WebSocket webSocket;
-        DeviceCamera cam;
 
         Queue<Action> mainThreadActionQueue = new Queue<Action>();
         private readonly object actionQueueLock = new object();
@@ -45,47 +45,14 @@ namespace FantasyErrand.WebSockets
 
         private void Start()
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                cam = DeviceCamera.FrontCamera;
-                cam.SetFramerate(FrameratePreset.Smooth);
-                cam.SetPhotoResolution(768, 1366);
-                cam.SetPreviewResolution(768, 1366);
-                
-                NatCam.OnStart += NatCam_OnStart;
-                //NatCam.OnFrame += NatCam_OnFrame;
-                NatCam.Verbose = Switch.On;
-                NatCam.Play(cam);
-                print("NatCam Playing: " + NatCam.IsPlaying);
-            }
-            else enabled = false;
-        }
-
-
-        private void NatCam_OnStart()
-        {
-            img.GetComponent<AspectRatioFitter>().aspectRatio = cam.PreviewResolution.x / cam.PreviewResolution.y;
-            img.texture = NatCam.Preview;
+            InitiateWebsocket();
             GameManager.OnGameEnd += GameManager_OnGameEnd;
-            //InitiateWebsocket();
         }
-
-        //private void NatCam_OnFrame()
-        //{
-        //    Texture2D frameTex = NatCam.Preview.ToTexture2D();
-
-        //    Frame frame = new Frame(frameTex.GetPixels32(), frameTex.width, frameTex.height, Frame.Orientation.Upright, Time.realtimeSinceStartup);
-        //    detector.ProcessFrame(frame);
-
-        //    if (frameTex != null) Destroy(frameTex);
-        //}
 
         private void GameManager_OnGameEnd(GameEndEventArgs args)
         {
             if (args.IsEnded)
             {
-                NatCam.Release();
-                cam = null;
                 enabled = false;
 
             }
@@ -95,11 +62,11 @@ namespace FantasyErrand.WebSockets
         {
             //First send the participant data
             ParticipantData partdata = new ParticipantData();
-            partdata.versionCode = 2;
+            partdata.versionCode = 3;
             partdata.name = GameDataManager.instance.PlayerName;
             partdata.age = GameDataManager.instance.Age;
             partdata.researchData = new List<ResearchData>();
-            List<ResearchData> presetData = new List<ResearchData>();
+            List<PresetExpressionData> presetData = new List<PresetExpressionData>();
             
             if (GameDataManager.instance.NeutralPicture != null) presetData.Add(GameDataManager.instance.NeutralData);
             if (GameDataManager.instance.HappyPicture != null) presetData.Add(GameDataManager.instance.HappyData);
@@ -111,26 +78,18 @@ namespace FantasyErrand.WebSockets
             webSocket.Send(JsonConvert.SerializeObject(packet));
         }
 
-        private void OnCapture(Texture2D photo, Orientation orientation)
-        {
-            StartCoroutine(CollectGameData(photo));
-            Texture2D.Destroy(photo);
-        }
-
-        IEnumerator CollectGameData(Texture2D photo)
+        void CollectGameData()
         {
             print($"Preparing data collection {collections}");
             
-            string imgStr = Convert.ToBase64String(Compressor.Compress(photo.EncodeToPNG()));
-            
-            yield return null;
             ResearchData data = new ResearchData()
             {
-                name = GameDataManager.instance.PlayerName,
-                isImage = true,
-                imageData = imgStr,
                 emotions = new Dictionary<string, float>(),
-                expressions = new Dictionary<string, float>()
+                expressions = new Dictionary<string, float>(),
+                score = gameManager.Score,
+                distance = gameManager.Distance,
+                coins = gameManager.Currency,
+                playerSpeed = gameManager.GetCurrSpeed()
             };
 
             if (emotionManager.ExpressionsList.Count > 0)
@@ -168,9 +127,8 @@ namespace FantasyErrand.WebSockets
             yield return new WaitForSeconds(0.25f);
             while (webSocket.ReadyState == WebSocketState.Open)
             {
-                
-                NatCam.CapturePhoto(OnCapture);
-                yield return new WaitForSeconds(2f);
+                CollectGameData();
+                yield return new WaitForSeconds(1f);
             }
             enabled = false;
             collecting = false;

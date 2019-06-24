@@ -263,7 +263,9 @@ Prefab:
       propertyPath: goldenCoinSlider
       value: 
       objectReference: {fileID: 1886268705}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114301418368215388, guid: 7dd54ec96c6b5ea40a806b6ddbe41a1d, type: 2}
+    - {fileID: 114109876329705366, guid: 7dd54ec96c6b5ea40a806b6ddbe41a1d, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 7dd54ec96c6b5ea40a806b6ddbe41a1d, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &358597620

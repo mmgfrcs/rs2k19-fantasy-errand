@@ -194,7 +194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &178193600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,12 +213,6 @@ MonoBehaviour:
     type: 2}
   straightPrefabs:
   - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
-  obstaclePrefabs:
-  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
-  - {fileID: 1910533343888404, guid: 28ef0afdc8cb729418890edc5ca4564c, type: 2}
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
-  - {fileID: 1910533343888404, guid: 28ef0afdc8cb729418890edc5ca4564c, type: 2}
-  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
   powerupsPrefabs:
   - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
@@ -240,6 +234,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameMode: 1
   maxGeneratedTile: 10
@@ -252,7 +254,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 40
+        value: 160
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -261,7 +263,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 25
+        value: 80
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -276,7 +278,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 20
+        value: 100
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -285,7 +287,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 40
+        value: 250
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -300,7 +302,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 70
+        value: 200
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -309,7 +311,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 20
+        value: 120
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -324,7 +326,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 80
+        value: 180
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -333,7 +335,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 30
+        value: 100
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -351,7 +353,7 @@ MonoBehaviour:
   maxCoinSpawnPerTile: 6
   minCoins: 4
   maxCoins: 24
-  minimumCoinLane: 2
+  minimumCoinLane: 3
   minTilesBeforeNextPowerUps: 4
   showGizmos: 1
   CoinLane:
@@ -359,7 +361,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -368,7 +370,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 2800
-      value: 2
+      value: 4
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -392,7 +394,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 2800
-      value: 3
+      value: 1.8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -406,6 +408,9 @@ MonoBehaviour:
   silverDistance: 0
   goldDistance: 0
   platinumDistance: 0
+  EasyTrigger: 1
+  HardTrigger: 0
+  CleverTrigger: 0
 --- !u!4 &178193601
 Transform:
   m_ObjectHideFlags: 0
@@ -414,11 +419,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 178193599}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.583504, y: -71.60239, z: -4.9491935}
+  m_LocalPosition: {x: 1.1334, y: 0.78045654, z: -1.9761596}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1335823350}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &234222591 stripped
 MonoBehaviour:
@@ -647,7 +652,8 @@ Prefab:
 --- !u!1 &462463282
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1723965218233500, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -663,7 +669,8 @@ GameObject:
 --- !u!82 &462463283
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 82428456446211690, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 462463282}
   m_Enabled: 1
@@ -758,7 +765,8 @@ AudioSource:
 --- !u!4 &462463284
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4052927069654540, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 462463282}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -771,7 +779,8 @@ Transform:
 --- !u!1 &587150093
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1594858610306468, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -787,7 +796,8 @@ GameObject:
 --- !u!82 &587150094
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 82630553228980074, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 587150093}
   m_Enabled: 1
@@ -882,7 +892,8 @@ AudioSource:
 --- !u!4 &587150095
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4578348307428424, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 587150093}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -1373,6 +1384,21 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: easySpeedGraph.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: hardSpeedGraph.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: normalSpeedGraph.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4295452466538956, guid: 67088997e6207c744af1cb100b78435f, type: 2}
       propertyPath: m_LocalPosition.x
       value: -31.99778
@@ -1435,6 +1461,51 @@ Prefab:
       propertyPath: startSpeed
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: easySpeedGraph.m_Curve.Array.data[0].value
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: easySpeedGraph.m_Curve.Array.data[1].time
+      value: 2800
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: easySpeedGraph.m_Curve.Array.data[1].value
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: hardSpeedGraph.m_Curve.Array.data[0].value
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: hardSpeedGraph.m_Curve.Array.data[1].time
+      value: 2800
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: hardSpeedGraph.m_Curve.Array.data[1].value
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: normalSpeedGraph.m_Curve.Array.data[0].value
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: normalSpeedGraph.m_Curve.Array.data[1].time
+      value: 2800
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
+        type: 2}
+      propertyPath: normalSpeedGraph.m_Curve.Array.data[1].value
+      value: 17
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67088997e6207c744af1cb100b78435f, type: 2}
   m_IsPrefabParent: 0
@@ -1452,7 +1523,8 @@ RectTransform:
 --- !u!1 &1020556279
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1852445391635614, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -1468,7 +1540,8 @@ GameObject:
 --- !u!82 &1020556280
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 82647719504886986, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1020556279}
   m_Enabled: 1
@@ -1563,7 +1636,8 @@ AudioSource:
 --- !u!4 &1020556281
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4094187012966902, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1020556279}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -1576,7 +1650,8 @@ Transform:
 --- !u!1 &1026271086
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1848746188925702, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -1592,7 +1667,8 @@ GameObject:
 --- !u!82 &1026271087
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 82305714853893264, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1026271086}
   m_Enabled: 1
@@ -1687,7 +1763,8 @@ AudioSource:
 --- !u!4 &1026271088
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4124740554404452, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1026271086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1706,7 +1783,7 @@ MonoBehaviour:
 --- !u!4 &1111593576
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4268118079146644, guid: 158d915d54f44dc48b884a2c484b6fa1,
+  m_PrefabParentObject: {fileID: 4549410901484966, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1338476258}
@@ -1720,7 +1797,7 @@ Transform:
   - {fileID: 462463284}
   - {fileID: 1020556281}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1112201080
 GameObject:
@@ -1738,7 +1815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1112201081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,12 +1834,6 @@ MonoBehaviour:
     type: 2}
   straightPrefabs:
   - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
-  obstaclePrefabs:
-  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
-  - {fileID: 1910533343888404, guid: 28ef0afdc8cb729418890edc5ca4564c, type: 2}
-  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
-  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
-  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
   powerupsPrefabs:
   - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
@@ -1784,6 +1855,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameMode: 1
   maxGeneratedTile: 10
@@ -1796,7 +1875,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 30
+        value: 120
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1804,8 +1883,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2400
-        value: 20
+        time: 2800
+        value: 40
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1820,7 +1899,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 20
+        value: 175
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1828,8 +1907,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2400
-        value: 70
+        time: 2800
+        value: 325
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1844,7 +1923,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 50
+        value: 160
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1852,8 +1931,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2400
-        value: 20
+        time: 2800
+        value: 80
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1868,7 +1947,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 80
+        value: 140
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1876,8 +1955,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2500
-        value: 30
+        time: 2800
+        value: 60
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1911,7 +1990,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2400
+      time: 2800
       value: 1
       inSlope: 0
       outSlope: 0
@@ -1935,8 +2014,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2400
-      value: 4
+      time: 2800
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1950,6 +2029,9 @@ MonoBehaviour:
   silverDistance: 0
   goldDistance: 0
   platinumDistance: 0
+  EasyTrigger: 0
+  HardTrigger: 0
+  CleverTrigger: 1
 --- !u!4 &1112201082
 Transform:
   m_ObjectHideFlags: 0
@@ -1958,11 +2040,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1112201080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.583504, y: -71.60239, z: -4.9491935}
+  m_LocalPosition: {x: 1.1334, y: 0.78045654, z: -1.9761596}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1335823350}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!225 &1167820647 stripped
 CanvasGroup:
@@ -1984,14 +2066,14 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1335823349
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1335823348}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8074b00a46cf5da49a2cba99620cd258, type: 3}
   m_Name: 
@@ -2009,17 +2091,14 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 33.716904, y: 72.38284, z: 2.973034}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1112201082}
-  - {fileID: 1642351560}
-  - {fileID: 178193601}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1338476258
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1219364340868094, guid: 158d915d54f44dc48b884a2c484b6fa1,
+  m_PrefabParentObject: {fileID: 1492445503119334, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
     type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
@@ -2037,7 +2116,7 @@ GameObject:
 --- !u!82 &1338476259
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 82788905431334492, guid: 158d915d54f44dc48b884a2c484b6fa1,
+  m_PrefabParentObject: {fileID: 82686261399404782, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1338476258}
@@ -2133,7 +2212,7 @@ AudioSource:
 --- !u!114 &1338476260
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114915167173889096, guid: 158d915d54f44dc48b884a2c484b6fa1,
+  m_PrefabParentObject: {fileID: 114063480545593496, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1338476258}
@@ -2200,7 +2279,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4339651819907506, guid: efb373f4727ac2546aaa4b5958cf3ade, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb373f4727ac2546aaa4b5958cf3ade, type: 2}
@@ -2233,7 +2312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1642351559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2252,12 +2331,6 @@ MonoBehaviour:
     type: 2}
   straightPrefabs:
   - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
-  obstaclePrefabs:
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
   powerupsPrefabs:
   - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
   - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
@@ -2279,6 +2352,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameMode: 1
   maxGeneratedTile: 10
@@ -2291,7 +2372,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 25
+        value: 80
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2299,8 +2380,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2100
-        value: 10
+        time: 2800
+        value: 20
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2315,7 +2396,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 30
+        value: 250
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2323,8 +2404,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2100
-        value: 70
+        time: 2800
+        value: 400
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2339,7 +2420,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 30
+        value: 120
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2347,8 +2428,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2100
-        value: 10
+        time: 2800
+        value: 40
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2363,7 +2444,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 40
+        value: 100
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2371,7 +2452,7 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2100
+        time: 2800
         value: 20
         inSlope: 0
         outSlope: 0
@@ -2384,7 +2465,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   tileScale: 8
   baseObstacleRatio: 100
-  minimumObstacleLane: 2
+  minimumObstacleLane: 3
   minTilesBeforeOverhead: 8
   obstacleTolerance: 4
   maxCoinSpawnPerTile: 6
@@ -2398,7 +2479,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 2
+      value: 1.8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2406,7 +2487,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2100
+      time: 2800
       value: 1
       inSlope: 0
       outSlope: 0
@@ -2422,7 +2503,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 2
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2430,7 +2511,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2100
+      time: 2800
       value: 5
       inSlope: 0
       outSlope: 0
@@ -2445,6 +2526,9 @@ MonoBehaviour:
   silverDistance: 0
   goldDistance: 0
   platinumDistance: 0
+  EasyTrigger: 0
+  HardTrigger: 1
+  CleverTrigger: 0
 --- !u!4 &1642351560
 Transform:
   m_ObjectHideFlags: 0
@@ -2453,11 +2537,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1642351558}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.583504, y: -71.60239, z: -4.9491935}
+  m_LocalPosition: {x: 1.1334, y: 0.78045654, z: -1.9761596}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1335823350}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1790540071
 Prefab:
@@ -2884,7 +2968,7 @@ RectTransform:
   m_LocalScale: {x: 0.16765045, y: 0.16765045, z: 0.16765045}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2894,7 +2978,8 @@ RectTransform:
 --- !u!1 &1826838094
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1487331283816746, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -2910,7 +2995,8 @@ GameObject:
 --- !u!82 &1826838095
 AudioSource:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 82113747181053262, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1826838094}
   m_Enabled: 1
@@ -3005,7 +3091,8 @@ AudioSource:
 --- !u!4 &1826838096
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4649260720135624, guid: 6d0cdd76e161fb5448498cbf0dfc359d,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1826838094}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}

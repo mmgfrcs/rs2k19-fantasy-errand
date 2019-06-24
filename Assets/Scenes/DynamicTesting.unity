@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 70835560}
   - component: {fileID: 70835559}
   m_Layer: 0
-  m_Name: DynamicLevelManager
+  m_Name: EasyLvlManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 70835558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4468b24394b69f479007dd3b8e534e1, type: 3}
+  m_Script: {fileID: 11500000, guid: db25a9abcd1f4414cadd57a3ce173830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 924932966}
@@ -146,18 +146,12 @@ MonoBehaviour:
     type: 2}
   straightPrefabs:
   - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
-  obstaclePrefabs:
-  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
-  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
-  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
-  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
   powerupsPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
   - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-  coinPrefabs:
-  - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  coinPrefabs: []
   overheadObstaclePrefabs:
   - {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388, type: 2}
   coinCopperPrefabs:
@@ -170,6 +164,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameMode: 1
   maxGeneratedTile: 10
@@ -182,7 +184,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 100
+        value: 160
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -190,8 +192,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 100
-        value: 100
+        time: 2800
+        value: 80
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -214,8 +216,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 100
-        value: 100
+        time: 2800
+        value: 250
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -230,7 +232,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 100
+        value: 200
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -238,8 +240,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 100
-        value: 100
+        time: 2800
+        value: 120
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -254,7 +256,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 100
+        value: 180
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -262,7 +264,7 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 100
+        time: 2800
         value: 100
         inSlope: 0
         outSlope: 0
@@ -278,55 +280,72 @@ MonoBehaviour:
   minimumObstacleLane: 1
   minTilesBeforeOverhead: 8
   obstacleTolerance: 4
-  LessPosMinObs: 2
-  LessPosMaxObs: 3
-  LessNegMinObs: 1
-  LessNegMaxObs: 2
-  MorePosMinObs: 3
-  MorePosMaxObs: 5
-  MoreNegMinObs: 3
-  MoreNegMaxObs: 4
-  EqualMinObs: 2
-  EqualMaxObs: 3
   maxCoinSpawnPerTile: 6
-  minCoins: 4
+  minCoins: 3
   maxCoins: 24
   minimumCoinLane: 1
-  LessPosMinCoins: 1
-  LessPosMaxCoins: 2
-  LessNegMinCoins: 2
-  LessNegMaxCoins: 3
-  MorePosMinCoins: 4
-  MorePosMaxCoins: 2
-  MoreNegMinCoins: 5
-  MoreNegMaxCoins: 3
-  EqualMinCoins: 2
-  EqualMaxCoins: 3
   minTilesBeforeNextPowerUps: 8
-  rateObstacle: 30
-  rateBaseTile: 30
-  rateCoin: 30
-  ratePowerUps: 30
-  rateSpeed: 0.5
-  emotionUpdateInterval: 0.8
-  rateBottomLimit: 10
-  rateUpperLimit: 200
-  speedUpperLimit: 10
-  speedBottomLimit: 35
-  posEmoCoin: -2
-  posEmoPowerUps: -1
-  posEmoBaseTile: -0.5
-  posEmoObstacle: 2
-  posEmoSpeedMult: 0.2
-  negEmoCoin: 2
-  negEmoObstacle: -2
-  negEmoBaseTile: 1
-  negEmoPowerUps: 1.2
-  negEmoSpeedMult: -0.4
+  showGizmos: 1
+  CoinLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ObstacleLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 1.8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   spawnedObjects: []
-  emotionManager: {fileID: 1054653656}
+  silverDistance: 0
+  goldDistance: 0
+  platinumDistance: 0
+  EasyTrigger: 1
+  HardTrigger: 0
+  CleverTrigger: 0
   positiveEmotions: 00000000
-  negativeEmotions: 02000000
+  negativeEmotions: 04000000
+  emotionManager: {fileID: 1054653656}
+  dynamicSpeedModifier: 1
+  emotionUpdateInterval: 0.5
 --- !u!4 &70835560
 Transform:
   m_ObjectHideFlags: 0
@@ -338,7 +357,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &160185654
 GameObject:
@@ -1684,18 +1703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 505de51ba8f54bb45809cc34eb908d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyClipList:
-  - {fileID: 8300000, guid: 25c0b8d4a3541944aaebb8162790b730, type: 3}
-  - {fileID: 8300000, guid: 437c7ff53142e0045bce751d3a66ff00, type: 3}
-  - {fileID: 8300000, guid: 75544ee01539da1428975eb14451fef0, type: 3}
-  - {fileID: 8300000, guid: 66c26b1f39a3a5c46909d229c8651ee3, type: 3}
-  - {fileID: 8300000, guid: f10e055552302194287309bf9e2ed8cb, type: 3}
-  PowerUpsClipList:
-  - {fileID: 8300000, guid: ac44245b8b4a35e45ba124f379d2246e, type: 3}
-  - {fileID: 8300000, guid: e449701b7f4ec3a41b9c27a4ce9628ba, type: 3}
-  - {fileID: 8300000, guid: 678fde40925f2e44aa32195e6b14c3e7, type: 3}
-  - {fileID: 8300000, guid: 5f6847d90f85fd140aabc842734e9f21, type: 3}
-  - {fileID: 8300000, guid: 6e4430d4e5ca7444fa3040a156238252, type: 3}
+  AudioClipList: []
   AudioSourceList:
   - {fileID: 502105080}
   - {fileID: 1216748609}
@@ -1980,6 +1988,252 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 779260990}
+--- !u!1 &786151257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 786151259}
+  - component: {fileID: 786151258}
+  m_Layer: 0
+  m_Name: NormalLvlManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &786151258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 786151257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db25a9abcd1f4414cadd57a3ce173830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 924932966}
+  gameManager: {fileID: 1042183309}
+  startPrefab: {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47,
+    type: 2}
+  straightPrefabs:
+  - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
+  powerupsPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
+  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  coinPrefabs: []
+  overheadObstaclePrefabs:
+  - {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388, type: 2}
+  coinCopperPrefabs:
+  - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
+  coinSilverPrefabs:
+  - {fileID: 1464802851982736, guid: 34ae12d969e69264e9fe85b5d2672e7c, type: 2}
+  coinGoldPrefabs:
+  - {fileID: 1874862385252794, guid: dd6440393b30c65438ddfcb71fa73f14, type: 2}
+  coinPlatinumPrefabs:
+  - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
+  coinRubyPrefabs:
+  - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
+  startPosition: {x: 0, y: 0, z: 0}
+  gameMode: 1
+  maxGeneratedTile: 10
+  pooledObstacles: 20
+  pooledCoins: 40
+  startTiles: 2
+  tileSpawnRates:
+    baseTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 120
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 40
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    obstacleTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 175
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 325
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    coinsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 160
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 80
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    powerupsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 140
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 60
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  tileScale: 8
+  baseObstacleRatio: 100
+  minimumObstacleLane: 2
+  minTilesBeforeOverhead: 8
+  obstacleTolerance: 4
+  maxCoinSpawnPerTile: 6
+  minCoins: 1
+  maxCoins: 24
+  minimumCoinLane: 1
+  minTilesBeforeNextPowerUps: 8
+  showGizmos: 1
+  CoinLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ObstacleLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spawnedObjects: []
+  silverDistance: 0
+  goldDistance: 0
+  platinumDistance: 0
+  EasyTrigger: 0
+  HardTrigger: 0
+  CleverTrigger: 1
+  positiveEmotions: 00000000
+  negativeEmotions: 04000000
+  emotionManager: {fileID: 1054653656}
+  dynamicSpeedModifier: 1
+  emotionUpdateInterval: 0.5
+--- !u!4 &786151259
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 786151257}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.68170124, y: 2.4119272, z: 5.4016676}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &799312586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2366,283 +2620,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224493608152683212, guid: c2085aa881ed268499b7c9737851f1fd,
     type: 2}
   m_PrefabInternal: {fileID: 1790540071}
---- !u!1001 &974668091
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: powerupsPrefabs.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: obstaclePrefabs.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: CoinLane.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: ObstacleLane.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: overheadObstaclePrefabs.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.baseTile.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 1.1334004
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.78045785
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -1.9761596
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534959742647014, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 924932966}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250524865801426, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_Name
-      value: LevelManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: powerupsPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: powerupsPrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: powerupsPrefabs.Array.data[3]
-      value: 
-      objectReference: {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: startTiles
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: obstaclePrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: obstaclePrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: obstaclePrefabs.Array.data[3]
-      value: 
-      objectReference: {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: obstaclePrefabs.Array.data[4]
-      value: 
-      objectReference: {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.obstacleTile.m_Curve.Array.data[0].value
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: obstaclePrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: CoinLane.m_Curve.Array.data[0].value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: CoinLane.m_Curve.Array.data[1].time
-      value: 2100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: CoinLane.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: ObstacleLane.m_Curve.Array.data[0].value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: ObstacleLane.m_Curve.Array.data[1].time
-      value: 2100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: ObstacleLane.m_Curve.Array.data[1].value
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.baseTile.m_Curve.Array.data[0].value
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.baseTile.m_Curve.Array.data[0].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.baseTile.m_Curve.Array.data[1].time
-      value: 2100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.baseTile.m_Curve.Array.data[1].value
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.powerupsTile.m_Curve.Array.data[0].value
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.powerupsTile.m_Curve.Array.data[1].time
-      value: 2100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.powerupsTile.m_Curve.Array.data[1].value
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.obstacleTile.m_Curve.Array.data[0].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.obstacleTile.m_Curve.Array.data[1].value
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.obstacleTile.m_Curve.Array.data[1].time
-      value: 2100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.coinsTile.m_Curve.Array.data[0].value
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.coinsTile.m_Curve.Array.data[1].time
-      value: 2100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: tileSpawnRates.coinsTile.m_Curve.Array.data[1].value
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: powerupsPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: minimumObstacleLane
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: ObstacleLane.m_Curve.Array.data[0].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: overheadObstaclePrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: overheadObstaclePrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388,
-        type: 2}
-    - target: {fileID: 114028365996745762, guid: 2e31d9b852a17344382b328788d4908e,
-        type: 2}
-      propertyPath: overheadObstaclePrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388,
-        type: 2}
-    - target: {fileID: 1250524865801426, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 2e31d9b852a17344382b328788d4908e, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &977202656
 GameObject:
   m_ObjectHideFlags: 0
@@ -2820,7 +2797,56 @@ MonoBehaviour:
   player: {fileID: 924932966}
   UIManager: {fileID: 822765833}
   startSpeed: 14
-  speedGraph:
+  startingMultiplier: 10
+  easySpeedGraph:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 14
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  normalSpeedGraph:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 11
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 17
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hardSpeedGraph:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -2833,8 +2859,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 14
+      time: 2800
+      value: 20
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2844,7 +2870,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  startingMultiplier: 10
   DynamicSpeedModifier: 0
 --- !u!1 &1054653655
 GameObject:
@@ -2884,7 +2909,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1093805503
 GameObject:
@@ -3052,7 +3077,7 @@ Transform:
   - {fileID: 1881292003}
   - {fileID: 1427935798}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1186997904
 GameObject:
@@ -3588,7 +3613,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4339651819907506, guid: efb373f4727ac2546aaa4b5958cf3ade, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb373f4727ac2546aaa4b5958cf3ade, type: 2}
@@ -3689,7 +3714,7 @@ Transform:
   m_LocalScale: {x: 1.1736506, y: 1.1736505, z: 1.1736505}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1546901800
 GameObject:
@@ -4084,7 +4109,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4209924876598556, guid: 1731c6aa2640caf4b86b165e4f4b06cb, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1731c6aa2640caf4b86b165e4f4b06cb, type: 2}
@@ -4686,7 +4711,7 @@ RectTransform:
   m_LocalScale: {x: 0.16765045, y: 0.16765045, z: 0.16765045}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4757,6 +4782,252 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1844240799}
+--- !u!1 &1860149581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1860149583}
+  - component: {fileID: 1860149582}
+  m_Layer: 0
+  m_Name: HardLvlManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1860149582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1860149581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db25a9abcd1f4414cadd57a3ce173830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 924932966}
+  gameManager: {fileID: 1042183309}
+  startPrefab: {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47,
+    type: 2}
+  straightPrefabs:
+  - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
+  powerupsPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
+  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  coinPrefabs: []
+  overheadObstaclePrefabs:
+  - {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388, type: 2}
+  coinCopperPrefabs:
+  - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
+  coinSilverPrefabs:
+  - {fileID: 1464802851982736, guid: 34ae12d969e69264e9fe85b5d2672e7c, type: 2}
+  coinGoldPrefabs:
+  - {fileID: 1874862385252794, guid: dd6440393b30c65438ddfcb71fa73f14, type: 2}
+  coinPlatinumPrefabs:
+  - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
+  coinRubyPrefabs:
+  - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
+  startPosition: {x: 0, y: 0, z: 0}
+  gameMode: 1
+  maxGeneratedTile: 10
+  pooledObstacles: 20
+  pooledCoins: 40
+  startTiles: 2
+  tileSpawnRates:
+    baseTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 80
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 20
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    obstacleTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 250
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 400
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    coinsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 120
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 40
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    powerupsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2800
+        value: 20
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  tileScale: 8
+  baseObstacleRatio: 100
+  minimumObstacleLane: 3
+  minTilesBeforeOverhead: 8
+  obstacleTolerance: 4
+  maxCoinSpawnPerTile: 6
+  minCoins: 1
+  maxCoins: 24
+  minimumCoinLane: 1
+  minTilesBeforeNextPowerUps: 8
+  showGizmos: 1
+  CoinLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ObstacleLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2800
+      value: 5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spawnedObjects: []
+  silverDistance: 0
+  goldDistance: 0
+  platinumDistance: 0
+  EasyTrigger: 0
+  HardTrigger: 1
+  CleverTrigger: 0
+  positiveEmotions: 00000000
+  negativeEmotions: 04000000
+  emotionManager: {fileID: 1054653656}
+  dynamicSpeedModifier: 1
+  emotionUpdateInterval: 0.5
+--- !u!4 &1860149583
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1860149581}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.68170124, y: 2.4119272, z: 5.4016676}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1881292002
 GameObject:
   m_ObjectHideFlags: 0

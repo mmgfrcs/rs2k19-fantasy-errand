@@ -11,6 +11,10 @@ TagManager:
   - CoinPath
   - PowerUpsPath
   - Overhead
+  - Wall
+  - Spike
+  - Hurdling
+  - Boulder
   layers:
   - Default
   - TransparentFX

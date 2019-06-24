@@ -28,10 +28,6 @@ namespace FantasyErrand
             {
                 Instance = this;
             }
-            else if (Instance != this)
-            {
-                Destroy(gameObject);
-            }
             DontDestroyOnLoad(gameObject);
         }
 

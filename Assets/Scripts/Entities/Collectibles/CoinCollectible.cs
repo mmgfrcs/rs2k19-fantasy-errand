@@ -6,7 +6,7 @@ namespace FantasyErrand
 
     public enum CoinType
     {
-        None, Copper=3, Silver, Gold, Platinum, Ruby
+        None, Copper=2, Silver, Gold, Platinum, Ruby
     };
 
     public class CoinCollectible : MonoBehaviour, ICollectible

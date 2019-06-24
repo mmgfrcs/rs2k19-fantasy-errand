@@ -19,11 +19,17 @@ namespace FantasyErrand
         GameUIManager UIManager;
         [SerializeField]
         float startSpeed;
-        [SerializeField]
-        AnimationCurve speedGraph;
+
         [SerializeField]
         int startingMultiplier = 10;
 
+        AnimationCurve speedGraph;
+        [SerializeField]
+        AnimationCurve easySpeedGraph;
+        [SerializeField]
+        AnimationCurve normalSpeedGraph;
+        [SerializeField]
+        AnimationCurve hardSpeedGraph;
         public float Score { get; private set; }
         public float Distance { get; private set; }
         public float Currency { get; private set; }
@@ -52,6 +58,14 @@ namespace FantasyErrand
 
         public void Start()
         {
+            if (MainMenuManager.difficultyLevel.Equals("easy"))
+                speedGraph = easySpeedGraph;
+            else if (MainMenuManager.difficultyLevel.Equals("normal"))
+                speedGraph = normalSpeedGraph;
+            else if (MainMenuManager.difficultyLevel.Equals("hard"))
+                speedGraph = hardSpeedGraph;
+
+
             //Setup game
             FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
@@ -148,6 +162,7 @@ namespace FantasyErrand
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
                 if (IsGameRunning) player.speed = multiplierSpeed * (speedGraph.Evaluate(Distance)+DynamicSpeedModifier);
+                print("Player Speed=" + player.speed);
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");

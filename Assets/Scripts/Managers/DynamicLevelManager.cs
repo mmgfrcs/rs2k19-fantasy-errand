@@ -480,9 +480,7 @@ namespace FantasyErrand
             {
                 if (emotionManager.FaceStatus.Equals("Tracking"))
                 {
-                    print("Bagian ini Jalan");
                     return emotionManager.EmotionsList[0][emo];
-
                 }
                 else
                     return 0;

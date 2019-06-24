@@ -420,7 +420,7 @@ namespace FantasyErrand.Entities
                 boostStarted = true;
                 float duration = boostDuration;
                 float timeStamp = Time.time;
-                speedBroadcast?.Invoke(5);
+                speedBroadcast?.Invoke(2);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {

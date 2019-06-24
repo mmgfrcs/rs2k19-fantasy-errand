@@ -44,8 +44,12 @@ namespace FantasyErrand.WebSockets
 
         private void Start()
         {
-            InitiateWebsocket();
-            GameManager.OnGameEnd += GameManager_OnGameEnd;
+            if (GameDataManager.instance.ResearchMode)
+            {
+
+                InitiateWebsocket();
+                GameManager.OnGameEnd += GameManager_OnGameEnd;
+            }
         }
 
         private void GameManager_OnGameEnd(GameEndEventArgs args)

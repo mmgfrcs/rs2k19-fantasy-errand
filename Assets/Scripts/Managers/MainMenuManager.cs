@@ -26,7 +26,7 @@ namespace FantasyErrand
 
         [Header("Option Fields")]
         public TMP_InputField[] serverAddress;
-        public Toggle researchToggle, basicGatherToggle, expressionToggle,swipeToggle;
+        public Toggle researchToggle, basicGatherToggle, expressionToggle, swipeToggle, dynamicToggle;
         public TMP_InputField nameField, ageField;
         public Image neutralImage, happyImage;
         public Button backButton;
@@ -42,7 +42,7 @@ namespace FantasyErrand
         int errors = 0;
 
         public static bool isSwipeModeOn=true;
-        public static String difficultyLevel="easy";
+        public static string difficultyLevel="hard";
         public void OnPlay()
         {
             changer.ChangeScene("SampleScene");
@@ -58,25 +58,27 @@ namespace FantasyErrand
             SoundManager.Instance.PlaySound("Back");
         }
 
+        void ChangeScene()
+        {
+            if (dynamicToggle.isOn) changer.ChangeScene("DynamicTesting");
+            else changer.ChangeScene("StaticTesting");
+        }
+
         public void OnPlayEasy()
         {
-            changer.ChangeScene("StaticTesting");
-            
             difficultyLevel = "easy";
+            ChangeScene();
+            
         }
         public void OnPlayNormal()
         {
-            changer.ChangeScene("StaticTesting");
             difficultyLevel = "normal";
+            ChangeScene();
         }
         public void OnPlayHard()
         {
-            changer.ChangeScene("StaticTesting");
             difficultyLevel = "hard";
-        }
-        public void OnPlayDynamic()
-        {
-            changer.ChangeScene("DynamicTesting");
+            ChangeScene();
         }
 
         public void OnUpgrades()

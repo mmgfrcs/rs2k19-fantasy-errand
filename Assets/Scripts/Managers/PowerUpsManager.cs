@@ -141,7 +141,7 @@ namespace FantasyErrand
         public void StartBoostPowerUps()
         {
             boostPhase = true;
-            player.StartBoostPowerUps(boostDuration,boostPhaseDuration);
+            player.StartBoostPowerUps(boostDuration, boostPhaseDuration);
             
         }
 
@@ -170,6 +170,7 @@ namespace FantasyErrand
         {
             int boostLvl = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
             boostDuration = GameDataManager.instance.UpgradeEffects.BoostDuration[boostLvl];
+            
         }
         public void SetGoldenCoinEffect()
         {

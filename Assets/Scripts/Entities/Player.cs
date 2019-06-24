@@ -88,15 +88,11 @@ namespace FantasyErrand.Entities
         private bool magnetActivated = false;
         int lane = 0;
 
-       
-
-
         //Swipe Attribute
         public swipeDirection Direction { set; get; }
         private Vector3 touchPosition;
         private float swipeResistanceX = 50.0f;
         private float swipeResistanceY = 50.0f;
-
 
         //Swipe Attribute
         private Vector2 fingerDownPosition;
@@ -105,10 +101,6 @@ namespace FantasyErrand.Entities
 
         [SerializeField]
         private float SwipeMinimumTreshold = 200f;
-
-
-        
-
 
         // Use this for initialization
         void Start()
@@ -290,7 +282,14 @@ namespace FantasyErrand.Entities
                 canSlide = true;
                 canJump = true;
             }
-            else OnCollision?.Invoke(collision);
+            else
+            {
+                var rb = GetComponent<Rigidbody>();
+                rb.velocity = Vector3.zero;
+                rb.useGravity = false;
+                rb.angularVelocity = Vector3.zero;
+                OnCollision?.Invoke(collision);
+            }
         }
 
         private void OnDrawGizmos()
@@ -355,9 +354,9 @@ namespace FantasyErrand.Entities
                 phaseStarted = true;
                 float duration = phaseDuration;
                 float timeStamp = Time.time;
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                     phaseTime = Time.time - timeStamp;
                     if (resetPhase)
                     {
@@ -418,13 +417,14 @@ namespace FantasyErrand.Entities
             {
                 SoundManager.Instance.PlaySound("Boost");
                 boostStarted = true;
-                float duration = boostDuration;
-                float timeStamp = Time.time;
                 speedBroadcast?.Invoke(2);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                while (Time.time < timeStamp + duration)
+                yield return new WaitForSeconds(1);
+                float timeStamp = Time.time;
+                while (Time.time < timeStamp + boostDuration)
                 {
                     //SoundManager.Instance.PlaySound("Boost");
+                    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                     boostTime = Time.time - timeStamp;
                     if (resetBoost)
                     {
@@ -440,8 +440,9 @@ namespace FantasyErrand.Entities
                 }
                 boostStarted = false;
                 speedBroadcast?.Invoke(1);
+                yield return new WaitForSeconds(boostPhaseDuration + 1);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
-                StartCoroutine(PhasePower(boostPhaseDuration));
+                //StartCoroutine(PhasePower(boostPhaseDuration));
             }
             else
             {

@@ -326,7 +326,7 @@ namespace FantasyErrand
 
         public void GenerateObstacles(Vector3 pos, int amount)
         {
-            int rand = Random.Range((int)ObstacleType.Spike, (int)ObstacleType.Wall);
+            int rand = Random.Range((int)ObstacleType.Spike, (int)ObstacleType.Wall + 1);
             if (amount == 1)
             {
                 GameObject go = poolers[rand].Instantiate(pos);

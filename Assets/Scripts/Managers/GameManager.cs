@@ -13,23 +13,15 @@ namespace FantasyErrand
 
     public class GameManager : MonoBehaviour
     {
-        [SerializeField]
-        Player player;
-        [SerializeField]
-        GameUIManager UIManager;
-        [SerializeField]
-        float startSpeed;
-
-        [SerializeField]
-        int startingMultiplier = 10;
+        [SerializeField] Player player;
+        [SerializeField]  GameUIManager UIManager;
+        [SerializeField] float startSpeed;
+        [SerializeField] int startingMultiplier = 10;
 
         AnimationCurve speedGraph;
-        [SerializeField]
-        AnimationCurve easySpeedGraph;
-        [SerializeField]
-        AnimationCurve normalSpeedGraph;
-        [SerializeField]
-        AnimationCurve hardSpeedGraph;
+        [SerializeField] AnimationCurve easySpeedGraph;
+        [SerializeField] AnimationCurve normalSpeedGraph;
+        [SerializeField] AnimationCurve hardSpeedGraph;
         public float Score { get; private set; }
         public float Distance { get; private set; }
         public float Currency { get; private set; }
@@ -50,11 +42,7 @@ namespace FantasyErrand
 
         private Vector3 playerCurrPos;
 
-        [HideInInspector]
-        public float DynamicSpeedModifier=0;
-
-
-
+        internal float DynamicSpeedModifier=0;
 
         public void Start()
         {
@@ -64,7 +52,6 @@ namespace FantasyErrand
                 speedGraph = normalSpeedGraph;
             else if (MainMenuManager.difficultyLevel.Equals("hard"))
                 speedGraph = hardSpeedGraph;
-
 
             //Setup game
             FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
@@ -162,15 +149,21 @@ namespace FantasyErrand
                 Score += player.speed * Time.deltaTime * Multiplier;
                 Distance += player.speed * Time.deltaTime;
                 if (IsGameRunning) player.speed = multiplierSpeed * (speedGraph.Evaluate(Distance)+DynamicSpeedModifier);
-                print("Player Speed=" + player.speed);
             }
             
             if(scoreText != null) scoreText.text = Score.ToString("n0");
         }
 
+        public IEnumerator Boost(float multiplier)
+        {
+            var tween = DOTween.To(() => multiplierSpeed, x => multiplierSpeed = x, multiplier, 1f);
+            yield return tween.WaitForCompletion();
+        }
+
         public void SetPlayerSpeed(float multiplier)
         {
-                multiplierSpeed= multiplier;
+            StartCoroutine(Boost(multiplier));
+            //multiplierSpeed= multiplier;
         }
 
         public float GetCurrSpeed()

@@ -21,7 +21,6 @@ namespace FantasyErrand.WebSockets
 {
     public class ResearchDataManager : MonoBehaviour
     {
-        public RawImage img;
         [Header("Options"), SerializeField]
         private string opcode = "684F2BA5B03585274A874D21BB6B16B802227A081577946A82E14EED9A4468DB";
         public bool dataTransmission = true;
@@ -54,7 +53,6 @@ namespace FantasyErrand.WebSockets
             if (args.IsEnded)
             {
                 enabled = false;
-
             }
         }
 

@@ -7,7 +7,7 @@ using UnityEditor.Callbacks;
 [InitializeOnLoad]
 public class BuildVersionIncrement {
     [PostProcessBuild(0)]
-    public static void OnPostProcessBuild()
+    public static void OnPostProcessBuild(BuildTarget target, string e)
     {
         IncrementVersion();
     }

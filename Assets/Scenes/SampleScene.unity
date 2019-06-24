@@ -2396,6 +2396,7 @@ MonoBehaviour:
   dataTransmission: 1
   retryAttempts: 3
   emotionManager: {fileID: 1152662696}
+  gameManager: {fileID: 0}
   detector: {fileID: 1152662697}
 --- !u!4 &1152662694
 Transform:
@@ -2433,7 +2434,8 @@ MonoBehaviour:
   - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   coinPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
-  overheadObstaclePrefabs: []
+  overheadObstaclePrefabs:
+  - {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388, type: 2}
   coinCopperPrefabs:
   - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
   coinSilverPrefabs:

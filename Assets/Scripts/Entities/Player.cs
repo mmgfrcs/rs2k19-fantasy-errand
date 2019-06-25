@@ -286,7 +286,6 @@ namespace FantasyErrand.Entities
             {
                 var rb = GetComponent<Rigidbody>();
                 rb.velocity = Vector3.zero;
-                rb.useGravity = false;
                 rb.angularVelocity = Vector3.zero;
                 OnCollision?.Invoke(collision);
             }

@@ -30,7 +30,7 @@ namespace FantasyErrand
         public bool IsRollingStart { get; private set; }
 
         private float multiplierSpeed=1;
-
+        private Rigidbody rb;
 
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event BaseGameEventDelegate OnGameStart;
@@ -40,7 +40,7 @@ namespace FantasyErrand
         UnityEngine.UI.Image fader;
         float startTime;
 
-        private Vector3 playerCurrPos;
+
 
         internal float DynamicSpeedModifier=0;
 
@@ -54,6 +54,7 @@ namespace FantasyErrand
                 speedGraph = hardSpeedGraph;
 
             //Setup game
+            rb = player.GetComponent<Rigidbody>();
             FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
             FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
@@ -85,11 +86,10 @@ namespace FantasyErrand
         {
             if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
-                playerCurrPos = player.transform.position;
+                rb.constraints = RigidbodyConstraints.FreezeAll;
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
-                player.transform.position = playerCurrPos;
                 player.enabled = false;
                 IsGameRunning = false;
                 StartCoroutine(EndGame());
@@ -178,11 +178,12 @@ namespace FantasyErrand
 
         public void RetryGame()
         {
-            player.transform.position = playerCurrPos;
             player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
             OnGameStart?.Invoke();
             player.enabled = true;
+            rb.constraints = RigidbodyConstraints.None;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             IsGameRunning = true;
         }
 

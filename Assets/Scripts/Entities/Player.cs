@@ -561,7 +561,6 @@ namespace FantasyErrand.Entities
             resetAllPowerUps = true;
             yield return new WaitForSeconds(2f);
             resetAllPowerUps = false;
-        
         }
 
         void StartResetingPowerUps(GameEndEventArgs abc)

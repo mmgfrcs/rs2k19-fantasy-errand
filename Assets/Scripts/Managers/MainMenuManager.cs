@@ -3,7 +3,6 @@ using DG.Tweening;
 using FantasyErrand.WebSockets.Models;
 using FantasyErrand.WebSockets.Utilities;
 using FantomLib;
-using Firebase.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -203,7 +202,6 @@ namespace FantasyErrand
         {
             if(isPanelOpen)
             {
-                FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
                 GameDataManager.instance.SaveParticipantData(nameField.text, ageField.text == "" ? 0 : int.Parse(ageField.text), neutral, happy, nData, hData);
                 GameDataManager.instance.SaveBasicOptions(researchToggle.isOn, basicGatherToggle.isOn, 
                     expressionToggle.isOn, $"192.168.{serverAddress[0].text}.{serverAddress[1].text}");
@@ -214,7 +212,6 @@ namespace FantasyErrand
             }
             else
             {
-                FirebaseAnalytics.SetCurrentScreen("Options", "System");
                 optionsPanel.blocksRaycasts = true;
                 optionsPanel.DOFade(1f, 1f);
                 nameField.text = GameDataManager.instance.PlayerName;
@@ -286,7 +283,6 @@ namespace FantasyErrand
         // Use this for initialization
         void Start()
         {
-            FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
             optionsPanel.alpha = 0;
             optionsPanel.blocksRaycasts = false;
             fader.DOFade(0f, 2f).onComplete = () => {

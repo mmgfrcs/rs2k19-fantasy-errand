@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using FantasyErrand.Entities;
-using Firebase.Analytics;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -55,8 +54,6 @@ namespace FantasyErrand
 
             //Setup game
             rb = player.GetComponent<Rigidbody>();
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
-            FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
 
             Player.coinAdded += AddCurrency;
             Player.speedBroadcast += SetPlayerSpeed;
@@ -193,12 +190,7 @@ namespace FantasyErrand
         public void EndGameTruly()
         {
             OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = true, Score = Score, Distance = Distance, Currency = Currency, Multiplier = Multiplier });
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelEnd,
-                new Parameter("level", "Easy"),
-                new Parameter("score", Score),
-                new Parameter("coins", Currency),
-                new Parameter("distance", Distance),
-                new Parameter("multiplier", Multiplier));
+
         }
 
     }

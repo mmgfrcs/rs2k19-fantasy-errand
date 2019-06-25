@@ -41,7 +41,7 @@ namespace FantasyErrand
         int errors = 0;
 
         public static bool isSwipeModeOn=true;
-        public static string difficultyLevel="hard";
+        public static string difficultyLevel="easy";
         public void OnPlay()
         {
             changer.ChangeScene("SampleScene");

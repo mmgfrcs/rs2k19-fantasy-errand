@@ -547,11 +547,11 @@ namespace FantasyErrand
         public int PickTile()
         {
             int i = MathRand.WeightedPick(new float[] {
-            tileSpawnRates.baseTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.coinsTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)
-        });
+                tileSpawnRates.baseTile.Evaluate(player.transform.position.z),
+                tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z),
+                tileSpawnRates.coinsTile.Evaluate(player.transform.position.z),
+                tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)
+            });
             return i;
         }
 

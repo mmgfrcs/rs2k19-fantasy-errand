@@ -14,6 +14,7 @@ namespace FantasyErrand
     {
         [SerializeField] Player player;
         [SerializeField]  GameUIManager UIManager;
+        [SerializeField] TestingLevelManager easyLevelManager, hardLevelManager, specialLevelManager;
         [SerializeField] float startSpeed;
         [SerializeField] int startingMultiplier = 10;
 
@@ -35,10 +36,10 @@ namespace FantasyErrand
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
         
-        TextMeshProUGUI scoreText;
+        TextMeshProUGUI scoreText, debugText;
         UnityEngine.UI.Image fader;
         float startTime;
-
+        TestingLevelManager levelManager;
 
 
         internal float DynamicSpeedModifier=0;
@@ -52,6 +53,10 @@ namespace FantasyErrand
             else if (MainMenuManager.difficultyLevel.Equals("hard"))
                 speedGraph = hardSpeedGraph;
 
+            if (MainMenuManager.difficultyLevel == "easy") levelManager = easyLevelManager;
+            else if (MainMenuManager.difficultyLevel == "normal") levelManager = specialLevelManager;
+            else if (MainMenuManager.difficultyLevel == "hard") levelManager = hardLevelManager;
+
             //Setup game
             rb = player.GetComponent<Rigidbody>();
 
@@ -60,6 +65,7 @@ namespace FantasyErrand
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
+            debugText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.DebugText);
             StartGame();
         }
 
@@ -141,6 +147,8 @@ namespace FantasyErrand
 
         public void Update()
         {
+            debugText.text = $"{GameDataManager.instance.PlayerName}\nTravelling {Distance.ToString("n0")}m at {GetCurrSpeed().ToString("n2")} m/s, {Currency.ToString("n0")} coins\nIgnore Obstacle: {Physics.GetIgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"))}\nRates: T {levelManager.tileSpawnRates.baseTile.Evaluate(player.transform.position.z).ToString("n2")}, O {levelManager.tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z).ToString("n2")}, C {levelManager.tileSpawnRates.coinsTile.Evaluate(player.transform.position.z).ToString("n2")}, P {levelManager.tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z).ToString("n2")}";
+
             if (IsRollingStart || IsGameRunning)
             {
                 Score += player.speed * Time.deltaTime * Multiplier;
@@ -171,6 +179,7 @@ namespace FantasyErrand
         public void AddCurrency(float value)
         {
             Currency += value;
+            Score += value * Multiplier;
         }
 
         public void RetryGame()

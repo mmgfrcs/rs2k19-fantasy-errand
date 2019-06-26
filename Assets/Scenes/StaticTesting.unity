@@ -730,7 +730,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &177694667
 GameObject:
@@ -860,6 +860,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  potionPhasePrefabs:
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  potionBoostPrefabs:
+  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  potionGoldPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
+  potionMagnetPrefabs:
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   spikePrefabs:
   - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
   boulderPrefabs:
@@ -880,7 +888,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 220
+        value: 300
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -889,7 +897,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 150
+        value: 260
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -913,7 +921,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 250
+        value: 280
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -928,16 +936,16 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 100
-        inSlope: -0.050138693
-        outSlope: -0.050138693
+        value: 120
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0.1051
       - serializedVersion: 3
         time: 2800
-        value: 55
+        value: 250
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -977,17 +985,17 @@ MonoBehaviour:
   minTilesBeforeOverhead: 8
   obstacleTolerance: 4
   maxCoinSpawnPerTile: 6
-  minCoins: 1
-  maxCoins: 8
-  minimumCoinLane: 1
-  minTilesBeforeNextPowerUps: 60
+  minCoins: 2
+  maxCoins: 24
+  minimumCoinLane: 3
+  minTilesBeforeNextPowerUps: 40
   showGizmos: 1
   CoinLane:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 4
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1623,7 +1631,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4965492369712486, guid: 7dd54ec96c6b5ea40a806b6ddbe41a1d, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114453284577038290, guid: 7dd54ec96c6b5ea40a806b6ddbe41a1d,
         type: 2}
@@ -1849,7 +1857,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4229090156390218, guid: e52abb8369fad8f44833bb922acc13b6, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e52abb8369fad8f44833bb922acc13b6, type: 2}
@@ -2195,7 +2203,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4532317030640664, guid: b183be521f9073b4994afb0815813e0e, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114552378838645334, guid: b183be521f9073b4994afb0815813e0e,
         type: 2}
@@ -3084,52 +3092,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &699089851
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 75.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4882488435736080, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &810867390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3635,7 +3597,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4295452466538956, guid: 67088997e6207c744af1cb100b78435f, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
@@ -3670,7 +3632,7 @@ Prefab:
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
       propertyPath: easySpeedGraph.m_Curve.Array.data[0].value
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
@@ -3680,12 +3642,12 @@ Prefab:
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
       propertyPath: easySpeedGraph.m_Curve.Array.data[1].value
-      value: 14
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
       propertyPath: hardSpeedGraph.m_Curve.Array.data[0].value
-      value: 14
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
@@ -3695,12 +3657,12 @@ Prefab:
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
       propertyPath: hardSpeedGraph.m_Curve.Array.data[1].value
-      value: 20
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
       propertyPath: normalSpeedGraph.m_Curve.Array.data[0].value
-      value: 11
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
@@ -3710,7 +3672,7 @@ Prefab:
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
       propertyPath: normalSpeedGraph.m_Curve.Array.data[1].value
-      value: 17
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114015256606179808, guid: 67088997e6207c744af1cb100b78435f,
         type: 2}
@@ -3950,7 +3912,7 @@ RectTransform:
   - {fileID: 23006246}
   - {fileID: 398132885}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4443,6 +4405,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  potionPhasePrefabs:
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  potionBoostPrefabs:
+  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  potionGoldPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
+  potionMagnetPrefabs:
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   spikePrefabs:
   - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
   boulderPrefabs:
@@ -4563,7 +4533,7 @@ MonoBehaviour:
   minCoins: 4
   maxCoins: 24
   minimumCoinLane: 1
-  minTilesBeforeNextPowerUps: 20
+  minTilesBeforeNextPowerUps: 40
   showGizmos: 1
   CoinLane:
     serializedVersion: 2
@@ -5432,7 +5402,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1338476258
 GameObject:
@@ -6123,9 +6093,9 @@ MonoBehaviour:
   straightPrefabs:
   - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
   powerupsPrefabs:
-  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
   - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
-  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
   coinPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
@@ -6143,6 +6113,14 @@ MonoBehaviour:
   - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
   coinRubyPrefabs:
   - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  potionPhasePrefabs:
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  potionBoostPrefabs:
+  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  potionGoldPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
+  potionMagnetPrefabs:
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
   spikePrefabs:
   - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
   boulderPrefabs:
@@ -6163,7 +6141,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 80
+        value: 400
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6172,7 +6150,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 20
+        value: 280
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6187,7 +6165,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 250
+        value: 175
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6196,7 +6174,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 400
+        value: 325
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6220,7 +6198,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 40
+        value: 280
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6235,7 +6213,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 100
+        value: 140
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6244,7 +6222,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 20
+        value: 60
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6263,7 +6241,7 @@ MonoBehaviour:
   minCoins: 4
   maxCoins: 24
   minimumCoinLane: 1
-  minTilesBeforeNextPowerUps: 20
+  minTilesBeforeNextPowerUps: 40
   showGizmos: 1
   CoinLane:
     serializedVersion: 2
@@ -6370,6 +6348,252 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1743948656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1743948658}
+  - component: {fileID: 1743948657}
+  m_Layer: 0
+  m_Name: NewLevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1743948657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1743948656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac110664cb804e43ae0ea80916e6246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 924932966}
+  gameManager: {fileID: 234222591}
+  startPrefab: {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47,
+    type: 2}
+  straightPrefabs:
+  - {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47, type: 2}
+  powerupsPrefabs: []
+  coinPrefabs:
+  - {fileID: 0}
+  overheadObstaclePrefabs:
+  - {fileID: 1642640490690048, guid: fcbf06b45f45918488e4c174b1d62388, type: 2}
+  coinCopperPrefabs:
+  - {fileID: 1702790285588938, guid: 6966095c3b9b7d34c84621b01e7253cf, type: 2}
+  coinSilverPrefabs:
+  - {fileID: 1464802851982736, guid: 34ae12d969e69264e9fe85b5d2672e7c, type: 2}
+  coinGoldPrefabs:
+  - {fileID: 1874862385252794, guid: dd6440393b30c65438ddfcb71fa73f14, type: 2}
+  coinPlatinumPrefabs:
+  - {fileID: 1831548074288622, guid: 216f3d05e3bc1fd43bf2ab30a902fe60, type: 2}
+  coinRubyPrefabs:
+  - {fileID: 1515438935018324, guid: 3a11cf597e544e74a8830b4c5513ff1d, type: 2}
+  spikePrefabs:
+  - {fileID: 1359486644689202, guid: eec3610a982804f4991056fcc0e6787e, type: 2}
+  boulderPrefabs:
+  - {fileID: 1182809303955062, guid: c0bd6c9d4ebe8424a8e7a35ea1111e94, type: 2}
+  hurdlingPrefabs:
+  - {fileID: 1730990234155740, guid: c956703c3a8a4654cadd8193e7c3169b, type: 2}
+  wallPrefabs:
+  - {fileID: 1100299766468056, guid: 85fefd40daab85c4b950370e41c5d4ac, type: 2}
+  potionPhasePrefabs:
+  - {fileID: 1834847674028780, guid: a2d02a2f458772d46a9ee6ce7da4760f, type: 2}
+  potionBoostPrefabs:
+  - {fileID: 1677257998093412, guid: 63d94247789eaf241a294fb69091e2c6, type: 2}
+  potionGoldPrefabs:
+  - {fileID: 1030775285827848, guid: 19ebee4fe0ffed54d877a4b4bb16ca8a, type: 2}
+  potionMagnetPrefabs:
+  - {fileID: 1857698196740586, guid: 83816b693bcf4464aa879de6dda5f6d6, type: 2}
+  startPosition: {x: 0, y: 0, z: 0}
+  gameMode: 1
+  maxGeneratedTile: 10
+  pooledObstacles: 20
+  pooledCoins: 40
+  startTiles: 2
+  tileSpawnRates:
+    baseTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    obstacleTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    coinsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    powerupsTile:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 100
+        value: 100
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  tileScale: 8
+  baseObstacleRatio: 100
+  minimumObstacleLane: 1
+  minTilesBeforeOverhead: 8
+  obstacleTolerance: 4
+  maxCoinSpawnPerTile: 6
+  minCoins: 1
+  maxCoins: 24
+  minimumCoinLane: 1
+  minTilesBeforeNextPowerUps: 45
+  showGizmos: 1
+  CoinLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ObstacleLane:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spawnedObjects: []
+  silverDistance: 0
+  goldDistance: 0
+  platinumDistance: 0
+  EasyTrigger: 1
+  HardTrigger: 0
+  CleverTrigger: 0
+--- !u!4 &1743948658
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1743948656}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.1334, y: 0.78045654, z: -1.9761596}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1752244594
 GameObject:
   m_ObjectHideFlags: 0

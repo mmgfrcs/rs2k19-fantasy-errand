@@ -27,6 +27,14 @@ namespace FantasyErrand.Entities
 
         }
 
+        public tileKey TileType
+        {
+            get
+            {
+                return tileKey.CoinRuby;
+            }
+        }
+
         public static event startBoost TurnGoldenCoin;
 
         public void CollectibleEffect()

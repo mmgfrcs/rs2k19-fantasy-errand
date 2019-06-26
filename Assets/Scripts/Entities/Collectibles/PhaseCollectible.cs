@@ -23,6 +23,14 @@ namespace FantasyErrand.Entities
             }
         }
 
+        public tileKey TileType
+        {
+            get
+            {
+                return tileKey.PotionPhase;
+            }
+        }
+
         public void CollectibleEffect()
         {
             TurnPhasing?.Invoke();

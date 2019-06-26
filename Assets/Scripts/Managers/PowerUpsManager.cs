@@ -12,7 +12,7 @@ namespace FantasyErrand
         Boost,
         GoldenCoin
     };
-    public delegate void MagnetBroadcast(bool mangetActive, int magnetRange, int magnetSpeed);
+    public delegate void MagnetBroadcast(bool activated);
     
     
     public class PowerUpsManager : MonoBehaviour
@@ -72,7 +72,8 @@ namespace FantasyErrand
             SetGoldenCoinEffect();
             GoldenCoinCollectible.TurnGoldenCoin += StartGoldenCoinPowerUps;
 
-            GameManager.OnGameStart += StartTemporaryPhasePower;
+            Player.phaseBroadcast += StartTemporaryPhasePower;
+            
         }
 
         void Update()

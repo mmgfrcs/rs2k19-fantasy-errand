@@ -9,6 +9,7 @@ namespace FantasyErrand
 {
     public delegate void BaseGameEventDelegate();
     public delegate void GameEndDelegate(GameEndEventArgs args);
+    
 
     public class GameManager : MonoBehaviour
     {
@@ -112,7 +113,7 @@ namespace FantasyErrand
             player.IsControlActive = true;
             startTime = Time.time;
             OnGameStart?.Invoke();
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+           Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
         IEnumerator EndGame()

@@ -14,6 +14,8 @@ namespace FantasyErrand.Entities.Interfaces
     public interface ICollectible
     {
         CollectibleType Type { get; }
+
+        tileKey TileType { get; }
         int Value { get; }
         
         void CollectibleEffect();

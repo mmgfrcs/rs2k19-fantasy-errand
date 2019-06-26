@@ -1,4 +1,5 @@
-﻿using FantasyErrand.Entities.Interfaces;
+﻿using FantasyErrand;
+using FantasyErrand.Entities.Interfaces;
 using UnityEngine;
 
 // EXAMPLE CODE
@@ -9,6 +10,14 @@ public class Coins : MonoBehaviour, ICollectible {
     public CollectibleType Type { get { return CollectibleType.Monetary; } }
 
     public int Value { get { return coinValue; } }
+
+    public tileKey TileType
+    {
+        get
+        {
+            return tileKey.CoinGold;
+        }
+    }
 
     public void CollectibleEffect()
     {

@@ -9,13 +9,13 @@ using FantasyErrand.Utilities;
 
 namespace FantasyErrand
 {
+    //public enum ObstacleType
+    //{
+    //   Spike=8,Boulder,Hurdling,Wall     
+    //}
 
-    public enum tileType
-    {
-        coin,powerups,tile,obstacle
-    }
-
-    public class DynamicLvlManager : MonoBehaviour {
+    
+    public class NewLevelManager1 : MonoBehaviour {
 
         /// <summary>
         /// catatan(ini sesudah diganti, pas sebelum pooler[2]=coin, pooler 3 = powerups
@@ -39,8 +39,11 @@ namespace FantasyErrand
         public GameObject[] coinCopperPrefabs, coinSilverPrefabs,coinGoldPrefabs,coinPlatinumPrefabs,coinRubyPrefabs;
         public GameObject[] spikePrefabs,boulderPrefabs,hurdlingPrefabs,wallPrefabs;
         public GameObject[] potionPhasePrefabs, potionBoostPrefabs, potionGoldPrefabs, potionMagnetPrefabs;
+        private Dictionary<tileKey,ObjectPooler>poolDictionary = new Dictionary<tileKey, ObjectPooler>();
         public Vector3 startPosition;
-        private Dictionary<tileKey, ObjectPooler> poolDictionary = new Dictionary<tileKey, ObjectPooler>();
+
+
+
         [Header("Tile Generation")]
         public bool gameMode = true;
         public int maxGeneratedTile = 10, pooledObstacles = 20, pooledCoins = 40;
@@ -65,14 +68,14 @@ namespace FantasyErrand
         [Header("Debug")]
         public bool showGizmos = true;
 
-        
+
         [Header("Game Balancing")]
         public AnimationCurve CoinLane;
         public AnimationCurve ObstacleLane;
-        bool isGameEnd = false;
+
         
         //public UnityEngine.UI.Text text;
-
+        
         List<GameObject> startObjects = new List<GameObject>();
         [SerializeField]
         List<GameObject> spawnedObjects = new List<GameObject>();
@@ -102,35 +105,19 @@ namespace FantasyErrand
                 gameObject.SetActive(false);
 
         }
+
+
         void Start()
-        {
+        { 
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
-            StartCoroutine(SetRateByEmotion());
             SoundManager.Instance.playBackSound();
-            GameManager.OnGameEnd += CheckGameEnd;
-            GameManager.OnGameStart += CheckGameStart;
         }
 
         public bool EasyTrigger=false;
         public bool HardTrigger = false;
         public bool CleverTrigger = false;
         // Update is called once per frame
-
-        public Affdex.Emotions[] positiveEmotions;
-        public Affdex.Emotions[] negativeEmotions;
-        public EmotionManager emotionManager;
-
-
-
-        public float dynamicSpeedModifier=1;
-        private float coinMod=1;
-        private float coinAmountMod=1;
-        private float tileMOd=1;
-        private float powerUpsMod=1;
-        private float obstacleMod=1;
-        private float obstacleAmountMod=1;
-        public float emotionUpdateInterval = 0.5f;
         void Update()
         {
             for (int i = 0; i < startObjects.Count; i++)
@@ -143,15 +130,15 @@ namespace FantasyErrand
             }
             for (int i = 0; i < spawnedObjects.Count; i++)
             {
-                if (Vector3.Distance(player.transform.position, spawnedObjects[i].transform.position) > maxGeneratedTile * tileScale * 1.25 &&
-                    player.transform.position.z > spawnedObjects[i].transform.position.z)
+                if (Vector3.Distance(player.transform.position, spawnedObjects[i].transform.position) > maxGeneratedTile * tileScale * 1.25 && 
+                    player.transform.position.z>spawnedObjects[i].transform.position.z)
                 {
                     //Check tile type by GetComponent
                     if (spawnedObjects[i].GetComponent<IObstacle>() != null)
                     {
                         if (spawnedObjects[i].CompareTag("Overhead"))
                             poolDictionary[tileKey.Overhead].Destroy(spawnedObjects[i]);
-                        else if (spawnedObjects[i].CompareTag("Spike"))
+                        else if(spawnedObjects[i].CompareTag("Spike"))
                             poolDictionary[tileKey.Spike].Destroy(spawnedObjects[i]);
                         else if (spawnedObjects[i].CompareTag("Boulder"))
                             poolDictionary[tileKey.Boulder].Destroy(spawnedObjects[i]);
@@ -161,7 +148,7 @@ namespace FantasyErrand
                             poolDictionary[tileKey.Wall].Destroy(spawnedObjects[i]);
 
                     }
-
+                        
                     else
                     {
                         ICollectible collect = spawnedObjects[i].GetComponent<ICollectible>();
@@ -300,7 +287,7 @@ namespace FantasyErrand
                 opt = PickTile();
             } while (opt == 3 && currMinTilesBeforeNextPowerUps != 0);
 
-            if (opt == 3 && currMinTilesBeforeNextPowerUps == 0)
+            if (opt == 3 && currMinTilesBeforeNextPowerUps <= 0)
                 currMinTilesBeforeNextPowerUps = minTilesBeforeNextPowerUps;
 
             GenerateStraights(new Vector3(spawnPos.x, -0.5f, spawnPos.z));
@@ -336,8 +323,9 @@ namespace FantasyErrand
                     GeneratePowerUps(new Vector3(spawnPos.x, 0.5f, spawnPos.z), 1);
                 }
             }
-            if ((opt == 1 || opt == 2) && currMinTilesBeforeNextPowerUps != 0)
+            if ((opt!=3) && currMinTilesBeforeNextPowerUps != 0)
                 currMinTilesBeforeNextPowerUps--;
+            print("TIle Before next power ups=" + currMinTilesBeforeNextPowerUps);
         }
 
 
@@ -346,8 +334,6 @@ namespace FantasyErrand
         {
             spawnedObjects.Add(poolDictionary[tileKey.Straight].Instantiate(pos));
         }
-
-
 
 
 
@@ -378,12 +364,12 @@ namespace FantasyErrand
                     }
                     else if (CleverTrigger)
                     {
-                        int x = Random.Range((int)tileKey.Wall, (int)tileKey.Hurdling + 1);
-                        GameObject go = poolDictionary[(tileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
+                        int x = Random.Range((int)tileKey.Wall, (int)tileKey.Hurdling+1);
+                        GameObject go =poolDictionary[(tileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
                         spawnedObjects.Add(go);
                     }
                 }
-
+                
             }
         }
 
@@ -403,7 +389,7 @@ namespace FantasyErrand
                 startPosition += Vector3.forward * tileScale;
                 GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
             }
-
+                
         }
 
         public void GeneratePowerUps(Vector3 pos, int amount)
@@ -421,14 +407,14 @@ namespace FantasyErrand
                 for (int i = 0; i < amount; i++)
                 {
                     int x = Random.Range((int)tileKey.PotionPhase, (int)tileKey.PotionMagnet + 1);
-                    GameObject go = poolDictionary[(tileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
+                    GameObject go = poolDictionary[(tileKey)x].Instantiate(new Vector3(mypos[i],pos.y,pos.z));
                     spawnedObjects.Add(go);
 
                 }
 
             }
         }
-
+        
 
 
         public void SetCoinXPos()
@@ -484,8 +470,8 @@ namespace FantasyErrand
                 MathRand.Shuffle(ref mypos);
                 for (int i = 0; i < amount; i++)
                 {
-                    GenerateConstantCoins(new Vector3(mypos[i], pos.y, pos.z), n);
-
+                        GenerateConstantCoins(new Vector3(mypos[i], pos.y, pos.z), n);
+   
                 }
             }
         }
@@ -495,14 +481,14 @@ namespace FantasyErrand
         public int GetCoinLane()
         {
             float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(CoinLane.Evaluate(distance)*coinAmountMod);
+            int temp = (int)Mathf.Round(CoinLane.Evaluate(distance));
             return temp;
         }
 
         public int GetObstacleLane()
         {
             float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(ObstacleLane.Evaluate(distance)*obstacleAmountMod);
+            int temp = (int)Mathf.Round(ObstacleLane.Evaluate(distance));
             return temp;
         }
 
@@ -517,33 +503,6 @@ namespace FantasyErrand
             return i;
         }
 
-
-        public float GetTileRate(tileType tiles)
-        {
-            float i = 0;
-            if (tiles.Equals(tileType.coin))
-            {
-                i = tileSpawnRates.coinsTile.Evaluate(player.transform.position.z)*coinMod;
-                return i;
-            }
-
-            else if (tiles.Equals(tileType.obstacle))
-            {
-                i = tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z)*obstacleMod;
-                return i;
-            }
-
-            else if (tiles.Equals(tileType.powerups))
-            {
-                i = tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z);
-                return i;
-            }
-            else
-            {
-                i = tileSpawnRates.baseTile.Evaluate(player.transform.position.z);
-                return i;
-            }
-        }
 
         public void SetCoinProperty()
         {
@@ -633,130 +592,8 @@ namespace FantasyErrand
                 }
             }
         }
-        public float GetEmotion(Affdex.Emotions emo)
-        {
-            if (emotionManager.EmotionsList != null)
-            {
-                if (emotionManager.FaceStatus.Equals("Tracking"))
-                {
-                    return emotionManager.EmotionsList[0][emo];
-                }
-                else
-                    return 0;
-            }
-            else
-                return 0;
-        }
 
-        IEnumerator SetRateByEmotion()
-        {
-
-            while (true)
-            {
-                if (!isGameEnd)
-                {
-                    float totalPosEmotions = 0, totalNegEmotions = 0;
-
-                    for (int i = 0; i < positiveEmotions.Length; i++)
-                        totalPosEmotions += GetEmotion(positiveEmotions[i]);
-
-                    for (int i = 0; i < negativeEmotions.Length; i++)
-                        totalNegEmotions += GetEmotion(negativeEmotions[i]);
-
-                    totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
-                    totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
-
-                    if (EasyTrigger)
-                    {
-                        if (totalNegEmotions >= totalPosEmotions && totalNegEmotions != 0)
-                        {
-                            obstacleMod = 1 + totalNegEmotions;//misal 1
-                            obstacleAmountMod = obstacleMod;
-                            coinMod = 1 - (0.5f * totalNegEmotions);
-                            coinAmountMod = coinMod;
-                            dynamicSpeedModifier = 4 * (totalNegEmotions);
-                        }
-                        else if (totalPosEmotions > totalNegEmotions)
-                        {
-                            obstacleMod = obstacleMod - (totalPosEmotions);
-                            if (obstacleMod < 1) obstacleMod = 1;
-                            obstacleAmountMod = obstacleAmountMod - (totalPosEmotions);
-                            if (obstacleAmountMod < 1) obstacleAmountMod = 1;
-                            coinMod = coinMod + totalPosEmotions;
-                            if (coinMod > 1) coinMod = 1;
-                            coinAmountMod = coinAmountMod + totalPosEmotions;
-                            if (coinAmountMod > 1) coinAmountMod = 1;
-                            dynamicSpeedModifier = dynamicSpeedModifier - totalPosEmotions;
-                            if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
-                        }
-                    }
-                    else if (HardTrigger)
-                    {
-                        if (totalNegEmotions >= totalPosEmotions)
-                        {
-                            obstacleMod = 1 - (0.5f * totalNegEmotions);
-                            obstacleAmountMod = 1 - (0.5f * totalNegEmotions);
-                            coinMod = 1 + (0.5f * totalNegEmotions);
-                            coinAmountMod = coinMod;
-                            dynamicSpeedModifier = dynamicSpeedModifier - totalNegEmotions;
-                            if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
-                        }
-                        else if (totalPosEmotions > totalNegEmotions)
-                        {
-                            obstacleMod = obstacleMod + (totalPosEmotions);
-                            if (obstacleMod > 1) obstacleMod = 1;
-                            obstacleAmountMod = obstacleAmountMod + (totalPosEmotions);
-                            if (obstacleAmountMod > 1) obstacleAmountMod = 1;
-                            coinMod = coinMod - totalPosEmotions;
-                            if (coinMod < 1) coinMod = 1;
-                            coinAmountMod = coinAmountMod - totalPosEmotions;
-                            if (coinAmountMod < 1) coinAmountMod = 1;
-                            dynamicSpeedModifier = 4 * (totalPosEmotions);
-                        }
-                    }
-                    else if (CleverTrigger)
-                    {
-                        if (totalNegEmotions >= totalPosEmotions)
-                        {
-                            obstacleMod = 1 - (0.5f * totalNegEmotions);
-                            obstacleAmountMod = 1 - (0.5f * totalNegEmotions);
-                            coinMod = 1 + (0.5f * totalNegEmotions);
-                            coinAmountMod = coinMod;
-                            dynamicSpeedModifier = dynamicSpeedModifier - totalNegEmotions;
-                            if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
-
-                        }
-                        else if (totalPosEmotions > totalNegEmotions)
-                        {
-                            obstacleMod = obstacleMod + totalPosEmotions;
-                            if (obstacleMod > 2) obstacleMod = 2;
-                            obstacleAmountMod = obstacleAmountMod + totalPosEmotions;
-                            if (obstacleAmountMod > 2) obstacleAmountMod = 2;
-                            coinMod = coinMod - totalPosEmotions;
-                            if (coinMod < 1) coinMod = 1;
-                            coinAmountMod = coinAmountMod - totalPosEmotions;
-                            if (coinAmountMod < 1) coinAmountMod = 1;
-                            dynamicSpeedModifier = 4 * (totalPosEmotions);
-                        }
-                    }
-                    gameManager.DynamicSpeedModifier = dynamicSpeedModifier;
-                }
-                yield return new WaitForSeconds(emotionUpdateInterval);
-            }
-        }
-        public void CheckGameEnd(GameEndEventArgs args)
-        {
-            isGameEnd = true;
-        }
-
-        public void CheckGameStart()
-        {
-            isGameEnd = false;
-        }
     }
-
-    
-
 }
 
 

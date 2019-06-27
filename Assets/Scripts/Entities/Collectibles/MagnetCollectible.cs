@@ -25,11 +25,11 @@ namespace FantasyErrand
             }
         }
 
-        public tileKey TileType
+        public TileKey TileType
         {
             get
             {
-                return tileKey.PotionMagnet;
+                return TileKey.PotionMagnet;
             }
         }
 

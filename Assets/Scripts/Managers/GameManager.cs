@@ -14,8 +14,8 @@ namespace FantasyErrand
     public class GameManager : MonoBehaviour
     {
         [SerializeField] Player player;
-        [SerializeField]  GameUIManager UIManager;
-        [SerializeField] TestingLevelManager easyLevelManager, hardLevelManager, specialLevelManager;
+        [SerializeField] GameUIManager UIManager;
+        [SerializeField] LevelManagerBase easyLevelManager, hardLevelManager, specialLevelManager;
         [SerializeField] float startSpeed;
         [SerializeField] int startingMultiplier = 10;
 
@@ -40,7 +40,7 @@ namespace FantasyErrand
         TextMeshProUGUI scoreText, debugText;
         UnityEngine.UI.Image fader;
         float startTime;
-        TestingLevelManager levelManager;
+        LevelManagerBase levelManager;
 
 
         internal float DynamicSpeedModifier=0;

@@ -14,7 +14,7 @@ namespace FantasyErrand
 
         [SerializeField]
         public CoinType coinType;
-        public tileKey tileType;
+        public TileKey tileType;
         public int value;
         CollectibleType type;
         bool magnetActivated=false;
@@ -38,11 +38,11 @@ namespace FantasyErrand
             }
         }
 
-        public tileKey TileType
+        public TileKey TileType
         {
             get
             {
-                return tileKey.CoinGold;
+                return TileKey.CoinGold;
             }
         }
 

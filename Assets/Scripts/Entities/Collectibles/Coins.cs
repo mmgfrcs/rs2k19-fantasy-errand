@@ -11,11 +11,11 @@ public class Coins : MonoBehaviour, ICollectible {
 
     public int Value { get { return coinValue; } }
 
-    public tileKey TileType
+    public TileKey TileType
     {
         get
         {
-            return tileKey.CoinGold;
+            return TileKey.CoinGold;
         }
     }
 

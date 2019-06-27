@@ -143,11 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05cd235af359cd24dae80c84a8a97e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 14
+  moveSpeed: 8
   isHurdling: 0
   spawnRate: 0
-  minSpeed: 8
-  detectionRange: 14
+  minSpeed: 6
+  detectionRange: 90
 --- !u!114 &114889296908873932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,10 +161,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnRate: 70
   isHurdling: 0
-  detectionRange: 14
-  rotateSpeed: {x: -180, y: 0, z: 0}
+  detectionRange: 90
+  rotateSpeed: {x: -360, y: 0, z: 0}
   minSpeed: 5
-  moveSpeed: 10
+  moveSpeed: 6
 --- !u!135 &135313624827715010
 SphereCollider:
   m_ObjectHideFlags: 1

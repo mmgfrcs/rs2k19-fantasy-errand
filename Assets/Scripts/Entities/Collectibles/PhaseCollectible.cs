@@ -23,11 +23,11 @@ namespace FantasyErrand.Entities
             }
         }
 
-        public tileKey TileType
+        public TileKey TileType
         {
             get
             {
-                return tileKey.PotionPhase;
+                return TileKey.PotionPhase;
             }
         }
 

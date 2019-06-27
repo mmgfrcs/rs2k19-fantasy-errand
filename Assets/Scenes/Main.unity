@@ -649,6 +649,7 @@ GameObject:
   - component: {fileID: 90231702}
   - component: {fileID: 90231704}
   - component: {fileID: 90231703}
+  - component: {fileID: 90231705}
   m_Layer: 5
   m_Name: HappyImage
   m_TagString: Untagged
@@ -707,6 +708,36 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 90231701}
+--- !u!114 &90231705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 90231701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1869478384}
+          m_MethodName: OnTakeHappyPicture
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!1 &92587089
 GameObject:
   m_ObjectHideFlags: 0
@@ -15098,6 +15129,7 @@ GameObject:
   - component: {fileID: 1869478384}
   - component: {fileID: 1869478382}
   - component: {fileID: 1869478385}
+  - component: {fileID: 1869478380}
   m_Layer: 8
   m_Name: Generator
   m_TagString: Untagged
@@ -15105,6 +15137,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1869478380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1869478379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64fda1334f578ce49bcdd6f68d6ea257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1869478381
 Transform:
   m_ObjectHideFlags: 0
@@ -15133,7 +15176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fader: {fileID: 139791583}
-  loadingSlider: {fileID: 841631250}
+  loadingSlider: {fileID: 302017639}
 --- !u!114 &1869478383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15162,14 +15205,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingSlider: {fileID: 841631250}
-  faderSlider: {fileID: 0}
+  faderSlider: {fileID: 302017639}
   optionsPanel: {fileID: 2021106383}
   researchModeFrame: {fileID: 867035228}
   basicInfoFrame: {fileID: 1020957718}
   expressionFrame: {fileID: 138871422}
   versionText: {fileID: 1324099016}
-  detector: {fileID: 0}
-  emotionManager: {fileID: 0}
+  detector: {fileID: 1918633897}
+  emotionManager: {fileID: 1869478380}
   changer: {fileID: 1869478382}
   serverAddress:
   - {fileID: 1658775098}
@@ -15258,6 +15301,7 @@ GameObject:
   - component: {fileID: 1918633894}
   - component: {fileID: 1918633895}
   - component: {fileID: 1918633896}
+  - component: {fileID: 1918633897}
   m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -15447,6 +15491,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1918633897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1918633892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9db04d0f9cdf0c45bab39f4268dc6d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOnWake: 1
+  discrete: 0
+  emotions: -1
+  expressions: -1
 --- !u!81 &1918633899
 AudioListener:
   m_ObjectHideFlags: 0

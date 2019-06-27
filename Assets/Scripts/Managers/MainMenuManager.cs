@@ -59,8 +59,8 @@ namespace FantasyErrand
 
         void ChangeScene()
         {
-            if (dynamicToggle.isOn) changer.ChangeScene("DynamicTesting");
-            else changer.ChangeScene("StaticTesting");
+            if (dynamicToggle.isOn) changer.ChangeScene("DynamicGame");
+            else changer.ChangeScene("StaticGame");
         }
 
         public void OnPlayEasy()
@@ -109,7 +109,7 @@ namespace FantasyErrand
         {
             var properties = NativeCamera.GetImageProperties(path);
 
-            faderSlider.value = 1 / 6f;
+            faderSlider.value = 1 / 7f;
             yield return null;
             if (properties.width < properties.height)
             {
@@ -118,23 +118,56 @@ namespace FantasyErrand
 
                 //Read the file to memory
                 byte[] bytes = File.ReadAllBytes(path);
-                faderSlider.value += 1 / 6f;
+                print($"LoadImage: File read at {path}");
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
                 //Turn it into Texture2D - a format that Unity understands
                 Texture2D t2d = new Texture2D(properties.width, properties.height);
                 t2d.LoadImage(bytes);
+                faderSlider.value += 1 / 7f;
+                print($"LoadImage: File converted to Texture2D - {t2d.width}x{t2d.height}, {bytes.LongLength.ToString("n0")} bytes");
+                yield return null;
+                
+                //Rotate the image
                 if (properties.orientation != NativeCamera.ImageOrientation.Normal && properties.orientation != NativeCamera.ImageOrientation.Unknown)
                     t2d = t2d.RotateImage();
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
-                //Process Texture2D using Affdex and load the results
-                detector.ProcessFrame(new Frame(t2d.GetPixels32(), t2d.width, t2d.height, Time.unscaledTime));
+                //Process Texture2D using Affdex
+                int tries = 5;
+                int dFaces = emotionManager.DetectedFaces;
+                detector.ProcessFrame(new Frame(t2d.GetPixels32(), properties.width, properties.height, Time.unscaledTime));
+                while (emotionManager.DetectedFaces == dFaces)
+                {
+                    if(tries==0)
+                    {
+                        AndroidPlugin.ShowToast("Cannot detect face in photo, aborting", true);
+                        print($"{(pickMode==0?"Neutral":"Happy")} Expressions & Emotions not detected");
+                        fader.DOFade(0f, 1f).onComplete = () =>
+                        {
+                            faderSlider.value = 0;
+                            fader.gameObject.SetActive(false);
+                        };
+                        yield break;
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                    if (emotionManager.DetectedFaces == dFaces)
+                    {
+                        detector.ProcessFrame(new Frame(t2d.GetPixels32(), properties.width, properties.height, Frame.Orientation.CW_270, Time.unscaledTime));
+                        tries--;
+                    }
+                }
                 yield return null;
+
+                //Safety net
+                if (emotionManager.DetectedFaces == dFaces) yield break;
+                print($"Face detected with {tries} tries remaining");
+
                 if (pickMode == 0)
                 {
-                    print($"Neutral Image loaded: {emotionManager.EmotionsList.Count} emotions and {emotionManager.ExpressionsList.Count} expressions captured.");
+                    print($"Neutral Image loaded: {emotionManager.EmotionsList[0].Count} emotions and {emotionManager.ExpressionsList[0].Count} expressions captured:\n{emotionManager.EmotionsList[0].PrintDictionaryContents()}");
                     nData = new PresetExpressionData() {emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
                     nData.imageData = Compressor.Compress(t2d.EncodeToPNG());
                     if (emotionManager.EmotionsList.Count > 0)
@@ -171,13 +204,13 @@ namespace FantasyErrand
                         }
                     }
                 }
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
                 //Assign Texture2D to prepare for saving later
                 if (pickMode == 0) neutral = t2d;
                 else happy = t2d;
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
                 //Show Texture2D as sprite to the user
@@ -190,7 +223,7 @@ namespace FantasyErrand
                         faderSlider.value = 0;
                         fader.gameObject.SetActive(false);
                     };
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
 
                 yield return null;
                 faderSlider.gameObject.SetActive(false);

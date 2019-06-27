@@ -9,91 +9,7 @@ using FantasyErrand.Utilities;
 
 namespace FantasyErrand
 {
-    //public enum ObstacleType
-    //{
-    //   Spike=8,Boulder,Hurdling,Wall     
-    //}
-
-    
-    public class NewLevelManager1 : MonoBehaviour {
-
-        /// <summary>
-        /// catatan(ini sesudah diganti, pas sebelum pooler[2]=coin, pooler 3 = powerups
-        /// pooler 0= basic/straight
-        /// pooler 1 = obstacle
-        /// pooler 2 = powerups
-        /// pooler 3 = copper
-        /// pooler 4 = silver
-        /// pooler 5 = GOld
-        /// pooler 6 = PLatinum
-        /// pooler 7 = ruby
-        /// pooler 8 = overhead obstacle
-        /// </summary>
-
-        public Player player;
-        public GameManager gameManager;
-
-        [Header("Level Objects")]
-        public GameObject startPrefab;
-        public GameObject[] straightPrefabs, powerupsPrefabs, coinPrefabs,overheadObstaclePrefabs;
-        public GameObject[] coinCopperPrefabs, coinSilverPrefabs,coinGoldPrefabs,coinPlatinumPrefabs,coinRubyPrefabs;
-        public GameObject[] spikePrefabs,boulderPrefabs,hurdlingPrefabs,wallPrefabs;
-        public GameObject[] potionPhasePrefabs, potionBoostPrefabs, potionGoldPrefabs, potionMagnetPrefabs;
-        private Dictionary<tileKey,ObjectPooler>poolDictionary = new Dictionary<tileKey, ObjectPooler>();
-        public Vector3 startPosition;
-
-
-
-        [Header("Tile Generation")]
-        public bool gameMode = true;
-        public int maxGeneratedTile = 10, pooledObstacles = 20, pooledCoins = 40;
-        public int startTiles = 2;
-        public TileSpawnRates tileSpawnRates;
-        public float tileScale;
-
-        [Header("Obstacles")]
-        public float baseObstacleRatio = 100;
-        public int minimumObstacleLane = 1;
-        public int minTilesBeforeOverhead = 8;
-        int currminTilesBeforeOverhead=0;
-        public int obstacleTolerance = 4;
-        [Header("Coins")]
-        public int maxCoinSpawnPerTile = 6;
-        public int minCoins = 4, maxCoins = 24;
-        public int minimumCoinLane = 1;
-
-        [Header("Power Ups")]
-        public int minTilesBeforeNextPowerUps = 8;
-        int currMinTilesBeforeNextPowerUps=0;
-        [Header("Debug")]
-        public bool showGizmos = true;
-
-
-        [Header("Game Balancing")]
-        public AnimationCurve CoinLane;
-        public AnimationCurve ObstacleLane;
-
-        
-        //public UnityEngine.UI.Text text;
-        
-        List<GameObject> startObjects = new List<GameObject>();
-        [SerializeField]
-        List<GameObject> spawnedObjects = new List<GameObject>();
-        bool initialized = false;
-        int patternSpawned;
-        int coinRemaining = 0;
-        float continueCoinAt = -99;
-
-        bool turnGoldenCoin = false;
-        float coinXLastPos=1.5f;
-        // Use this for initialization
-
-        //<Coin Property Value>
-        private int coinValueLevel = 0;
-        public float silverDistance = 0;
-        public float goldDistance = 0;
-        public float platinumDistance = 0;
-
+    public class StaticLevelManager : LevelManagerBase {
 
         void Awake()
         {
@@ -106,19 +22,16 @@ namespace FantasyErrand
 
         }
 
-
-        void Start()
+        protected override void Start()
         { 
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
             SoundManager.Instance.playBackSound();
         }
 
-        public bool EasyTrigger=false;
-        public bool HardTrigger = false;
-        public bool CleverTrigger = false;
+
         // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
             for (int i = 0; i < startObjects.Count; i++)
             {
@@ -137,15 +50,15 @@ namespace FantasyErrand
                     if (spawnedObjects[i].GetComponent<IObstacle>() != null)
                     {
                         if (spawnedObjects[i].CompareTag("Overhead"))
-                            poolDictionary[tileKey.Overhead].Destroy(spawnedObjects[i]);
-                        else if(spawnedObjects[i].CompareTag("Spike"))
-                            poolDictionary[tileKey.Spike].Destroy(spawnedObjects[i]);
+                            poolDictionary[TileKey.Overhead].Destroy(spawnedObjects[i]);
+                        else if (spawnedObjects[i].CompareTag("Spike"))
+                            poolDictionary[TileKey.Spike].Destroy(spawnedObjects[i]);
                         else if (spawnedObjects[i].CompareTag("Boulder"))
-                            poolDictionary[tileKey.Boulder].Destroy(spawnedObjects[i]);
+                            poolDictionary[TileKey.Boulder].Destroy(spawnedObjects[i]);
                         else if (spawnedObjects[i].CompareTag("Hurdling"))
-                            poolDictionary[tileKey.Hurdling].Destroy(spawnedObjects[i]);
+                            poolDictionary[TileKey.Hurdling].Destroy(spawnedObjects[i]);
                         else if (spawnedObjects[i].CompareTag("Wall"))
-                            poolDictionary[tileKey.Wall].Destroy(spawnedObjects[i]);
+                            poolDictionary[TileKey.Wall].Destroy(spawnedObjects[i]);
 
                     }
                         
@@ -156,20 +69,20 @@ namespace FantasyErrand
                         {
                             if (collect.Type == CollectibleType.Monetary)
                             {
-                                tileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
+                                TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
                                 poolDictionary[temp].Destroy(spawnedObjects[i]);
 
                             }
 
                             else
                             {
-                                tileKey temp = collect.TileType;
+                                TileKey temp = collect.TileType;
                                 poolDictionary[temp].Destroy(spawnedObjects[i]);
                             }
                         }
                         else
                         {
-                            poolDictionary[tileKey.Straight].Destroy(spawnedObjects[i]);
+                            poolDictionary[TileKey.Straight].Destroy(spawnedObjects[i]);
                         }
                     }
                     spawnedObjects.RemoveAt(i);
@@ -191,66 +104,66 @@ namespace FantasyErrand
 
             ObjectPooler pooler = gameObject.AddComponent<ObjectPooler>();
             pooler.Initialize(maxGeneratedTile * 3, straightPrefabs);
-            poolDictionary.Add(tileKey.Straight, pooler);
+            poolDictionary.Add(TileKey.Straight, pooler);
 
             if (gameMode)
             {
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, potionPhasePrefabs);
-                poolDictionary.Add(tileKey.PotionPhase, pooler);
+                poolDictionary.Add(TileKey.PotionPhase, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, potionMagnetPrefabs);
-                poolDictionary.Add(tileKey.PotionMagnet, pooler);
+                poolDictionary.Add(TileKey.PotionMagnet, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, potionGoldPrefabs);
-                poolDictionary.Add(tileKey.PotionGold, pooler);
+                poolDictionary.Add(TileKey.PotionGold, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, potionBoostPrefabs);
-                poolDictionary.Add(tileKey.PotionBoost, pooler);
+                poolDictionary.Add(TileKey.PotionBoost, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, coinCopperPrefabs);
-                poolDictionary.Add(tileKey.CoinCopper, pooler);
+                poolDictionary.Add(TileKey.CoinCopper, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, coinSilverPrefabs);
-                poolDictionary.Add(tileKey.CoinSilver, pooler);
+                poolDictionary.Add(TileKey.CoinSilver, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, coinGoldPrefabs);
-                poolDictionary.Add(tileKey.CoinGold, pooler);
+                poolDictionary.Add(TileKey.CoinGold, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, coinPlatinumPrefabs);
-                poolDictionary.Add(tileKey.CoinPlatinum, pooler);
+                poolDictionary.Add(TileKey.CoinPlatinum, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, coinRubyPrefabs);
-                poolDictionary.Add(tileKey.CoinRuby, pooler);
+                poolDictionary.Add(TileKey.CoinRuby, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, overheadObstaclePrefabs);
-                poolDictionary.Add(tileKey.Overhead, pooler);
+                poolDictionary.Add(TileKey.Overhead, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, spikePrefabs);
-                poolDictionary.Add(tileKey.Spike, pooler);
+                poolDictionary.Add(TileKey.Spike, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, boulderPrefabs);
-                poolDictionary.Add(tileKey.Boulder, pooler);
+                poolDictionary.Add(TileKey.Boulder, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, hurdlingPrefabs);
-                poolDictionary.Add(tileKey.Hurdling, pooler);
+                poolDictionary.Add(TileKey.Hurdling, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, wallPrefabs);
-                poolDictionary.Add(tileKey.Wall, pooler);
+                poolDictionary.Add(TileKey.Wall, pooler);
             }
 
             while (tiles < maxGeneratedTile)
@@ -294,7 +207,6 @@ namespace FantasyErrand
             float spawnX = MathRand.Pick(new float[] { -3, -1.5f, 0, 1.5f, 3 });
             if (coinRemaining != 0)
             {
-                print("Ini maslah coin rem="+coinRemaining);
                 GenerateConstantCoins(new Vector3(continueCoinAt, 0.5f, spawnPos.z), coinRemaining);
             }
             else
@@ -325,24 +237,25 @@ namespace FantasyErrand
             }
             if ((opt!=3) && currMinTilesBeforeNextPowerUps != 0)
                 currMinTilesBeforeNextPowerUps--;
-            print("TIle Before next power ups=" + currMinTilesBeforeNextPowerUps);
         }
 
 
 
         public void GenerateStraights(Vector3 pos)
         {
-            spawnedObjects.Add(poolDictionary[tileKey.Straight].Instantiate(pos));
+            spawnedObjects.Add(poolDictionary[TileKey.Straight].Instantiate(pos));
         }
+
+
 
 
 
         public void GenerateObstacles(Vector3 pos, int amount)
         {
-            int rand = Random.Range((int)tileKey.Wall, (int)tileKey.Hurdling + 1);
+            int rand = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
             if (amount == 1)
             {
-                GameObject go = poolDictionary[(tileKey)rand].Instantiate(pos);
+                GameObject go = poolDictionary[(TileKey)rand].Instantiate(pos);
                 spawnedObjects.Add(go);
             }
             else
@@ -359,23 +272,23 @@ namespace FantasyErrand
                     }
                     else if (HardTrigger || EasyTrigger)
                     {
-                        GameObject go = poolDictionary[(tileKey)rand].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
+                        GameObject go = poolDictionary[(TileKey)rand].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
                         spawnedObjects.Add(go);
                     }
                     else if (CleverTrigger)
                     {
-                        int x = Random.Range((int)tileKey.Wall, (int)tileKey.Hurdling+1);
-                        GameObject go =poolDictionary[(tileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
+                        int x = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
+                        GameObject go = poolDictionary[(TileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
                         spawnedObjects.Add(go);
                     }
                 }
-                
+
             }
         }
 
         public void generateOverhead(Vector3 pos)
         {
-            GameObject go = poolDictionary[tileKey.Overhead].Instantiate(pos);
+            GameObject go = poolDictionary[TileKey.Overhead].Instantiate(pos);
             spawnedObjects.Add(go);
             if (!CleverTrigger)
             {
@@ -389,15 +302,15 @@ namespace FantasyErrand
                 startPosition += Vector3.forward * tileScale;
                 GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
             }
-                
+
         }
 
         public void GeneratePowerUps(Vector3 pos, int amount)
         {
             if (amount == 1)
             {
-                int x = Random.Range((int)tileKey.PotionPhase, (int)tileKey.PotionMagnet + 1);
-                GameObject go = poolDictionary[(tileKey)x].Instantiate(pos);
+                int x = Random.Range((int)TileKey.PotionPhase, (int)TileKey.PotionMagnet + 1);
+                GameObject go = poolDictionary[(TileKey)x].Instantiate(pos);
                 spawnedObjects.Add(go);
             }
             else
@@ -406,15 +319,15 @@ namespace FantasyErrand
                 MathRand.Shuffle(ref mypos);
                 for (int i = 0; i < amount; i++)
                 {
-                    int x = Random.Range((int)tileKey.PotionPhase, (int)tileKey.PotionMagnet + 1);
-                    GameObject go = poolDictionary[(tileKey)x].Instantiate(new Vector3(mypos[i],pos.y,pos.z));
+                    int x = Random.Range((int)TileKey.PotionPhase, (int)TileKey.PotionMagnet + 1);
+                    GameObject go = poolDictionary[(TileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
                     spawnedObjects.Add(go);
 
                 }
 
             }
         }
-        
+
 
 
         public void SetCoinXPos()
@@ -439,6 +352,8 @@ namespace FantasyErrand
 
 
 
+
+
         public void GenerateConstantCoins(Vector3 pos, int n)
         {
             float step = tileScale / (Mathf.Min(maxCoinSpawnPerTile, n) + 1);
@@ -449,11 +364,11 @@ namespace FantasyErrand
                 GameObject go;
                 if (!turnGoldenCoin)
                 {
-                    go = poolDictionary[(tileKey)SelectCoinPooler()].Instantiate(new Vector3(pos.x, pos.y, start));
+                    go = poolDictionary[(TileKey)SelectCoinPooler()].Instantiate(new Vector3(pos.x, pos.y, start));
                 }
                 else
                 {
-                    go = poolDictionary[tileKey.CoinGold].Instantiate(new Vector3(pos.x, pos.y, start));
+                    go = poolDictionary[TileKey.CoinGold].Instantiate(new Vector3(pos.x, pos.y, start));
                 }
                 spawnedObjects.Add(go);
                 start += step;
@@ -470,8 +385,8 @@ namespace FantasyErrand
                 MathRand.Shuffle(ref mypos);
                 for (int i = 0; i < amount; i++)
                 {
-                        GenerateConstantCoins(new Vector3(mypos[i], pos.y, pos.z), n);
-   
+                    GenerateConstantCoins(new Vector3(mypos[i], pos.y, pos.z), n);
+
                 }
             }
         }
@@ -495,11 +410,11 @@ namespace FantasyErrand
         public int PickTile()
         {
             int i = MathRand.WeightedPick(new float[] {
-            tileSpawnRates.baseTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.coinsTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)
-        });
+                tileSpawnRates.baseTile.Evaluate(player.transform.position.z),
+                tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z),
+                tileSpawnRates.coinsTile.Evaluate(player.transform.position.z),
+                tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)
+            });
             return i;
         }
 
@@ -542,7 +457,7 @@ namespace FantasyErrand
                 val = 0;
             }
 
-            return val + (int)tileKey.CoinCopper;
+            return val + (int)TileKey.CoinCopper;
         }
 
         public void SetGoldenCoin(bool isSwitched)
@@ -559,12 +474,12 @@ namespace FantasyErrand
                         if (collect.Type == CollectibleType.Monetary)
                         {
                             CoinType temp = spawnedObjects[i].GetComponent<CoinCollectible>().coinType;
-                            tileKey temps = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
+                            TileKey temps = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
                             Vector3 currPos = spawnedObjects[i].transform.position;
                             poolDictionary[temps].Destroy(spawnedObjects[i]);
 
                             spawnedObjects.RemoveAt(i);
-                            GameObject go = poolDictionary[tileKey.CoinRuby].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
+                            GameObject go = poolDictionary[TileKey.CoinRuby].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
                             spawnedObjects.Insert(i, go);
                         }
                     }
@@ -580,21 +495,22 @@ namespace FantasyErrand
                     {
                         if (collect.Type == CollectibleType.Monetary)
                         {
-                            tileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
+                            TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
                             Vector3 currPos = spawnedObjects[i].transform.position;
                             poolDictionary[temp].Destroy(spawnedObjects[i]);
 
                             spawnedObjects.RemoveAt(i);
-                            GameObject go = poolDictionary[(tileKey)SelectCoinPooler()].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
+                            GameObject go = poolDictionary[(TileKey)SelectCoinPooler()].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
                             spawnedObjects.Insert(i, go);
                         }
                     }
                 }
             }
         }
-
     }
+
 }
+
 
 
 

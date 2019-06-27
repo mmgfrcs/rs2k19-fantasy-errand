@@ -46,10 +46,10 @@ namespace FantasyErrand.WebSockets
         {
             if (GameDataManager.instance.ResearchMode)
             {
-
                 InitiateWebsocket();
                 GameManager.OnGameEnd += GameManager_OnGameEnd;
             }
+            
         }
 
         private void GameManager_OnGameEnd(GameEndEventArgs args)

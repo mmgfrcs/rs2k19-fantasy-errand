@@ -892,10 +892,7 @@ GameObject:
   - component: {fileID: 20623788667165116}
   - component: {fileID: 81898875051204586}
   - component: {fileID: 114195600717548528}
-  - component: {fileID: 114146354541950198}
   - component: {fileID: 95895322874031924}
-  - component: {fileID: 114784609881934286}
-  - component: {fileID: 114174027435675672}
   m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2237,7 +2234,6 @@ GameObject:
   - component: {fileID: 54206680751422670}
   - component: {fileID: 65581237987755096}
   - component: {fileID: 114616100995703942}
-  - component: {fileID: 114403343615567344}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -5622,32 +5618,6 @@ MonoBehaviour:
   boostTime: 0
   currSwipe: 0
   SwipeMinimumTreshold: 200
---- !u!114 &114146354541950198
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1309074274718626}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b58a41d2cccbef14fbba41225e469907, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sampleRate: 20
-  isFrontFacing: 1
-  targetWidth: 768
-  targetHeight: 1024
---- !u!114 &114174027435675672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1309074274718626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114195600717548528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5663,23 +5633,6 @@ MonoBehaviour:
   discrete: 0
   emotions: 31
   expressions: 0
---- !u!114 &114403343615567344
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1856581703317636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eae504c79e9f774698bfec575db845d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 114141373974779592}
-  magnetSpeed: 8
-  magnetSlider: {fileID: 0}
-  boostSlider: {fileID: 0}
-  phaseSlider: {fileID: 0}
-  goldenCoinSlider: {fileID: 0}
 --- !u!114 &114578807724161638
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5748,17 +5701,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: FantomLib.LinearAccelerationSensorController+LinearAccelerationSensorChangedHandler,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!114 &114784609881934286
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1309074274718626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!137 &137069137237679558
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

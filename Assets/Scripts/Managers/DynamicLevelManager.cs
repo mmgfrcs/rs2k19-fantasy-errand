@@ -19,21 +19,21 @@ namespace FantasyErrand
         public float emotionUpdateInterval = 0.5f;
 
         bool isGameEnd = false;
-        private float coinMod = 1;
+
         private float coinAmountMod = 1;
         private float tileMOd = 1;
         private float powerUpsMod = 1;
-        private float obstacleMod = 1;
+
         private float obstacleAmountMod = 1;
         
 
         void Awake()
         {
-            if (MainMenuManager.difficultyLevel.Equals("easy") && !EasyTrigger)
+            if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy) && !difficulty.Equals(Difficulty.Easy))
                 gameObject.SetActive(false);
-            else if (MainMenuManager.difficultyLevel.Equals("normal") && !CleverTrigger)
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Special) && !difficulty.Equals(Difficulty.Special))
                 gameObject.SetActive(false);
-            else if (MainMenuManager.difficultyLevel.Equals("hard") && !HardTrigger)
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Hard) && !difficulty.Equals(Difficulty.Hard))
                 gameObject.SetActive(false);
 
         }
@@ -234,7 +234,7 @@ namespace FantasyErrand
                 if (opt == 1)
                 {
                     currminTilesBeforeOverhead--;
-                    int n = Random.Range(minimumObstacleLane, GetObstacleLane());
+                    int n = Random.Range(minimumObstacleLane, GetObstacleLane()*(int)obstacleAmountMod);
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
                     if (currminTilesBeforeOverhead <= 0) currminTilesBeforeOverhead = minTilesBeforeOverhead;
                     if (n >= obstacleTolerance)
@@ -247,7 +247,7 @@ namespace FantasyErrand
                 {
                     SetCoinXPos();
                     int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(minimumCoinLane, GetCoinLane());
+                    int lanenumber = Random.Range(minimumCoinLane, GetCoinLane()*(int)coinAmountMod);
                     GenerateConstantCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
                 }
                 else if (opt == 3)
@@ -290,12 +290,12 @@ namespace FantasyErrand
                         generateOverhead(new Vector3(0, pos.y, pos.z));
                         break;
                     }
-                    else if (HardTrigger || EasyTrigger)
+                    else if (difficulty.Equals(Difficulty.Hard) || difficulty.Equals(Difficulty.Easy))
                     {
                         GameObject go = poolDictionary[(TileKey)rand].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
                         spawnedObjects.Add(go);
                     }
-                    else if (CleverTrigger)
+                    else if (difficulty.Equals(Difficulty.Special))
                     {
                         int x = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
                         GameObject go = poolDictionary[(TileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
@@ -310,7 +310,7 @@ namespace FantasyErrand
         {
             GameObject go = poolDictionary[TileKey.Overhead].Instantiate(pos);
             spawnedObjects.Add(go);
-            if (!CleverTrigger)
+            if (!difficulty.Equals(Difficulty.Special))
             {
                 startPosition += Vector3.forward * tileScale;
                 GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
@@ -425,44 +425,23 @@ namespace FantasyErrand
             return temp;
         }
 
+
+        
+
+
         public int PickTile()
         {
             int i = MathRand.WeightedPick(new float[] {
-            tileSpawnRates.baseTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.coinsTile.Evaluate(player.transform.position.z),
-            tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)
+            GetTileRate(TileType.Tile),
+            GetTileRate(TileType.Obstacle),
+            GetTileRate(TileType.Coin),
+            GetTileRate(TileType.Powerups)
         });
             return i;
         }
 
 
-        public float GetTileRate(TileType tiles)
-        {
-            float i = 0;
-            if (tiles.Equals(TileType.Coin))
-            {
-                i = tileSpawnRates.coinsTile.Evaluate(player.transform.position.z)*coinMod;
-                return i;
-            }
-
-            else if (tiles.Equals(TileType.Obstacle))
-            {
-                i = tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z)*obstacleMod;
-                return i;
-            }
-
-            else if (tiles.Equals(TileType.Powerups))
-            {
-                i = tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z);
-                return i;
-            }
-            else
-            {
-                i = tileSpawnRates.baseTile.Evaluate(player.transform.position.z);
-                return i;
-            }
-        }
+        
 
         public void SetCoinProperty()
         {
@@ -585,7 +564,7 @@ namespace FantasyErrand
                     totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
                     totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
 
-                    if (EasyTrigger)
+                    if (difficulty.Equals(Difficulty.Easy))
                     {
                         if (totalNegEmotions >= totalPosEmotions && totalNegEmotions != 0)
                         {
@@ -609,7 +588,7 @@ namespace FantasyErrand
                             if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
                         }
                     }
-                    else if (HardTrigger)
+                    else if (difficulty.Equals(Difficulty.Hard))
                     {
                         if (totalNegEmotions >= totalPosEmotions)
                         {
@@ -633,7 +612,7 @@ namespace FantasyErrand
                             dynamicSpeedModifier = 4 * (totalPosEmotions);
                         }
                     }
-                    else if (CleverTrigger)
+                    else if (difficulty.Equals(Difficulty.Special))
                     {
                         if (totalNegEmotions >= totalPosEmotions)
                         {

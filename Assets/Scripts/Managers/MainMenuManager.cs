@@ -30,6 +30,7 @@ namespace FantasyErrand
         public Image neutralImage, happyImage;
         public Button backButton;
 
+        public static Difficulty mainMenuDifficulty = Difficulty.Hard;
         Texture2D neutral, happy;
         PresetExpressionData nData, hData;
 
@@ -41,7 +42,6 @@ namespace FantasyErrand
         int errors = 0;
 
         public static bool isSwipeModeOn=true;
-        public static string difficultyLevel="easy";
         public void OnPlay()
         {
             changer.ChangeScene("SampleScene");
@@ -65,18 +65,18 @@ namespace FantasyErrand
 
         public void OnPlayEasy()
         {
-            difficultyLevel = "easy";
+            mainMenuDifficulty = Difficulty.Easy;
             ChangeScene();
             
         }
         public void OnPlayNormal()
         {
-            difficultyLevel = "normal";
+            mainMenuDifficulty = Difficulty.Special;
             ChangeScene();
         }
         public void OnPlayHard()
         {
-            difficultyLevel = "hard";
+            mainMenuDifficulty = Difficulty.Hard;
             ChangeScene();
         }
 

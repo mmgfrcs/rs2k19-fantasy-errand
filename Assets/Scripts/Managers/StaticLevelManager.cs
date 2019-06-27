@@ -13,11 +13,11 @@ namespace FantasyErrand
 
         void Awake()
         {
-            if (MainMenuManager.difficultyLevel.Equals("easy") && !EasyTrigger)
+            if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy) && !difficulty.Equals(Difficulty.Easy))
                 gameObject.SetActive(false);
-            else if (MainMenuManager.difficultyLevel.Equals("normal") && !CleverTrigger)
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Special) && !difficulty.Equals(Difficulty.Special))
                 gameObject.SetActive(false);
-            else if (MainMenuManager.difficultyLevel.Equals("hard") && !HardTrigger)
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Hard) && !difficulty.Equals(Difficulty.Hard))
                 gameObject.SetActive(false);
 
         }
@@ -26,7 +26,6 @@ namespace FantasyErrand
         { 
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
-            SoundManager.Instance.playBackSound();
         }
 
 
@@ -270,12 +269,12 @@ namespace FantasyErrand
                         generateOverhead(new Vector3(0, pos.y, pos.z));
                         break;
                     }
-                    else if (HardTrigger || EasyTrigger)
+                    else if (difficulty.Equals(Difficulty.Hard) || difficulty.Equals(Difficulty.Easy))
                     {
                         GameObject go = poolDictionary[(TileKey)rand].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
                         spawnedObjects.Add(go);
                     }
-                    else if (CleverTrigger)
+                    else if (difficulty.Equals(Difficulty.Special))
                     {
                         int x = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
                         GameObject go = poolDictionary[(TileKey)x].Instantiate(new Vector3(mypos[i], pos.y, pos.z));
@@ -290,7 +289,7 @@ namespace FantasyErrand
         {
             GameObject go = poolDictionary[TileKey.Overhead].Instantiate(pos);
             spawnedObjects.Add(go);
-            if (!CleverTrigger)
+            if (!difficulty.Equals(Difficulty.Special))
             {
                 startPosition += Vector3.forward * tileScale;
                 GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));

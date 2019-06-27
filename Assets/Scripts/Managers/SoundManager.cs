@@ -16,6 +16,7 @@ namespace FantasyErrand
         public AudioSource EffectsSource;
         public AudioSource MusicSource;
         public float timeGapBackSound = 15f;
+        private bool isPlayBackSound = false;
         int counter = 0;
 
         // Singleton instance.
@@ -29,6 +30,8 @@ namespace FantasyErrand
                 Instance = this;
             }
             DontDestroyOnLoad(gameObject);
+            GameManager.OnGameEnd += EndPlayBackSound;
+            GameManager.OnGameStart += playBackSound;
         }
 
         // Play a single clip through the sound effects source.
@@ -65,7 +68,8 @@ namespace FantasyErrand
         IEnumerator PlayBackSound()
         {
             float currTime = 0;
-            while (true)
+            isPlayBackSound = true;
+            while (isPlayBackSound)
             {
                 currTime += Time.deltaTime;
 
@@ -77,6 +81,11 @@ namespace FantasyErrand
                 }
                 yield return null;
             }
+        }
+
+        public void EndPlayBackSound(GameEndEventArgs args)
+        {
+            isPlayBackSound = false;
         }
 
         public  void playBackSound()

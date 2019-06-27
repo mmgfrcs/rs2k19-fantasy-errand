@@ -84,9 +84,10 @@ namespace FantasyErrand
         public float goldDistance = 0;
         public float platinumDistance = 0;
 
-        public bool EasyTrigger = false;
-        public bool HardTrigger = false;
-        public bool CleverTrigger = false;
+        protected float coinMod = 1;
+        protected float obstacleMod = 1;
+
+
         // Use this for initialization
         protected virtual void Start()
         {
@@ -98,5 +99,34 @@ namespace FantasyErrand
         {
 
         }
+
+        protected float GetTileRate(TileType tiles)
+        {
+            float i = 0;
+            if (tiles.Equals(TileType.Coin))
+            {
+                i = tileSpawnRates.coinsTile.Evaluate(player.transform.position.z) * coinMod;
+                return i;
+            }
+
+            else if (tiles.Equals(TileType.Obstacle))
+            {
+                i = tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z) * obstacleMod;
+                return i;
+            }
+
+            else if (tiles.Equals(TileType.Powerups))
+            {
+                i = tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z);
+                return i;
+            }
+            else
+            {
+                i = tileSpawnRates.baseTile.Evaluate(player.transform.position.z);
+                return i;
+            }
+        }
+
+        
     } 
 }

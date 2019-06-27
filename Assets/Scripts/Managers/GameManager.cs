@@ -47,16 +47,16 @@ namespace FantasyErrand
 
         public void Start()
         {
-            if (MainMenuManager.difficultyLevel.Equals("easy"))
+            if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy))
                 speedGraph = easySpeedGraph;
-            else if (MainMenuManager.difficultyLevel.Equals("normal"))
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Special))
                 speedGraph = normalSpeedGraph;
-            else if (MainMenuManager.difficultyLevel.Equals("hard"))
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Hard))
                 speedGraph = hardSpeedGraph;
 
-            if (MainMenuManager.difficultyLevel == "easy") levelManager = easyLevelManager;
-            else if (MainMenuManager.difficultyLevel == "normal") levelManager = specialLevelManager;
-            else if (MainMenuManager.difficultyLevel == "hard") levelManager = hardLevelManager;
+            if (MainMenuManager.mainMenuDifficulty == Difficulty.Easy) levelManager = easyLevelManager;
+            else if (MainMenuManager.mainMenuDifficulty == Difficulty.Special) levelManager = specialLevelManager;
+            else if (MainMenuManager.mainMenuDifficulty == Difficulty.Hard) levelManager = hardLevelManager;
 
             //Setup game
             rb = player.GetComponent<Rigidbody>();
@@ -203,6 +203,15 @@ namespace FantasyErrand
 
         }
 
+        public void RestartGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        public void ExitGame()
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 
     public class GameEndEventArgs
@@ -213,4 +222,6 @@ namespace FantasyErrand
         public float Currency { get; set; }
         public int Multiplier { get; set; }
     }
+
+    
 }

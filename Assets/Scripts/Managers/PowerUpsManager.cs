@@ -158,7 +158,7 @@ namespace FantasyErrand
                 gameManagerBroadcastCount++;
                 return;
             }
-            else
+            else if(player!=null)
                 player.StartPhasePowerUps(phaseDuration);
         }
 

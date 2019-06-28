@@ -46,7 +46,7 @@ namespace FantasyErrand
             EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
-            StartCoroutine(SetRateByEmotion());
+            //StartCoroutine(SetRateByEmotion());
             SoundManager.Instance.playBackSound();
             GameManager.OnGameEnd += CheckGameEnd;
             GameManager.OnGameStart += CheckGameStart;
@@ -654,11 +654,103 @@ namespace FantasyErrand
 
         private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)
         {
-            EmotionsList = emotions;
-            if (EmotionsList.Count == 0)
-                emoStatus = "Null";
-            else
-                emoStatus = "Berisi";
+            //EmotionsList = emotions;
+            //if (EmotionsList.Count == 0)
+            //    emoStatus = "Null";
+            //else
+            //    emoStatus = "Berisi";
+
+            if (!isGameEnd)
+            {
+                totalPosEmotions = 0; totalNegEmotions = 0;
+
+                for (int i = 0; i < positiveEmotions.Length; i++)
+                    totalPosEmotions += emotions[positiveEmotions[i]];
+
+                for (int i = 0; i < negativeEmotions.Length; i++)
+                    totalNegEmotions += emotions[negativeEmotions[i]];
+
+                totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
+                totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+
+                
+
+                if (difficulty.Equals(Difficulty.Easy))
+                {
+                    if (totalNegEmotions >= totalPosEmotions && totalNegEmotions != 0)
+                    {
+                        obstacleMod = 1 + totalNegEmotions;//misal 1
+                        obstacleAmountMod = obstacleMod;
+                        coinMod = 1 - (0.5f * totalNegEmotions);
+                        coinAmountMod = coinMod;
+                        dynamicSpeedModifier = 4 * (totalNegEmotions);
+                    }
+                    else if (totalPosEmotions > totalNegEmotions)
+                    {
+                        obstacleMod = obstacleMod - (totalPosEmotions);
+                        if (obstacleMod < 1) obstacleMod = 1;
+                        obstacleAmountMod = obstacleAmountMod - (totalPosEmotions);
+                        if (obstacleAmountMod < 1) obstacleAmountMod = 1;
+                        coinMod = coinMod + totalPosEmotions;
+                        if (coinMod > 1) coinMod = 1;
+                        coinAmountMod = coinAmountMod + totalPosEmotions;
+                        if (coinAmountMod > 1) coinAmountMod = 1;
+                        dynamicSpeedModifier = dynamicSpeedModifier - totalPosEmotions;
+                        if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
+                    }
+                }
+                else if (difficulty.Equals(Difficulty.Hard))
+                {
+                    if (totalNegEmotions >= totalPosEmotions)
+                    {
+                        obstacleMod = 1 - (0.5f * totalNegEmotions);
+                        obstacleAmountMod = 1 - (0.5f * totalNegEmotions);
+                        coinMod = 1 + (0.5f * totalNegEmotions);
+                        coinAmountMod = coinMod;
+                        dynamicSpeedModifier = dynamicSpeedModifier - totalNegEmotions;
+                        if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
+                    }
+                    else if (totalPosEmotions > totalNegEmotions)
+                    {
+                        obstacleMod = obstacleMod + (totalPosEmotions);
+                        if (obstacleMod > 1) obstacleMod = 1;
+                        obstacleAmountMod = obstacleAmountMod + (totalPosEmotions);
+                        if (obstacleAmountMod > 1) obstacleAmountMod = 1;
+                        coinMod = coinMod - totalPosEmotions;
+                        if (coinMod < 1) coinMod = 1;
+                        coinAmountMod = coinAmountMod - totalPosEmotions;
+                        if (coinAmountMod < 1) coinAmountMod = 1;
+                        dynamicSpeedModifier = 4 * (totalPosEmotions);
+                    }
+                }
+                else if (difficulty.Equals(Difficulty.Special))
+                {
+                    if (totalNegEmotions >= totalPosEmotions)
+                    {
+                        obstacleMod = 1 - (0.5f * totalNegEmotions);
+                        obstacleAmountMod = 1 - (0.5f * totalNegEmotions);
+                        coinMod = 1 + (0.5f * totalNegEmotions);
+                        coinAmountMod = coinMod;
+                        dynamicSpeedModifier = dynamicSpeedModifier - totalNegEmotions;
+                        if (dynamicSpeedModifier < 0) dynamicSpeedModifier = 0;
+
+                    }
+                    else if (totalPosEmotions > totalNegEmotions)
+                    {
+                        obstacleMod = obstacleMod + totalPosEmotions;
+                        if (obstacleMod > 2) obstacleMod = 2;
+                        obstacleAmountMod = obstacleAmountMod + totalPosEmotions;
+                        if (obstacleAmountMod > 2) obstacleAmountMod = 2;
+                        coinMod = coinMod - totalPosEmotions;
+                        if (coinMod < 1) coinMod = 1;
+                        coinAmountMod = coinAmountMod - totalPosEmotions;
+                        if (coinAmountMod < 1) coinAmountMod = 1;
+                        dynamicSpeedModifier = 4 * (totalPosEmotions);
+                    }
+                }
+                gameManager.DynamicSpeedModifier = dynamicSpeedModifier;
+            }
+
         }
     }
 

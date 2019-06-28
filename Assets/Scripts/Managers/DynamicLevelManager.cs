@@ -654,10 +654,6 @@ namespace FantasyErrand
 
         private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)
         {
-            
-
-            joy = emotions[Emotions.Joy];
-            disgust = emotions[Emotions.Disgust];
             EmotionsList = emotions;
             if (EmotionsList.Count == 0)
                 emoStatus = "Null";

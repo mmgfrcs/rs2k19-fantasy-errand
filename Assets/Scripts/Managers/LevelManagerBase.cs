@@ -100,7 +100,7 @@ namespace FantasyErrand
 
         }
 
-        protected float GetTileRate(TileType tiles)
+        internal float GetTileRate(TileType tiles)
         {
             float i = 0;
             if (tiles.Equals(TileType.Coin))

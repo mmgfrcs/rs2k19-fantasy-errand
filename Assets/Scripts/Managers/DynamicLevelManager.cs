@@ -25,7 +25,9 @@ namespace FantasyErrand
         private float powerUpsMod = 1;
 
         private float obstacleAmountMod = 1;
-
+        public static float totalPosEmotions = 0;
+        public static float totalNegEmotions = 0;
+        public static string enumStatus = "not started";
         internal Dictionary<Emotions, float> EmotionsList { get; set; } = new Dictionary<Emotions, float>();
         void Awake()
         {
@@ -538,17 +540,17 @@ namespace FantasyErrand
         }
         public float GetEmotion(Affdex.Emotions emo)
         {
-                    return EmotionsList[emo];
+             return EmotionsList[emo];
         }
 
         IEnumerator SetRateByEmotion()
         {
-
+            enumStatus = "Started";
             while (true)
             {
                 if (!isGameEnd)
                 {
-                    float totalPosEmotions = 0, totalNegEmotions = 0;
+                    totalPosEmotions = 0; totalNegEmotions = 0;
 
                     for (int i = 0; i < positiveEmotions.Length; i++)
                         totalPosEmotions += GetEmotion(positiveEmotions[i]);
@@ -636,6 +638,7 @@ namespace FantasyErrand
                 }
                 yield return new WaitForSeconds(emotionUpdateInterval);
             }
+            enumStatus = "Ended";
         }
         public void CheckGameEnd(GameEndEventArgs args)
         {

@@ -27,7 +27,9 @@ namespace FantasyErrand
         private float obstacleAmountMod = 1;
         public static float totalPosEmotions = 0;
         public static float totalNegEmotions = 0;
-        public static string enumStatus = "not started";
+        public static string emoStatus = "Null";
+        public static float joy = 0;
+        public static float disgust = 0;
         internal Dictionary<Emotions, float> EmotionsList { get; set; } = new Dictionary<Emotions, float>();
         void Awake()
         {
@@ -545,7 +547,6 @@ namespace FantasyErrand
 
         IEnumerator SetRateByEmotion()
         {
-            enumStatus = "Started";
             while (true)
             {
                 if (!isGameEnd)
@@ -638,7 +639,6 @@ namespace FantasyErrand
                 }
                 yield return new WaitForSeconds(emotionUpdateInterval);
             }
-            enumStatus = "Ended";
         }
         public void CheckGameEnd(GameEndEventArgs args)
         {
@@ -652,6 +652,13 @@ namespace FantasyErrand
 
         private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)
         {
+            if (emotions.Count == 0)
+                emoStatus = "Null";
+            else
+                emoStatus = "Berisi";
+
+            joy = emotions[Emotions.Joy];
+            disgust = emotions[Emotions.Disgust];
             EmotionsList = emotions;
         }
     }

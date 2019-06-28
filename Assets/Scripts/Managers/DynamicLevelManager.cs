@@ -670,8 +670,8 @@ namespace FantasyErrand
                 for (int i = 0; i < negativeEmotions.Length; i++)
                     totalNegEmotions += emotions[negativeEmotions[i]];
 
-                totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
-                totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+                totalPosEmotions = totalPosEmotions / (positiveEmotions.Length *100);
+                totalNegEmotions = totalNegEmotions / (negativeEmotions.Length *100);
 
                 
 

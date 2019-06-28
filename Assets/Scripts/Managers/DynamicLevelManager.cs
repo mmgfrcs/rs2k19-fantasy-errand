@@ -538,17 +538,7 @@ namespace FantasyErrand
         }
         public float GetEmotion(Affdex.Emotions emo)
         {
-            if (emotionManager.EmotionsList != null)
-            {
-                if (emotionManager.FaceStatus.Equals("Tracking"))
-                {
                     return EmotionsList[emo];
-                }
-                else
-                    return 0;
-            }
-            else
-                return 0;
         }
 
         IEnumerator SetRateByEmotion()

@@ -542,6 +542,8 @@ namespace FantasyErrand
         }
         public float GetEmotion(Affdex.Emotions emo)
         {
+            joy = EmotionsList[Emotions.Joy];
+            disgust = EmotionsList[Emotions.Disgust];
              return EmotionsList[emo];
         }
 
@@ -559,8 +561,8 @@ namespace FantasyErrand
                     for (int i = 0; i < negativeEmotions.Length; i++)
                         totalNegEmotions += GetEmotion(negativeEmotions[i]);
 
-                    totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
-                    totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
+                    //totalPosEmotions = totalPosEmotions / positiveEmotions.Length;
+                    //totalNegEmotions = totalNegEmotions / negativeEmotions.Length;
 
                     if (difficulty.Equals(Difficulty.Easy))
                     {
@@ -652,14 +654,15 @@ namespace FantasyErrand
 
         private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)
         {
-            if (emotions.Count == 0)
-                emoStatus = "Null";
-            else
-                emoStatus = "Berisi";
+            
 
             joy = emotions[Emotions.Joy];
             disgust = emotions[Emotions.Disgust];
             EmotionsList = emotions;
+            if (EmotionsList.Count == 0)
+                emoStatus = "Null";
+            else
+                emoStatus = "Berisi";
         }
     }
 

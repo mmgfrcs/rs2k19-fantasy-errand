@@ -109,19 +109,19 @@ namespace FantasyErrand
             {
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, potionPhasePrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, potionPhasePrefabs);
                 poolDictionary.Add(TileKey.PotionPhase, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, potionMagnetPrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, potionMagnetPrefabs);
                 poolDictionary.Add(TileKey.PotionMagnet, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, potionGoldPrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, potionGoldPrefabs);
                 poolDictionary.Add(TileKey.PotionGold, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, potionBoostPrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, potionBoostPrefabs);
                 poolDictionary.Add(TileKey.PotionBoost, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
@@ -145,23 +145,23 @@ namespace FantasyErrand
                 poolDictionary.Add(TileKey.CoinRuby, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, overheadObstaclePrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, overheadObstaclePrefabs);
                 poolDictionary.Add(TileKey.Overhead, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, spikePrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, spikePrefabs);
                 poolDictionary.Add(TileKey.Spike, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, boulderPrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, boulderPrefabs);
                 poolDictionary.Add(TileKey.Boulder, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, hurdlingPrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, hurdlingPrefabs);
                 poolDictionary.Add(TileKey.Hurdling, pooler);
 
                 pooler = gameObject.AddComponent<ObjectPooler>();
-                pooler.Initialize(maxGeneratedTile * 3, wallPrefabs);
+                pooler.Initialize(maxGeneratedTile * 1, wallPrefabs);
                 poolDictionary.Add(TileKey.Wall, pooler);
             }
 

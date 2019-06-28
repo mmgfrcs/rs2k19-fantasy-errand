@@ -15,6 +15,7 @@ namespace FantasyErrand
     {
         [SerializeField] Player player;
         [SerializeField] GameUIManager UIManager;
+        [SerializeField] EmotionManager emotionManager;
         [SerializeField] LevelManagerBase easyLevelManager, hardLevelManager, specialLevelManager;
         [SerializeField] float startSpeed;
         [SerializeField] int startingMultiplier = 10;
@@ -148,7 +149,7 @@ namespace FantasyErrand
 
         public void Update()
         {
-            debugText.text = $"{GameDataManager.instance.PlayerName}\nTravelling {Distance.ToString("n0")}m at {GetCurrSpeed().ToString("n2")} m/s, {Currency.ToString("n0")} coins\nIgnore Obstacle: {Physics.GetIgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"))}\nRates: T {levelManager.tileSpawnRates.baseTile.Evaluate(player.transform.position.z).ToString("n2")}, O {levelManager.tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z).ToString("n2")}, C {levelManager.tileSpawnRates.coinsTile.Evaluate(player.transform.position.z).ToString("n2")}, P {levelManager.tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z).ToString("n2")}";
+            debugText.text = $"{GameDataManager.instance.PlayerName}\nTravelling {Distance.ToString("n0")}m at {GetCurrSpeed().ToString("n2")} m/s, {Currency.ToString("n0")} coins\nIgnore Obstacle: {Physics.GetIgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"))}\nRates: T {levelManager.tileSpawnRates.baseTile.Evaluate(player.transform.position.z).ToString("n2")}, O {levelManager.tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z).ToString("n2")}, C {levelManager.tileSpawnRates.coinsTile.Evaluate(player.transform.position.z).ToString("n2")}, P {levelManager.tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z).ToString("n2")}\nFace {emotionManager.DetectedFaces}: {emotionManager.FaceStatus}, {(emotionManager.ExpressionsList.Count > 0 ? emotionManager.ExpressionsList[0].Count.ToString() : "No")} expressions ";
 
             if (IsRollingStart || IsGameRunning)
             {

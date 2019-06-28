@@ -55,6 +55,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fda1334f578ce49bcdd6f68d6ea257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sendData: 1
+  target: {fileID: 114261412463342658}
 --- !u!114 &114261412463342658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -66,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03085ec786ac1c4daf3a52dec6fd087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  img: {fileID: 0}
   opcode: 684F2BA5B03585274A874D21BB6B16B802227A081577946A82E14EED9A4468DB
   dataTransmission: 1
   retryAttempts: 3
@@ -114,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   UIManager: {fileID: 114815129130330436}
+  emotionManager: {fileID: 114166337886479578}
   easyLevelManager: {fileID: 0}
   hardLevelManager: {fileID: 0}
   specialLevelManager: {fileID: 0}

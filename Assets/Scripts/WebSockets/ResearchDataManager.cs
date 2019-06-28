@@ -60,7 +60,14 @@ namespace FantasyErrand.WebSockets
                 levelManager = gameManager.levelManager;
                 GameManager.OnGameEnd += GameManager_OnGameEnd;
                 EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
+                EmotionManager.OnFaceLost += EmotionManager_OnFaceLost;
             }
+        }
+
+        private void EmotionManager_OnFaceLost()
+        {
+            EmotionsList = new Dictionary<Emotions, float>();
+            ExpressionsList = new Dictionary<Expressions, float>();
         }
 
         private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)

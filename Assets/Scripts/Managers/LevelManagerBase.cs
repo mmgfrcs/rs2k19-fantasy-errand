@@ -84,8 +84,8 @@ namespace FantasyErrand
         public float goldDistance = 0;
         public float platinumDistance = 0;
 
-        protected float coinMod = 1;
-        protected float obstacleMod = 1;
+        internal float coinMod = 1;
+        internal float obstacleMod = 1;
 
 
         // Use this for initialization

@@ -20,12 +20,14 @@ namespace FantasyErrand
 
         public delegate void FaceResultArgs(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions);
         public static event FaceResultArgs OnFaceResults;
+        public static event System.Action OnFaceFound, OnFaceLost;
         public override void onFaceFound(float timestamp, int faceId)
         {
             
             FaceStatus = "Tracking";
             print($"{SceneManager.GetActiveScene().name} EmotionManager - {FaceStatus}");
             LastAcquiredTimestamp = timestamp;
+            OnFaceFound?.Invoke();
         }
 
         public override void onFaceLost(float timestamp, int faceId)
@@ -39,6 +41,7 @@ namespace FantasyErrand
 
             FaceStatus = "Standby";
             print($"{SceneManager.GetActiveScene().name} EmotionManager - {FaceStatus}");
+            OnFaceLost?.Invoke();
         }
 
         public override void onImageResults(Dictionary<int, Face> faces)

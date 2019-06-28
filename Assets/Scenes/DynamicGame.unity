@@ -956,7 +956,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 120
+        value: 400
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -965,7 +965,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 40
+        value: 280
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -980,7 +980,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 140
+        value: 175
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -989,7 +989,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 60
+        value: 325
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1004,7 +1004,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 160
+        value: 120
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1013,7 +1013,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 80
+        value: 280
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1028,7 +1028,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 175
+        value: 140
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1037,7 +1037,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2800
-        value: 325
+        value: 60
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1111,7 +1111,7 @@ MonoBehaviour:
   goldDistance: 0
   platinumDistance: 0
   positiveEmotions: 00000000
-  negativeEmotions: 04000000
+  negativeEmotions: 02000000
   emotionManager: {fileID: 471071059}
   dynamicSpeedModifier: 1
   emotionUpdateInterval: 0.5
@@ -2906,7 +2906,7 @@ MonoBehaviour:
   goldDistance: 0
   platinumDistance: 0
   positiveEmotions: 00000000
-  negativeEmotions: 04000000
+  negativeEmotions: 02000000
   emotionManager: {fileID: 471071059}
   dynamicSpeedModifier: 1
   emotionUpdateInterval: 0.5
@@ -4304,7 +4304,7 @@ MonoBehaviour:
   goldDistance: 0
   platinumDistance: 0
   positiveEmotions: 00000000
-  negativeEmotions: 04000000
+  negativeEmotions: 02000000
   emotionManager: {fileID: 471071059}
   dynamicSpeedModifier: 1
   emotionUpdateInterval: 0.5

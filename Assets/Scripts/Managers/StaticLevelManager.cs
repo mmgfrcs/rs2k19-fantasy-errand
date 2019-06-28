@@ -392,19 +392,7 @@ namespace FantasyErrand
 
 
 
-        public int GetCoinLane()
-        {
-            float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(CoinLane.Evaluate(distance));
-            return temp;
-        }
-
-        public int GetObstacleLane()
-        {
-            float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(ObstacleLane.Evaluate(distance));
-            return temp;
-        }
+        
 
         public int PickTile()
         {

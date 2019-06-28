@@ -31,13 +31,14 @@ namespace FantasyErrand.WebSockets
         [Header("Scripts")]
         public EmotionManager emotionManager;
         public GameManager gameManager;
-        public Detector detector;
+        
 
         internal Dictionary<Emotions, float> EmotionsList { get; set; } = new Dictionary<Emotions, float>();
         internal Dictionary<Expressions, float> ExpressionsList { get; set; } = new Dictionary<Expressions, float>();
 
+        LevelManagerBase levelManager;
         WebSocket webSocket;
-        WebCamTexture webcam;
+        //WebCamTexture webcam;
         Queue<Action> mainThreadActionQueue = new Queue<Action>();
         private readonly object actionQueueLock = new object();
 
@@ -56,6 +57,7 @@ namespace FantasyErrand.WebSockets
             {
 
                 InitiateWebsocket();
+                levelManager = gameManager.levelManager;
                 GameManager.OnGameEnd += GameManager_OnGameEnd;
                 EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
             }
@@ -118,14 +120,21 @@ namespace FantasyErrand.WebSockets
         void CollectGameData()
         {
             print($"Preparing data collection {collections}, expressions: {ExpressionsList.Count}");
-            
+
             ResearchData data = new ResearchData()
             {
+                time = DateTime.UtcNow,
                 emotions = new Dictionary<string, float>(),
                 expressions = new Dictionary<string, float>(),
                 score = gameManager.Score,
                 distance = gameManager.Distance,
                 coins = gameManager.Currency,
+                baseTileRate = levelManager.GetTileRate(TileType.Tile),
+                obstacleRate = levelManager.GetTileRate(TileType.Obstacle),
+                coinsRate = levelManager.GetTileRate(TileType.Coin),
+                powerupsRate = levelManager.GetTileRate(TileType.Powerups),
+                difficulty = MainMenuManager.mainMenuDifficulty.ToString(),
+                gameType = levelManager is StaticLevelManager ? "Static" : "Dynamic",
                 playerSpeed = gameManager.GetCurrSpeed()
             };
 
@@ -267,23 +276,5 @@ namespace FantasyErrand.WebSockets
             if (webSocket.ReadyState != WebSocketState.Closed && identified) webSocket.CloseAsync(CloseStatusCode.Away);
         }
 
-        private IEnumerator StartAffdex()
-        {
-            print("Affdex started");
-            while(true)
-            {
-                Frame.Orientation orientation = GetWebcamOrientation(webcam.videoRotationAngle);
-                detector.ProcessFrame(new Frame(webcam.GetPixels32(), webcam.width, webcam.height, orientation, Time.realtimeSinceStartup));
-                yield return new WaitForSeconds(1/60f);
-            }
-        }
-
-        private Frame.Orientation GetWebcamOrientation(int angle)
-        {
-            if (angle == 90) return Frame.Orientation.CW_90;
-            else if (angle == 180) return Frame.Orientation.CW_180;
-            else if (angle == 270) return Frame.Orientation.CW_270;
-            else return Frame.Orientation.Upright;
-        }
     }
 }

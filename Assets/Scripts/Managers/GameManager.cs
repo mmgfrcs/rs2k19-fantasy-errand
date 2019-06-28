@@ -41,7 +41,7 @@ namespace FantasyErrand
         TextMeshProUGUI scoreText, debugText;
         UnityEngine.UI.Image fader;
         float startTime;
-        LevelManagerBase levelManager;
+        internal LevelManagerBase levelManager;
 
 
         internal float DynamicSpeedModifier=0;

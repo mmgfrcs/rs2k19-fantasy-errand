@@ -127,17 +127,17 @@ namespace FantasyErrand
             }
         }
 
-        public int GetCoinLane()
+        public virtual float GetCoinLane()
         {
             float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(CoinLane.Evaluate(distance));
+            float temp = Mathf.Round(CoinLane.Evaluate(distance));
             return temp;
         }
 
-        public int GetObstacleLane()
+        public virtual float GetObstacleLane()
         {
             float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(ObstacleLane.Evaluate(distance));
+            float temp = Mathf.Round(ObstacleLane.Evaluate(distance));
             return temp;
         }
 

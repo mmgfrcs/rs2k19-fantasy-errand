@@ -234,7 +234,7 @@ namespace FantasyErrand
                 if (opt == 1)
                 {
                     currminTilesBeforeOverhead--;
-                    int n = Random.Range(minimumObstacleLane, GetObstacleLane()*(int)obstacleAmountMod);
+                    int n = Random.Range(minimumObstacleLane, Mathf.RoundToInt(GetObstacleLane()*obstacleAmountMod));
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
                     if (currminTilesBeforeOverhead <= 0) currminTilesBeforeOverhead = minTilesBeforeOverhead;
                     if (n >= obstacleTolerance)
@@ -247,7 +247,7 @@ namespace FantasyErrand
                 {
                     SetCoinXPos();
                     int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(minimumCoinLane, GetCoinLane()*(int)coinAmountMod);
+                    int lanenumber = Random.Range(minimumCoinLane, Mathf.RoundToInt(GetCoinLane()*coinAmountMod));
                     GenerateConstantCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
                 }
                 else if (opt == 3)
@@ -272,6 +272,8 @@ namespace FantasyErrand
 
         public void GenerateObstacles(Vector3 pos, int amount)
         {
+            if (amount > 5)
+                amount = 5;
             int rand = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
             if (amount == 1)
             {
@@ -395,6 +397,8 @@ namespace FantasyErrand
 
         public void GenerateConstantCoins(Vector3 pos, int n, int amount)
         {
+            if (amount > 5)
+                amount = 5;
             if (amount == 1)
                 GenerateConstantCoins(pos, n);
             else
@@ -411,17 +415,17 @@ namespace FantasyErrand
 
 
 
-        public int GetCoinLane()
+        public override float GetCoinLane()
         {
             float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(CoinLane.Evaluate(distance)*coinAmountMod);
+            float temp = Mathf.Round(CoinLane.Evaluate(distance)*coinAmountMod);
             return temp;
         }
 
-        public int GetObstacleLane()
+        public override float GetObstacleLane()
         {
             float distance = gameManager.Distance;
-            int temp = (int)Mathf.Round(ObstacleLane.Evaluate(distance)*obstacleAmountMod);
+            float temp = Mathf.Round(ObstacleLane.Evaluate(distance)*obstacleAmountMod);
             return temp;
         }
 

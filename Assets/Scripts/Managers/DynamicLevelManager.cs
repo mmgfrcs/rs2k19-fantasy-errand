@@ -5,7 +5,7 @@ using FantasyErrand.Entities;
 using FantasyErrand.Entities.Interfaces;
 using FantasyErrand;
 using FantasyErrand.Utilities;
-
+using Affdex;
 
 namespace FantasyErrand
 {
@@ -25,8 +25,8 @@ namespace FantasyErrand
         private float powerUpsMod = 1;
 
         private float obstacleAmountMod = 1;
-        
 
+        internal Dictionary<Emotions, float> EmotionsList { get; set; } = new Dictionary<Emotions, float>();
         void Awake()
         {
             if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy) && !difficulty.Equals(Difficulty.Easy))
@@ -39,6 +39,7 @@ namespace FantasyErrand
         }
         protected override void Start()
         {
+            EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
             Player.goldenCoinBroadcast += SetGoldenCoin;
             StartCoroutine(InitialGeneration());
             StartCoroutine(SetRateByEmotion());
@@ -541,7 +542,7 @@ namespace FantasyErrand
             {
                 if (emotionManager.FaceStatus.Equals("Tracking"))
                 {
-                    return emotionManager.EmotionsList[0][emo];
+                    return EmotionsList[emo];
                 }
                 else
                     return 0;
@@ -654,6 +655,11 @@ namespace FantasyErrand
         public void CheckGameStart()
         {
             isGameEnd = false;
+        }
+
+        private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)
+        {
+            EmotionsList = emotions;
         }
     }
 

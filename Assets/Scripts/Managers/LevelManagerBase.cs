@@ -84,9 +84,11 @@ namespace FantasyErrand
         public float goldDistance = 0;
         public float platinumDistance = 0;
 
-        internal float coinMod = 1;
-        internal float obstacleMod = 1;
+        internal float coinMod = 0;
+        internal float obstacleMod = 0;
 
+
+        
 
         // Use this for initialization
         protected virtual void Start()
@@ -105,13 +107,13 @@ namespace FantasyErrand
             float i = 0;
             if (tiles.Equals(TileType.Coin))
             {
-                i = tileSpawnRates.coinsTile.Evaluate(player.transform.position.z) * coinMod;
+                i = tileSpawnRates.coinsTile.Evaluate(player.transform.position.z) + coinMod;
                 return i;
             }
 
             else if (tiles.Equals(TileType.Obstacle))
             {
-                i = tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z) * obstacleMod;
+                i = tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z) + obstacleMod;
                 return i;
             }
 

@@ -1113,8 +1113,9 @@ MonoBehaviour:
   positiveEmotions: 00000000
   negativeEmotions: 02000000
   emotionManager: {fileID: 471071059}
-  dynamicSpeedModifier: 1
+  dynamicSpeedModifier: 0
   emotionUpdateInterval: 0.5
+  MaxSpeedModifier: 4
 --- !u!4 &227004436
 Transform:
   m_ObjectHideFlags: 0
@@ -2913,8 +2914,9 @@ MonoBehaviour:
   positiveEmotions: 00000000
   negativeEmotions: 02000000
   emotionManager: {fileID: 471071059}
-  dynamicSpeedModifier: 1
+  dynamicSpeedModifier: 0
   emotionUpdateInterval: 0.5
+  MaxSpeedModifier: 4
 --- !u!4 &814011817
 Transform:
   m_ObjectHideFlags: 0
@@ -4311,8 +4313,9 @@ MonoBehaviour:
   positiveEmotions: 00000000
   negativeEmotions: 02000000
   emotionManager: {fileID: 471071059}
-  dynamicSpeedModifier: 1
+  dynamicSpeedModifier: 0
   emotionUpdateInterval: 0.5
+  MaxSpeedModifier: 4
 --- !u!4 &1250764156
 Transform:
   m_ObjectHideFlags: 0

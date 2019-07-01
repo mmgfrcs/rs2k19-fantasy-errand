@@ -2,11 +2,43 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 namespace FantasyErrand
 {
     public static class Extensions
     {
+        public static string PrintListContents<T>(this IList<T> list)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(var content in list)
+            {
+                if (content is string) sb.AppendLine(content as string);
+                else sb.AppendLine(content.ToString());
+            }
+
+            return sb.ToString();
+        }
+        public static string PrintDictionaryContents<TKey, TVal>(this IDictionary<TKey, TVal> list)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var content in list)
+            {
+                if (content.Key is string) sb.Append(content.Key as string);
+                else sb.Append(content.Key.ToString());
+
+                sb.Append(": ");
+
+
+                if(content.Value is string) sb.Append(content.Value as string);
+                else sb.Append(content.Value.ToString());
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
         public static Texture2D ToTexture2D(this Texture texture)
         {
             return Texture2D.CreateExternalTexture(

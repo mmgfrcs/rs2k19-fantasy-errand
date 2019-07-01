@@ -9,30 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: d1c179ad395c546489b2471aa058414f
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Scenes/HardTesting.unity
-    guid: 6a1e86443907eb747949f4bcdc522f29
-  - enabled: 0
-    path: Assets/Scenes/DynamicTesting.unity
+    path: Assets/Scenes/DynamicGame.unity
     guid: 674ac491ff2271440a7d2bf705a2f5a6
-  - enabled: 0
-    path: Assets/Scenes/EasyTesting.unity
-    guid: e2fbc68e3e689744b9071b147af0621e
-  - enabled: 0
-    path: Assets/Scenes/Level manager.unity
-    guid: 57a12e7feff008c4f90b260ae02c2e50
-  - enabled: 0
-    path: Assets/Scenes/NormalTesting.unity
-    guid: 32da50484e848344f87bb5a4dce42501
-  - enabled: 0
-    path: Assets/Scenes/SandBoxTesting.unity
-    guid: 024fa6048939c9444b37f2b53c10a463
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Shop.unity
     guid: 3d6afbdfa5ef13f4ea7680ca186d4ac9
   - enabled: 1
-    path: Assets/Scenes/StaticTesting.unity
+    path: Assets/Scenes/StaticGame.unity
     guid: b0437a648ee8f2b4b9e736c56a3b71fe
   m_configObjects: {}

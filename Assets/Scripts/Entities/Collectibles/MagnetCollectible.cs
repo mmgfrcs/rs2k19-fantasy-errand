@@ -25,6 +25,14 @@ namespace FantasyErrand
             }
         }
 
+        public TileKey TileType
+        {
+            get
+            {
+                return TileKey.PotionMagnet;
+            }
+        }
+
         public void CollectibleEffect()
         {
             TurnMagnet?.Invoke();

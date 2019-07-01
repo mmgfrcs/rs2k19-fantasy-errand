@@ -24,6 +24,14 @@ namespace FantasyErrand.Entities
                 
         }
 
+        public TileKey TileType
+        {
+            get
+            {
+                return TileKey.PotionBoost;
+            }
+        }
+
         public void CollectibleEffect()
         {
             TurnBoost?.Invoke();

@@ -17,9 +17,13 @@ namespace FantasyErrand.Entities
     public delegate void PlayerBroadcast(float coinValue);
     public delegate void SpeedBroadcast(float multiplier);
     public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
+    public delegate void MagnetBroadcast(bool activated);
+    public delegate void StartTemporaryPhase();
     public class Player : MonoBehaviour
     {
+        public static event MagnetBroadcast magnetBroadcast;
         public static event PlayerBroadcast coinAdded;
+        public static event StartTemporaryPhase phaseBroadcast;
         [Header("Non-Game")]
         public bool enableNonGameMode;
         
@@ -40,7 +44,7 @@ namespace FantasyErrand.Entities
         public LayerMask layerMask;
 
         //----[Magnet Attribute]
-        private float magnetRange;
+        private float magnetRange=50;
         public int magnetSpeed = 8;
         private bool resetMagnet = false;
         private bool magnetStarted = false;
@@ -64,7 +68,7 @@ namespace FantasyErrand.Entities
         /// Can the player be controlled by motion controls?
         /// </summary>
         public bool IsControlActive { get { return controlActive; } internal set { controlActive = value; } }
-
+        private bool enableSwipe = true;
         //Vector2 moveDir = new Vector2(0, 1); //Move Direction: X -> X actual, Y -> Z actual
 
         //Motion related variables
@@ -88,15 +92,11 @@ namespace FantasyErrand.Entities
         private bool magnetActivated = false;
         int lane = 0;
 
-       
-
-
         //Swipe Attribute
         public swipeDirection Direction { set; get; }
         private Vector3 touchPosition;
         private float swipeResistanceX = 50.0f;
         private float swipeResistanceY = 50.0f;
-
 
         //Swipe Attribute
         private Vector2 fingerDownPosition;
@@ -106,15 +106,11 @@ namespace FantasyErrand.Entities
         [SerializeField]
         private float SwipeMinimumTreshold = 200f;
 
-
-        
-
-
         // Use this for initialization
         void Start()
         {
-            PowerUpsManager.magnetBroadcast += SetMagnetProperty;
             GameManager.OnGameEnd += StartResetingPowerUps;
+            GameManager.OnGameStart += NotResetingPowerUps;
             if (enableNonGameMode)
             {
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
@@ -290,7 +286,13 @@ namespace FantasyErrand.Entities
                 canSlide = true;
                 canJump = true;
             }
-            else OnCollision?.Invoke(collision);
+            else
+            {
+                var rb = GetComponent<Rigidbody>();
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                OnCollision?.Invoke(collision);
+            }
         }
 
         private void OnDrawGizmos()
@@ -319,12 +321,7 @@ namespace FantasyErrand.Entities
             }
         }
 
-        private void SetMagnetProperty(bool activated, int range, int speed)
-        {
-            magnetActivated = activated;
-            magnetRange = range;
-            magnetSpeed = speed;
-        }
+
 
 
         public void StartMagnetPowerUps(float magnetDuration,float Range)
@@ -355,9 +352,9 @@ namespace FantasyErrand.Entities
                 phaseStarted = true;
                 float duration = phaseDuration;
                 float timeStamp = Time.time;
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 while (Time.time < timeStamp + duration)
                 {
+                    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                     phaseTime = Time.time - timeStamp;
                     if (resetPhase)
                     {
@@ -404,6 +401,7 @@ namespace FantasyErrand.Entities
                     yield return null;
                 }
                 magnetStarted = false;
+                magnetBroadcast?.Invoke(false);
             }
             else
             {
@@ -418,13 +416,14 @@ namespace FantasyErrand.Entities
             {
                 SoundManager.Instance.PlaySound("Boost");
                 boostStarted = true;
-                float duration = boostDuration;
-                float timeStamp = Time.time;
-                speedBroadcast?.Invoke(5);
+                speedBroadcast?.Invoke(2);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                while (Time.time < timeStamp + duration)
+                yield return new WaitForSeconds(1);
+                float timeStamp = Time.time;
+                while (Time.time < timeStamp + boostDuration)
                 {
                     //SoundManager.Instance.PlaySound("Boost");
+                    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                     boostTime = Time.time - timeStamp;
                     if (resetBoost)
                     {
@@ -440,8 +439,9 @@ namespace FantasyErrand.Entities
                 }
                 boostStarted = false;
                 speedBroadcast?.Invoke(1);
+                yield return new WaitForSeconds(boostPhaseDuration + 1);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
-                StartCoroutine(PhasePower(boostPhaseDuration));
+                //StartCoroutine(PhasePower(boostPhaseDuration));
             }
             else
             {
@@ -493,6 +493,7 @@ namespace FantasyErrand.Entities
                 {
                     fingerUpPosition = touch.position;
                     fingerDownPosition = touch.position;
+                    enableSwipe = false;
                 }
 
                 if (touch.phase == TouchPhase.Moved)
@@ -503,6 +504,7 @@ namespace FantasyErrand.Entities
                 if (touch.phase == TouchPhase.Ended)
                 {
                     fingerDownPosition = touch.position;
+                    enableSwipe = true;
                 }
             }
             
@@ -511,7 +513,7 @@ namespace FantasyErrand.Entities
         private void DetectSwipe()
         {
             currSwipe = swipeDirection.None;
-            if (SwipeCompromised())
+            if (SwipeCompromised()&&enableSwipe)
             {
                 if (IsVerticalSwipe())
                 {
@@ -522,7 +524,7 @@ namespace FantasyErrand.Entities
                     currSwipe = fingerDownPosition.x - fingerUpPosition.x > 0 ? swipeDirection.Right : swipeDirection.Left;
                 }
                 fingerUpPosition = fingerDownPosition;
-                Debug.Log("swipe Compromised");
+
             }
 
             if (currSwipe.Equals(swipeDirection.Left) && lane > -2) 
@@ -556,17 +558,17 @@ namespace FantasyErrand.Entities
             return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
         }
 
-        IEnumerator ResetPowerUps()
-        {
-            resetAllPowerUps = true;
-            yield return new WaitForSeconds(2f);
-            resetAllPowerUps = false;
-        
-        }
+
 
         void StartResetingPowerUps(GameEndEventArgs abc)
         {
-            StartCoroutine(ResetPowerUps());
+            resetAllPowerUps = true;
+        }
+
+        void NotResetingPowerUps()
+        {
+            resetAllPowerUps = false;
+            phaseBroadcast?.Invoke();
         }
 
     }

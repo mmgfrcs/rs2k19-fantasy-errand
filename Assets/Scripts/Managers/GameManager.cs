@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using FantasyErrand.Entities;
-using Firebase.Analytics;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,20 +9,21 @@ namespace FantasyErrand
 {
     public delegate void BaseGameEventDelegate();
     public delegate void GameEndDelegate(GameEndEventArgs args);
+    
 
     public class GameManager : MonoBehaviour
     {
-        [SerializeField]
-        Player player;
-        [SerializeField]
-        GameUIManager UIManager;
-        [SerializeField]
-        float startSpeed;
-        [SerializeField]
-        AnimationCurve speedGraph;
-        [SerializeField]
-        int startingMultiplier = 10;
+        [SerializeField] Player player;
+        [SerializeField] GameUIManager UIManager;
+        [SerializeField] EmotionManager emotionManager;
+        [SerializeField] LevelManagerBase easyLevelManager, hardLevelManager, specialLevelManager;
+        [SerializeField] float startSpeed;
+        [SerializeField] int startingMultiplier = 10;
 
+        AnimationCurve speedGraph;
+        [SerializeField] AnimationCurve easySpeedGraph;
+        [SerializeField] AnimationCurve normalSpeedGraph;
+        [SerializeField] AnimationCurve hardSpeedGraph;
         public float Score { get; private set; }
         public float Distance { get; private set; }
         public float Currency { get; private set; }
@@ -32,35 +32,42 @@ namespace FantasyErrand
         public bool IsRollingStart { get; private set; }
 
         private float multiplierSpeed=1;
-
+        private Rigidbody rb;
 
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
         
-        TextMeshProUGUI scoreText;
+        TextMeshProUGUI scoreText, debugText;
         UnityEngine.UI.Image fader;
         float startTime;
-
-        private Vector3 playerCurrPos;
-
-        [HideInInspector]
-        public float DynamicSpeedModifier=0;
+        internal LevelManagerBase levelManager;
 
 
-
+        internal float DynamicSpeedModifier=0;
 
         public void Start()
         {
+            if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy))
+                speedGraph = easySpeedGraph;
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Special))
+                speedGraph = normalSpeedGraph;
+            else if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Hard))
+                speedGraph = hardSpeedGraph;
+
+            if (MainMenuManager.mainMenuDifficulty == Difficulty.Easy) levelManager = easyLevelManager;
+            else if (MainMenuManager.mainMenuDifficulty == Difficulty.Special) levelManager = specialLevelManager;
+            else if (MainMenuManager.mainMenuDifficulty == Difficulty.Hard) levelManager = hardLevelManager;
+
             //Setup game
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelStart, new Parameter("level", "Easy"));
-            FirebaseAnalytics.SetCurrentScreen("EasyGame", "In-Game");
+            rb = player.GetComponent<Rigidbody>();
 
             Player.coinAdded += AddCurrency;
             Player.speedBroadcast += SetPlayerSpeed;
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
+            debugText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.DebugText);
             StartGame();
         }
 
@@ -84,11 +91,10 @@ namespace FantasyErrand
         {
             if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
-                playerCurrPos = player.transform.position;
+                rb.constraints = RigidbodyConstraints.FreezeAll;
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
-                player.transform.position = playerCurrPos;
                 player.enabled = false;
                 IsGameRunning = false;
                 StartCoroutine(EndGame());
@@ -108,7 +114,7 @@ namespace FantasyErrand
             player.IsControlActive = true;
             startTime = Time.time;
             OnGameStart?.Invoke();
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
+           Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
         IEnumerator EndGame()
@@ -143,6 +149,8 @@ namespace FantasyErrand
 
         public void Update()
         {
+            debugText.text = $"{GameDataManager.instance.PlayerName}\nTravelling {Distance.ToString("n0")}m at {GetCurrSpeed().ToString("n2")} m/s, {Currency.ToString("n0")} coins\nIgnore Obstacle: {Physics.GetIgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"))}\nRates: T {levelManager.tileSpawnRates.baseTile.Evaluate(player.transform.position.z).ToString("n2")}, O {levelManager.tileSpawnRates.obstacleTile.Evaluate(player.transform.position.z).ToString("n2")}, C {levelManager.tileSpawnRates.coinsTile.Evaluate(player.transform.position.z).ToString("n2")}, P {levelManager.tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z).ToString("n2")}\nCoin Mod: {levelManager.coinMod.ToString("n2")}, Obs. Mod: {levelManager.obstacleMod.ToString("n2")}\n PosEmo:{DynamicLevelManager.totalPosEmotions.ToString("n2")},NegEmo:{DynamicLevelManager.totalNegEmotions.ToString("n2")}\nEmomanager :{DynamicLevelManager.emoStatus},Joy:{DynamicLevelManager.joy.ToString("n2")},Disgust:{DynamicLevelManager.disgust.ToString("n2")}";
+
             if (IsRollingStart || IsGameRunning)
             {
                 Score += player.speed * Time.deltaTime * Multiplier;
@@ -153,9 +161,16 @@ namespace FantasyErrand
             if(scoreText != null) scoreText.text = Score.ToString("n0");
         }
 
+        public IEnumerator Boost(float multiplier)
+        {
+            var tween = DOTween.To(() => multiplierSpeed, x => multiplierSpeed = x, multiplier, 1f);
+            yield return tween.WaitForCompletion();
+        }
+
         public void SetPlayerSpeed(float multiplier)
         {
-                multiplierSpeed= multiplier;
+            StartCoroutine(Boost(multiplier));
+            //multiplierSpeed= multiplier;
         }
 
         public float GetCurrSpeed()
@@ -166,15 +181,17 @@ namespace FantasyErrand
         public void AddCurrency(float value)
         {
             Currency += value;
+            Score += value * Multiplier;
         }
 
         public void RetryGame()
         {
-            player.transform.position = playerCurrPos;
             player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
             OnGameStart?.Invoke();
             player.enabled = true;
+            rb.constraints = RigidbodyConstraints.None;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             IsGameRunning = true;
         }
 
@@ -184,14 +201,18 @@ namespace FantasyErrand
         public void EndGameTruly()
         {
             OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = true, Score = Score, Distance = Distance, Currency = Currency, Multiplier = Multiplier });
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelEnd,
-                new Parameter("level", "Easy"),
-                new Parameter("score", Score),
-                new Parameter("coins", Currency),
-                new Parameter("distance", Distance),
-                new Parameter("multiplier", Multiplier));
+
         }
 
+        public void RestartGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        public void ExitGame()
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 
     public class GameEndEventArgs
@@ -202,4 +223,6 @@ namespace FantasyErrand
         public float Currency { get; set; }
         public int Multiplier { get; set; }
     }
+
+    
 }

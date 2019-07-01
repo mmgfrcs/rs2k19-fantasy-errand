@@ -3,7 +3,6 @@ using DG.Tweening;
 using FantasyErrand.WebSockets.Models;
 using FantasyErrand.WebSockets.Utilities;
 using FantomLib;
-using Firebase.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,11 +25,12 @@ namespace FantasyErrand
 
         [Header("Option Fields")]
         public TMP_InputField[] serverAddress;
-        public Toggle researchToggle, basicGatherToggle, expressionToggle,swipeToggle;
+        public Toggle researchToggle, basicGatherToggle, expressionToggle, swipeToggle, dynamicToggle;
         public TMP_InputField nameField, ageField;
         public Image neutralImage, happyImage;
         public Button backButton;
 
+        public static Difficulty mainMenuDifficulty = Difficulty.Hard;
         Texture2D neutral, happy;
         PresetExpressionData nData, hData;
 
@@ -42,7 +42,6 @@ namespace FantasyErrand
         int errors = 0;
 
         public static bool isSwipeModeOn=true;
-        public static String difficultyLevel="easy";
         public void OnPlay()
         {
             changer.ChangeScene("SampleScene");
@@ -58,25 +57,27 @@ namespace FantasyErrand
             SoundManager.Instance.PlaySound("Back");
         }
 
+        void ChangeScene()
+        {
+            if (dynamicToggle.isOn) changer.ChangeScene("DynamicGame");
+            else changer.ChangeScene("StaticGame");
+        }
+
         public void OnPlayEasy()
         {
-            changer.ChangeScene("StaticTesting");
+            mainMenuDifficulty = Difficulty.Easy;
+            ChangeScene();
             
-            difficultyLevel = "easy";
         }
         public void OnPlayNormal()
         {
-            changer.ChangeScene("StaticTesting");
-            difficultyLevel = "normal";
+            mainMenuDifficulty = Difficulty.Special;
+            ChangeScene();
         }
         public void OnPlayHard()
         {
-            changer.ChangeScene("StaticTesting");
-            difficultyLevel = "hard";
-        }
-        public void OnPlayDynamic()
-        {
-            changer.ChangeScene("DynamicTesting");
+            mainMenuDifficulty = Difficulty.Hard;
+            ChangeScene();
         }
 
         public void OnUpgrades()
@@ -108,7 +109,7 @@ namespace FantasyErrand
         {
             var properties = NativeCamera.GetImageProperties(path);
 
-            faderSlider.value = 1 / 6f;
+            faderSlider.value = 1 / 7f;
             yield return null;
             if (properties.width < properties.height)
             {
@@ -117,23 +118,56 @@ namespace FantasyErrand
 
                 //Read the file to memory
                 byte[] bytes = File.ReadAllBytes(path);
-                faderSlider.value += 1 / 6f;
+                print($"LoadImage: File read at {path}");
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
                 //Turn it into Texture2D - a format that Unity understands
                 Texture2D t2d = new Texture2D(properties.width, properties.height);
                 t2d.LoadImage(bytes);
+                faderSlider.value += 1 / 7f;
+                print($"LoadImage: File converted to Texture2D - {t2d.width}x{t2d.height}, {bytes.LongLength.ToString("n0")} bytes");
+                yield return null;
+                
+                //Rotate the image
                 if (properties.orientation != NativeCamera.ImageOrientation.Normal && properties.orientation != NativeCamera.ImageOrientation.Unknown)
                     t2d = t2d.RotateImage();
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
-                //Process Texture2D using Affdex and load the results
-                detector.ProcessFrame(new Frame(t2d.GetPixels32(), t2d.width, t2d.height, Time.unscaledTime));
+                //Process Texture2D using Affdex
+                int tries = 5;
+                int dFaces = emotionManager.DetectedFaces;
+                detector.ProcessFrame(new Frame(t2d.GetPixels32(), properties.width, properties.height, Time.unscaledTime));
+                while (emotionManager.DetectedFaces == dFaces)
+                {
+                    if(tries==0)
+                    {
+                        AndroidPlugin.ShowToast("Cannot detect face in photo, aborting", true);
+                        print($"{(pickMode==0?"Neutral":"Happy")} Expressions & Emotions not detected");
+                        fader.DOFade(0f, 1f).onComplete = () =>
+                        {
+                            faderSlider.value = 0;
+                            fader.gameObject.SetActive(false);
+                        };
+                        yield break;
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                    if (emotionManager.DetectedFaces == dFaces)
+                    {
+                        detector.ProcessFrame(new Frame(t2d.GetPixels32(), properties.width, properties.height, Frame.Orientation.CW_270, Time.unscaledTime));
+                        tries--;
+                    }
+                }
                 yield return null;
+
+                //Safety net
+                if (emotionManager.DetectedFaces == dFaces) yield break;
+                print($"Face detected with {tries} tries remaining");
+
                 if (pickMode == 0)
                 {
-                    print($"Neutral Image loaded: {emotionManager.EmotionsList.Count} emotions and {emotionManager.ExpressionsList.Count} expressions captured.");
+                    print($"Neutral Image loaded: {emotionManager.EmotionsList[0].Count} emotions and {emotionManager.ExpressionsList[0].Count} expressions captured:\n{emotionManager.EmotionsList[0].PrintDictionaryContents()}");
                     nData = new PresetExpressionData() {emotions = new Dictionary<string, float>(), expressions = new Dictionary<string, float>() };
                     nData.imageData = Compressor.Compress(t2d.EncodeToPNG());
                     if (emotionManager.EmotionsList.Count > 0)
@@ -170,13 +204,13 @@ namespace FantasyErrand
                         }
                     }
                 }
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
                 //Assign Texture2D to prepare for saving later
                 if (pickMode == 0) neutral = t2d;
                 else happy = t2d;
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
                 yield return null;
 
                 //Show Texture2D as sprite to the user
@@ -189,7 +223,7 @@ namespace FantasyErrand
                         faderSlider.value = 0;
                         fader.gameObject.SetActive(false);
                     };
-                faderSlider.value += 1 / 6f;
+                faderSlider.value += 1 / 7f;
 
                 yield return null;
                 faderSlider.gameObject.SetActive(false);
@@ -201,7 +235,6 @@ namespace FantasyErrand
         {
             if(isPanelOpen)
             {
-                FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
                 GameDataManager.instance.SaveParticipantData(nameField.text, ageField.text == "" ? 0 : int.Parse(ageField.text), neutral, happy, nData, hData);
                 GameDataManager.instance.SaveBasicOptions(researchToggle.isOn, basicGatherToggle.isOn, 
                     expressionToggle.isOn, $"192.168.{serverAddress[0].text}.{serverAddress[1].text}");
@@ -212,7 +245,6 @@ namespace FantasyErrand
             }
             else
             {
-                FirebaseAnalytics.SetCurrentScreen("Options", "System");
                 optionsPanel.blocksRaycasts = true;
                 optionsPanel.DOFade(1f, 1f);
                 nameField.text = GameDataManager.instance.PlayerName;
@@ -284,7 +316,6 @@ namespace FantasyErrand
         // Use this for initialization
         void Start()
         {
-            FirebaseAnalytics.SetCurrentScreen("Main menu", "System");
             optionsPanel.alpha = 0;
             optionsPanel.blocksRaycasts = false;
             fader.DOFade(0f, 2f).onComplete = () => {

@@ -12,7 +12,7 @@ namespace FantasyErrand
         Boost,
         GoldenCoin
     };
-    public delegate void MagnetBroadcast(bool mangetActive, int magnetRange, int magnetSpeed);
+    public delegate void MagnetBroadcast(bool activated);
     
     
     public class PowerUpsManager : MonoBehaviour
@@ -72,7 +72,8 @@ namespace FantasyErrand
             SetGoldenCoinEffect();
             GoldenCoinCollectible.TurnGoldenCoin += StartGoldenCoinPowerUps;
 
-            GameManager.OnGameStart += StartTemporaryPhasePower;
+            Player.phaseBroadcast += StartTemporaryPhasePower;
+            
         }
 
         void Update()
@@ -141,7 +142,7 @@ namespace FantasyErrand
         public void StartBoostPowerUps()
         {
             boostPhase = true;
-            player.StartBoostPowerUps(boostDuration,boostPhaseDuration);
+            player.StartBoostPowerUps(boostDuration, boostPhaseDuration);
             
         }
 
@@ -157,7 +158,7 @@ namespace FantasyErrand
                 gameManagerBroadcastCount++;
                 return;
             }
-            else
+            else if(player!=null)
                 player.StartPhasePowerUps(phaseDuration);
         }
 
@@ -170,6 +171,7 @@ namespace FantasyErrand
         {
             int boostLvl = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
             boostDuration = GameDataManager.instance.UpgradeEffects.BoostDuration[boostLvl];
+            
         }
         public void SetGoldenCoinEffect()
         {

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using FantasyErrand.Entities.Interfaces;
-
+using FantasyErrand.Entities;
 namespace FantasyErrand
 {
 
     public enum CoinType
     {
-        None, Copper=3, Silver, Gold, Platinum, Ruby
+        None, Copper=2, Silver, Gold, Platinum, Ruby
     };
 
     public class CoinCollectible : MonoBehaviour, ICollectible
@@ -14,6 +14,7 @@ namespace FantasyErrand
 
         [SerializeField]
         public CoinType coinType;
+        public TileKey tileType;
         public int value;
         CollectibleType type;
         bool magnetActivated=false;
@@ -37,7 +38,13 @@ namespace FantasyErrand
             }
         }
 
-
+        public TileKey TileType
+        {
+            get
+            {
+                return TileKey.CoinGold;
+            }
+        }
 
         public void CollectibleEffect()
         {
@@ -48,7 +55,7 @@ namespace FantasyErrand
         void Start()
         {
             //player = GameObject.FindGameObjectWithTag("Player");
-            PowerUpsManager.magnetBroadcast += setMagnet;
+            Player.magnetBroadcast += SetMagnet;
 
         }
 
@@ -62,12 +69,12 @@ namespace FantasyErrand
             }
         }
 
-        void setMagnet(bool activated, int range,int speed)
-        {
-            magnetActivated = activated;
-            magnetRange = range;
-            magnetSpeed = speed;
-        }
+        //void setMagnet(bool activated, int range,int speed)
+        //{
+        //    magnetActivated = activated;
+        //    magnetRange = range;
+        //    magnetSpeed = speed;
+        //}
 
         public void SetTarget(GameObject obj,float speed)
         {

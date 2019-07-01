@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebSocketSharp;
-using UnityEngine;
-using System.Collections.Generic;
-using Affdex;
-using Newtonsoft.Json;
-using FantasyErrand.WebSockets.Utilities;
+﻿using Affdex;
 using FantasyErrand.WebSockets.Models;
+using Newtonsoft.Json;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using FantomLib;
-using System.Runtime;
-using NatCamU.Core;
-using NatCamU.Extended;
-using NatCamU.Professional;
+using WebSocketSharp;
 
 namespace FantasyErrand.WebSockets
 {

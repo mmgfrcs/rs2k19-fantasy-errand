@@ -602,6 +602,9 @@ namespace FantasyErrand
 
                 for (int i = 0; i < negativeEmotions.Length; i++)
                     totalNegEmotions += emotions[negativeEmotions[i]];
+
+                totalPosEmotions = totalPosEmotions / (positiveEmotions.Length * 100);
+                totalNegEmotions = totalNegEmotions / (negativeEmotions.Length * 100);
             }
 
         }
@@ -612,8 +615,7 @@ namespace FantasyErrand
             {
                 if (!isGameEnd)
                 {
-                    totalPosEmotions = totalPosEmotions / (positiveEmotions.Length * 100);
-                    totalNegEmotions = totalNegEmotions / (negativeEmotions.Length * 100);
+                    
 
 
 
@@ -687,7 +689,7 @@ namespace FantasyErrand
                                 coinAmountMod += (float)0.1;
 
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0iiiiiiiiiiiiiiiiiiii)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;

@@ -686,7 +686,7 @@ namespace FantasyErrand
                                 coinAmountMod += (float)0.1;
 
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0iiiiiiiiiiiiiiiiiiii)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;

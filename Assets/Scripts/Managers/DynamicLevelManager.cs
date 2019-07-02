@@ -399,7 +399,7 @@ namespace FantasyErrand
                 }
                 else
                 {
-                    go = poolDictionary[TileKey.CoinGold].Instantiate(new Vector3(pos.x, pos.y, start));
+                    go = poolDictionary[TileKey.CoinRuby].Instantiate(new Vector3(pos.x, pos.y, start));
                 }
                 spawnedObjects.Add(go);
                 start += step;

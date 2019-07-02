@@ -33,7 +33,7 @@ namespace FantasyErrand
 
         private float multiplierSpeed=1;
         private Rigidbody rb;
-
+        
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
@@ -45,7 +45,7 @@ namespace FantasyErrand
 
 
         internal float DynamicSpeedModifier=0;
-
+        public SceneChanger changer;
         public void Start()
         {
             if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy))
@@ -206,12 +206,12 @@ namespace FantasyErrand
 
         public void RestartGame()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            changer.ChangeScene(SceneManager.GetActiveScene().name);
         }
 
         public void ExitGame()
         {
-            SceneManager.LoadScene("Main");
+            changer.ChangeScene(SceneManager.GetActiveScene().name);
         }
     }
 

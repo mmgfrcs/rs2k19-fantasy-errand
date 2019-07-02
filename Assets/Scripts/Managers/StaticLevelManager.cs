@@ -251,8 +251,8 @@ namespace FantasyErrand
 
         public void GenerateObstacles(Vector3 pos, int amount)
         {
-            if (amount > 5)
-                amount = 5;
+            if (amount >= 5)
+                amount = 4;
             int rand = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
             if (amount == 1)
             {
@@ -283,7 +283,15 @@ namespace FantasyErrand
                         spawnedObjects.Add(go);
                     }
                 }
-
+                //kasih jarak ke obstacle seandainya dia mengenai overhead
+                if (currminTilesBeforeOverhead == 1)
+                {
+                    for(int i = 0; i < 3; i++)
+                    {
+                        startPosition += Vector3.forward * tileScale;
+                        GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
+                    }
+                }
             }
         }
 

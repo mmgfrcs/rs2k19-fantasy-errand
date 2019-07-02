@@ -315,7 +315,15 @@ namespace FantasyErrand
                         spawnedObjects.Add(go);
                     }
                 }
-
+                //Kasih Jarak seandainya udah dekat overhead
+                if (currminTilesBeforeOverhead == 1)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        startPosition += Vector3.forward * tileScale;
+                        GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
+                    }
+                }
             }
         }
 

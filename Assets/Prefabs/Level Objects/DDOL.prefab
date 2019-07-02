@@ -1,59 +1,85 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1536261091288824}
-  m_IsPrefabParent: 1
---- !u!1 &1536261091288824
+--- !u!1 &3758604240624301222
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
-  - component: {fileID: 224470604714337026}
-  - component: {fileID: 114834788609661156}
-  m_Layer: 5
+  - component: {fileID: 3758604240624301220}
+  - component: {fileID: 3758604240624301223}
+  - component: {fileID: 3758604240624301221}
+  - component: {fileID: 104672538}
+  m_Layer: 0
   m_Name: DDOL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114834788609661156
+--- !u!4 &3758604240624301220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3758604240624301222}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.975525, y: 78.37138, z: -123.92154}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3758604240624301223
 MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1536261091288824}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3758604240624301222}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a18c6ca912e7d4b43a01f22221be0476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetFrameRate: 60
---- !u!224 &224470604714337026
-RectTransform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1536261091288824}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3758604240624301221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3758604240624301222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505de51ba8f54bb45809cc34eb908d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourceTarget: {fileID: 0}
+  AudioClipList:
+  - {fileID: 8300000, guid: 8c2d16e86d4f9c2438eb8c228bf1f84d, type: 3}
+  - {fileID: 8300000, guid: fa34730018d2c4f42b1d33be492d9d0e, type: 3}
+  - {fileID: 8300000, guid: 25c0b8d4a3541944aaebb8162790b730, type: 3}
+  - {fileID: 8300000, guid: 75544ee01539da1428975eb14451fef0, type: 3}
+  - {fileID: 8300000, guid: 437c7ff53142e0045bce751d3a66ff00, type: 3}
+  - {fileID: 8300000, guid: 66c26b1f39a3a5c46909d229c8651ee3, type: 3}
+  - {fileID: 8300000, guid: f10e055552302194287309bf9e2ed8cb, type: 3}
+  - {fileID: 8300000, guid: ac44245b8b4a35e45ba124f379d2246e, type: 3}
+  - {fileID: 8300000, guid: 5f6847d90f85fd140aabc842734e9f21, type: 3}
+  - {fileID: 8300000, guid: 6e4430d4e5ca7444fa3040a156238252, type: 3}
+  bgmMixer: {fileID: 243468808771620966, guid: faad99234e6ed19498e6589573ee3e0c, type: 2}
+  sfxMixer: {fileID: 243253227821054236, guid: faad99234e6ed19498e6589573ee3e0c, type: 2}
+  voiceMixer: {fileID: 243716415859447672, guid: faad99234e6ed19498e6589573ee3e0c,
+    type: 2}
+  timeGapBackSound: 15
+--- !u!81 &104672538
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3758604240624301222}
+  m_Enabled: 1

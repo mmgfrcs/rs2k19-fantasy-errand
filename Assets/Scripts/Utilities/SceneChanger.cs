@@ -9,7 +9,7 @@ public class SceneChanger : MonoBehaviour {
     public Image fader;
     public Slider loadingSlider;
 
-    public event System.Action OnSceneLoaded;
+    public static event System.Action OnSceneLoaded;
 
     public void ChangeScene(string sceneName)
     {

@@ -53,6 +53,11 @@ namespace FantasyErrand.WebSockets
                 EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
                 EmotionManager.OnFaceLost += EmotionManager_OnFaceLost;
             }
+            else
+            {
+                Debug.Log("Research Mode is disabled. Data collection has been suspended.");
+                enabled = false;
+            }
         }
 
         private void EmotionManager_OnFaceLost()
@@ -71,6 +76,7 @@ namespace FantasyErrand.WebSockets
         {
             if (args.IsEnded)
             {
+                webSocket.CloseAsync(CloseStatusCode.Away, "The game has been ended by user");
                 StopAllCoroutines();
                 enabled = false;
             }
@@ -209,7 +215,7 @@ namespace FantasyErrand.WebSockets
             webSocket.OnClose += (sender, e) =>
             {
                 mainThreadActionQueue.Enqueue(() => {
-                    if(e.WasClean) print($"Websocket Closed, code {(CloseStatusCode)e.Code}: {e.Reason}");
+                    if(e.WasClean) Debug.Log($"Websocket Closed, code {(CloseStatusCode)e.Code}: {e.Reason}");
                     else Debug.LogWarning($"Websocket Closed, code {(CloseStatusCode)e.Code}: {e.Reason}");
                     if (!opened)
                     {
@@ -271,7 +277,7 @@ namespace FantasyErrand.WebSockets
 
         private void OnApplicationQuit()
         {
-            if (webSocket.ReadyState != WebSocketState.Closed && identified) webSocket.CloseAsync(CloseStatusCode.Away);
+            if (webSocket.ReadyState != WebSocketState.Closed && identified) webSocket.CloseAsync(CloseStatusCode.Away, "Application exited");
         }
 
     }

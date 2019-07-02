@@ -30,7 +30,7 @@ namespace FantasyErrand
         public Image neutralImage, happyImage;
         public Button backButton;
 
-        public static Difficulty mainMenuDifficulty = Difficulty.Hard;
+        public static Difficulty mainMenuDifficulty = Difficulty.Easy;
         Texture2D neutral, happy;
         PresetExpressionData nData, hData;
 

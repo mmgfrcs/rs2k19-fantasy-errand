@@ -619,7 +619,7 @@ namespace FantasyErrand
 
                     if (difficulty.Equals(Difficulty.Easy))
                     {
-                        if (totalNegEmotions >= totalPosEmotions)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;
@@ -630,7 +630,7 @@ namespace FantasyErrand
                             if (coinAmountMod > 0.5)
                                 coinAmountMod -= (float)0.1;
                         }
-                        else if (totalPosEmotions > totalNegEmotions)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
                         {
                             if (obstacleMod > 0)
                                 obstacleMod -= 5;
@@ -644,7 +644,7 @@ namespace FantasyErrand
                     }
                     else if (difficulty.Equals(Difficulty.Hard))
                     {
-                        if (totalNegEmotions >= totalPosEmotions)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)
                         {
                             if (obstacleMod > -GetTileRate2(TileType.Obstacle) / 2)
                                 obstacleMod -= 5;
@@ -657,7 +657,7 @@ namespace FantasyErrand
                             if (coinAmountMod < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                         }
-                        else if (totalPosEmotions > totalNegEmotions)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
                         {
                             if (obstacleMod < 0)
                                 obstacleMod += 5;
@@ -673,7 +673,7 @@ namespace FantasyErrand
                     }
                     else if (difficulty.Equals(Difficulty.Special))
                     {
-                        if (totalNegEmotions >= totalPosEmotions)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)
                         {
                             if (obstacleMod > -GetTileRate2(TileType.Obstacle) / 2)
                                 obstacleMod -= 5;
@@ -687,7 +687,7 @@ namespace FantasyErrand
                                 coinAmountMod += (float)0.1;
 
                         }
-                        else if (totalPosEmotions > totalNegEmotions)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;

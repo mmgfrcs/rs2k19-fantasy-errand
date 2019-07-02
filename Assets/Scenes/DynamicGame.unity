@@ -940,7 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4468b24394b69f479007dd3b8e534e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 310626991}
   gameManager: {fileID: 471071055}
   difficulty: 2
   startPrefab: {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47,
@@ -1547,7 +1547,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 310626990}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 310626993}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ff42d6345eb5d749b64395315c3e920, type: 3}
@@ -1556,6 +1556,12 @@ MonoBehaviour:
 --- !u!4 &310626992 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8332811227509039564, guid: 923d762fa07374f4dbd2f2b31a92d941,
+    type: 3}
+  m_PrefabInstance: {fileID: 310626990}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &310626993 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8336797199935003574, guid: 923d762fa07374f4dbd2f2b31a92d941,
     type: 3}
   m_PrefabInstance: {fileID: 310626990}
   m_PrefabAsset: {fileID: 0}
@@ -2964,7 +2970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4468b24394b69f479007dd3b8e534e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 310626991}
   gameManager: {fileID: 471071055}
   difficulty: 0
   startPrefab: {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47,
@@ -3557,7 +3563,7 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 310626991}
     - target: {fileID: 114312147068227886, guid: 3921a40b5e479e643b1b832677da79c4,
         type: 3}
       propertyPath: magnetSlider
@@ -4528,7 +4534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4468b24394b69f479007dd3b8e534e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 310626991}
   gameManager: {fileID: 471071055}
   difficulty: 1
   startPrefab: {fileID: 1797127958607160, guid: 294bfd6222b48994cab7178da6affa47,
@@ -5376,7 +5382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef4ed4b9aac4254d88765b3f27a1298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 310626993}
 --- !u!65 &1528092527
 BoxCollider:
   m_ObjectHideFlags: 0

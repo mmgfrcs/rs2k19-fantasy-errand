@@ -626,7 +626,7 @@ namespace FantasyErrand
                             if (obstacleAmountMod < 2)
                                 obstacleAmountMod += (float)0.1;
                             if (dynamicSpeedModifier < MaxSpeedModifier)
-                                dynamicSpeedModifier += (float)0.1;
+                                dynamicSpeedModifier += (float)0.5;
                             if (coinAmountMod > 0.5)
                                 coinAmountMod -= (float)0.1;
                         }
@@ -637,7 +637,7 @@ namespace FantasyErrand
                             if (obstacleAmountMod > 1)
                                 obstacleAmountMod -= (float)0.1;
                             if (dynamicSpeedModifier > 0)
-                                dynamicSpeedModifier -= (float)0.1;
+                                dynamicSpeedModifier -= (float)0.5;
                             if (coinAmountMod < 0.5)
                                 coinAmountMod += (float)0.1;
                         }
@@ -651,7 +651,7 @@ namespace FantasyErrand
                             if (obstacleAmountMod > 0.5)
                                 obstacleAmountMod -= (float)0.1;
                             if (dynamicSpeedModifier > -MaxSpeedModifier)
-                                dynamicSpeedModifier -= (float)0.1;
+                                dynamicSpeedModifier -= (float)0.5;
                             if (coinMod < GetTileRate2(TileType.Coin) / 2)
                                 coinMod += 5;
                             if (coinAmountMod < 2)
@@ -664,7 +664,7 @@ namespace FantasyErrand
                             if (obstacleAmountMod < 1)
                                 obstacleAmountMod += (float)0.1;
                             if (dynamicSpeedModifier < 0)
-                                dynamicSpeedModifier += (float)0.1;
+                                dynamicSpeedModifier += (float)0.5;
                             if (coinMod > 0)
                                 coinMod -= 5;
                             if (coinAmountMod > 1)
@@ -680,7 +680,7 @@ namespace FantasyErrand
                             if (obstacleAmountMod > 0.5)
                                 obstacleAmountMod -= (float)0.1;
                             if (dynamicSpeedModifier > -MaxSpeedModifier)
-                                dynamicSpeedModifier -= (float)0.1;
+                                dynamicSpeedModifier -= (float)0.5;
                             if (coinMod < GetTileRate2(TileType.Coin) / 2)
                                 coinMod += 5;
                             if (coinAmountMod < 2)
@@ -694,7 +694,7 @@ namespace FantasyErrand
                             if (obstacleAmountMod < 2)
                                 obstacleAmountMod += (float)0.1;
                             if (dynamicSpeedModifier < MaxSpeedModifier)
-                                dynamicSpeedModifier += (float)0.1;
+                                dynamicSpeedModifier += (float)0.5;
                             if (coinMod > 0)
                                 coinMod -= 5;
                             if (coinAmountMod > 0.5)

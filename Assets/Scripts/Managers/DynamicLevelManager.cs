@@ -281,8 +281,8 @@ namespace FantasyErrand
 
         public void GenerateObstacles(Vector3 pos, int amount)
         {
-            if (amount > 5)
-                amount = 5;
+            if (amount >= 5)
+                amount = 4;
             int rand = Random.Range((int)TileKey.Wall, (int)TileKey.Hurdling + 1);
             if (amount == 1)
             {
@@ -615,10 +615,7 @@ namespace FantasyErrand
             {
                 if (!isGameEnd)
                 {
-                    
-
-
-
+                   
                     if (difficulty.Equals(Difficulty.Easy))
                     {
                         if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)

@@ -29,7 +29,6 @@ namespace FantasyErrand
             {
                 Instance = this;
             }
-            DontDestroyOnLoad(gameObject);
             GameManager.OnGameEnd += EndPlayBackSound;
             GameManager.OnGameStart += playBackSound;
         }

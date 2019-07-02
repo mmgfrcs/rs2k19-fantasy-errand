@@ -18,6 +18,7 @@ namespace FantasyErrand
         private float minSpeed;
         public float detectionRange;
         private GameObject player;
+        private bool startMove = true;
         public float MoveSpeed
         {
             get
@@ -53,12 +54,29 @@ namespace FantasyErrand
         void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player");
+            GameManager.OnGameEnd += disableMove;
+            GameManager.OnGameStart += enableMove;
+        }
+
+        void OnEnable()
+        {
+            startMove = true;
+        }
+
+        void disableMove(GameEndEventArgs args)
+        {
+            startMove = false;   
+        }
+
+        void enableMove()
+        {
+            startMove = true;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Vector3.Distance(player.transform.position, transform.position) < detectionRange)
+            if (Vector3.Distance(player.transform.position, transform.position) < detectionRange && startMove)
             {
                 transform.Translate(-Vector3.forward * minSpeed * Time.deltaTime, Space.World);
                 if (minSpeed < moveSpeed)

@@ -211,7 +211,7 @@ namespace FantasyErrand
 
         public void ExitGame()
         {
-            changer.ChangeScene(SceneManager.GetActiveScene().name);
+            changer.ChangeScene("Main");
         }
     }
 

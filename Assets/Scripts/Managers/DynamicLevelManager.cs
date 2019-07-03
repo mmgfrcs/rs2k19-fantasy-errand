@@ -246,11 +246,6 @@ namespace FantasyErrand
                     int n = Random.Range(Mathf.RoundToInt(minimumObstacleLane*obstacleAmountMod), Mathf.RoundToInt(GetObstacleLane()*obstacleAmountMod));
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
                     if (currminTilesBeforeOverhead <= 0) currminTilesBeforeOverhead = minTilesBeforeOverhead;
-                    if (n >= obstacleTolerance)
-                    {
-                        startPosition += Vector3.forward * tileScale;
-                        GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));//generate 1 tile lebih jika obstacle terlalu banyak
-                    }
                 }
                 else if (opt == 2)
                 {
@@ -323,6 +318,15 @@ namespace FantasyErrand
                         startPosition += Vector3.forward * tileScale;
                         GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
                     }
+                }
+                if (amount >= obstacleTolerance && currminTilesBeforeOverhead!=1)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        startPosition += Vector3.forward * tileScale;
+                        GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
+                    }
+                    //generate 2  tile lebih jika obstacle terlalu banyak
                 }
             }
         }

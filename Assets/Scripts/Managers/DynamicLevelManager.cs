@@ -20,11 +20,9 @@ namespace FantasyErrand
 
         bool isGameEnd = false;
 
-        private float coinAmountMod = 1;
         private float tileMOd = 1;
         private float powerUpsMod = 1;
 
-        private float obstacleAmountMod = 1;
         public static float totalPosEmotions = 0;
         public static float totalNegEmotions = 0;
         public static string emoStatus = "Null";
@@ -630,7 +628,7 @@ namespace FantasyErrand
                    
                     if (difficulty.Equals(Difficulty.Easy))
                     {
-                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions-getNeutral(negativeEmotions)>0)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;
@@ -641,7 +639,7 @@ namespace FantasyErrand
                             if (coinAmountMod > 0.5)
                                 coinAmountMod -= (float)0.1;
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions-getNeutral(positiveEmotions)>0)
                         {
                             if (obstacleMod > 0)
                                 obstacleMod -= 5;
@@ -655,7 +653,7 @@ namespace FantasyErrand
                     }
                     else if (difficulty.Equals(Difficulty.Hard))
                     {
-                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions - getNeutral(negativeEmotions) > 0)
                         {
                             if (obstacleMod > -GetTileRate2(TileType.Obstacle) / 2)
                                 obstacleMod -= 5;
@@ -668,7 +666,7 @@ namespace FantasyErrand
                             if (coinAmountMod < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0)
                         {
                             if (obstacleMod < 0)
                                 obstacleMod += 5;
@@ -684,7 +682,7 @@ namespace FantasyErrand
                     }
                     else if (difficulty.Equals(Difficulty.Special))
                     {
-                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions>0)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions - getNeutral(negativeEmotions) > 0)
                         {
                             if (obstacleMod > -GetTileRate2(TileType.Obstacle) / 2)
                                 obstacleMod -= 5;
@@ -698,7 +696,7 @@ namespace FantasyErrand
                                 coinAmountMod += (float)0.1;
 
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions>0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;
@@ -717,8 +715,19 @@ namespace FantasyErrand
                 yield return new WaitForSeconds(0.5f);
             }
         }
+
+        public float getNeutral(Affdex.Emotions [] type)
+        {
+            float totalEmo = 0;
+            for(int i = 0; i < type.Length; i++)
+            {
+                totalEmo += GameDataManager.instance.NeutralData.emotions[type[i].ToString()];
+            }
+            return totalEmo / (type.Length * 100);
+        }
     }
 
+    
     
 
 }

@@ -1487,6 +1487,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8332811227509039564, guid: 923d762fa07374f4dbd2f2b31a92d941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8224274500982767798, guid: 923d762fa07374f4dbd2f2b31a92d941,
+        type: 3}
+      propertyPath: isFrontFacing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4732051125486334, guid: 923d762fa07374f4dbd2f2b31a92d941, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.66
@@ -1523,16 +1533,6 @@ PrefabInstance:
         type: 3}
       propertyPath: startOnWake
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8332811227509039564, guid: 923d762fa07374f4dbd2f2b31a92d941,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8224274500982767798, guid: 923d762fa07374f4dbd2f2b31a92d941,
-        type: 3}
-      propertyPath: isFrontFacing
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 923d762fa07374f4dbd2f2b31a92d941, type: 3}
@@ -4653,7 +4653,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 2800
-      value: 5
+      value: 4
       inSlope: 0
       outSlope: 0
       tangentMode: 0

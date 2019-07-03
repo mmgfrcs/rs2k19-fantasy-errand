@@ -628,7 +628,7 @@ namespace FantasyErrand
                    
                     if (difficulty.Equals(Difficulty.Easy))
                     {
-                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions-getNeutral(negativeEmotions)>0)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions-getNeutral(negativeEmotions)>0.1)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;
@@ -639,7 +639,7 @@ namespace FantasyErrand
                             if (coinAmountMod > 0.5)
                                 coinAmountMod -= (float)0.1;
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions-getNeutral(positiveEmotions)>0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions-getNeutral(positiveEmotions)>0.1)
                         {
                             if (obstacleMod > 0)
                                 obstacleMod -= 5;
@@ -653,7 +653,7 @@ namespace FantasyErrand
                     }
                     else if (difficulty.Equals(Difficulty.Hard))
                     {
-                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions - getNeutral(negativeEmotions) > 0)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions - getNeutral(negativeEmotions) > 0.1)
                         {
                             if (obstacleMod > -GetTileRate2(TileType.Obstacle) / 2)
                                 obstacleMod -= 5;
@@ -666,7 +666,7 @@ namespace FantasyErrand
                             if (coinAmountMod < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0.1)
                         {
                             if (obstacleMod < 0)
                                 obstacleMod += 5;
@@ -682,7 +682,7 @@ namespace FantasyErrand
                     }
                     else if (difficulty.Equals(Difficulty.Special))
                     {
-                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions - getNeutral(negativeEmotions) > 0)
+                        if (totalNegEmotions > totalPosEmotions && totalNegEmotions - getNeutral(negativeEmotions) > 0.1)
                         {
                             if (obstacleMod > -GetTileRate2(TileType.Obstacle) / 2)
                                 obstacleMod -= 5;
@@ -696,7 +696,7 @@ namespace FantasyErrand
                                 coinAmountMod += (float)0.1;
 
                         }
-                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0)
+                        else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0.1)
                         {
                             if (GetTileRate2(TileType.Obstacle) + obstacleMod < GetTileRate2(TileType.Obstacle) * 2)
                                 obstacleMod += 5;
@@ -716,15 +716,7 @@ namespace FantasyErrand
             }
         }
 
-        public float getNeutral(Affdex.Emotions [] type)
-        {
-            float totalEmo = 0;
-            for(int i = 0; i < type.Length; i++)
-            {
-                totalEmo += GameDataManager.instance.NeutralData.emotions[type[i].ToString()];
-            }
-            return totalEmo / (type.Length * 100);
-        }
+        
     }
 
     

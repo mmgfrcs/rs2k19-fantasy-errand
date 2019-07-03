@@ -170,5 +170,15 @@ namespace FantasyErrand
             return temp;
         }
 
+        public float getNeutral(Affdex.Emotions[] type)
+        {
+            float totalEmo = 0;
+            for (int i = 0; i < type.Length; i++)
+            {
+                totalEmo += GameDataManager.instance.NeutralData.emotions[type[i].ToString()];
+            }
+            return totalEmo / (type.Length * 100);
+        }
+
     } 
 }

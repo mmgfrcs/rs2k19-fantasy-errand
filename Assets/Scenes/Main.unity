@@ -341,7 +341,7 @@ MonoBehaviour:
     spaceCount: 18
     wordCount: 19
     linkCount: 0
-    lineCount: 2
+    lineCount: 3
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -10048,5 +10048,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3758604240624301221, guid: b5171bbe436996a4897968e9ad290fee,
+        type: 3}
+      propertyPath: AudioClipList.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758604240624301221, guid: b5171bbe436996a4897968e9ad290fee,
+        type: 3}
+      propertyPath: AudioClipList.Array.data[10]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6758407cbd02b244986ebc7931b567f0, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5171bbe436996a4897968e9ad290fee, type: 3}

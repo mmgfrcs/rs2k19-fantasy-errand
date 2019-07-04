@@ -42,7 +42,7 @@ namespace FantasyErrand
         UnityEngine.UI.Image fader;
         float startTime;
         internal LevelManagerBase levelManager;
-
+        bool isPaused = false;
 
         internal float DynamicSpeedModifier=0;
         public SceneChanger changer;
@@ -91,6 +91,7 @@ namespace FantasyErrand
         {
             if (obj.collider.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
             {
+                SoundManager.Instance.PlaySound("Collision");
                 rb.constraints = RigidbodyConstraints.FreezeAll;
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
@@ -213,6 +214,20 @@ namespace FantasyErrand
         public void ExitGame()
         {
             changer.ChangeScene("Main");
+        }
+
+        public void PauseGame()
+        {
+            if (isPaused)
+            {
+                Time.timeScale = 1;
+                isPaused = false;
+            }
+            else
+            {
+                Time.timeScale = 0;
+                isPaused = true;
+            }
         }
     }
 

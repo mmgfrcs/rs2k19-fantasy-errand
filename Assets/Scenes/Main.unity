@@ -341,7 +341,7 @@ MonoBehaviour:
     spaceCount: 18
     wordCount: 19
     linkCount: 0
-    lineCount: 3
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -9873,6 +9873,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LoadingSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474026359892965808, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474026359892965808, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3474026358806195274, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
         type: 3}

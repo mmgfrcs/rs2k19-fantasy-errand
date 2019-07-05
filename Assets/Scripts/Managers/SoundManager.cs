@@ -144,7 +144,6 @@ namespace FantasyErrand
 
                 if (currTime >= timeGapBackSound)
                 {
-                    print("Growl Jalan");
                     currTime = 0;
                     PlaySound("Growl");
                 }

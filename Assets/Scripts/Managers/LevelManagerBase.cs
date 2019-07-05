@@ -159,7 +159,7 @@ namespace FantasyErrand
 
         private float GetMinCoins()
         {
-            float temp = minimumCoinLane * obstacleAmountMod;
+            float temp = minimumCoinLane * coinAmountMod;
             return temp;
         }
 

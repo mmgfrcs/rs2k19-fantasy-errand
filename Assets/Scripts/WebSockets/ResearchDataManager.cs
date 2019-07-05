@@ -139,7 +139,11 @@ namespace FantasyErrand.WebSockets
                 powerupsRate = levelManager.GetTileRate(TileType.Powerups),
                 difficulty = MainMenuManager.mainMenuDifficulty.ToString(),
                 gameType = levelManager is StaticLevelManager ? "Static" : "Dynamic",
-                playerSpeed = gameManager.GetCurrSpeed()
+                playerSpeed = gameManager.GetCurrSpeed(),
+                maxObstacle = levelManager.GetMaxObs(),
+                maxCoin = levelManager.GetMaxCoins(),
+                minObstacle = levelManager.GetMinObs(),
+                minCoin = levelManager.GetMinCoins()
             };
 
             if (ExpressionsList.Count > 0)

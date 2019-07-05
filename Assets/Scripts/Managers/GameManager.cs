@@ -203,7 +203,9 @@ namespace FantasyErrand
         public void EndGameTruly()
         {
             OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = true, Score = Score, Distance = Distance, Currency = Currency, Multiplier = Multiplier });
-
+            OnGameEnd = null;
+            OnGameStart = null;
+            OnGameRollingStart = null;
         }
 
         public void RestartGame()

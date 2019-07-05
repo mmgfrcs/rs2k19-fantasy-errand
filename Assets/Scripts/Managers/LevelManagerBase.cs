@@ -144,26 +144,26 @@ namespace FantasyErrand
             return temp;
         }
 
-        private float GetMinObs()
+        internal float GetMinObs()
         {
             float temp = minimumObstacleLane*obstacleAmountMod;
             return temp;
         }
 
-        private float GetMaxObs()
+        internal float GetMaxObs()
         {
             float distance = gameManager.Distance;
             float temp = Mathf.Round(ObstacleLane.Evaluate(distance)*obstacleAmountMod);
             return temp;
         }
 
-        private float GetMinCoins()
+        internal float GetMinCoins()
         {
             float temp = minimumCoinLane * coinAmountMod;
             return temp;
         }
 
-        private float GetMaxCoins()
+        internal float GetMaxCoins()
         {
             float distance = gameManager.Distance;
             float temp = Mathf.Round(CoinLane.Evaluate(distance) * coinAmountMod);

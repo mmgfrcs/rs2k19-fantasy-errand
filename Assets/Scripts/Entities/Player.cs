@@ -558,8 +558,6 @@ namespace FantasyErrand.Entities
             return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
         }
 
-
-
         void StartResetingPowerUps(GameEndEventArgs abc)
         {
             resetAllPowerUps = true;

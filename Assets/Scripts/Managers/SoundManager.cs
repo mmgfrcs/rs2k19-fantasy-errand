@@ -32,7 +32,10 @@ namespace FantasyErrand
             }
             else
             {
+                AudioListener listener = GetComponent<AudioListener>();
+                if (listener != null) Destroy(listener); 
                 Destroy(this);
+                
                 return;
             }
             DontDestroyOnLoad(gameObject);

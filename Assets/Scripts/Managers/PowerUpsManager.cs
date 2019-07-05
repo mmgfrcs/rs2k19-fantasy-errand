@@ -143,7 +143,6 @@ namespace FantasyErrand
         {
             boostPhase = true;
             player.StartBoostPowerUps(boostDuration, boostPhaseDuration);
-            
         }
 
         public void StartGoldenCoinPowerUps()

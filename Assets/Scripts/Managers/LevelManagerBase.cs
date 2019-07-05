@@ -89,12 +89,15 @@ namespace FantasyErrand
         protected float coinAmountMod = 1;
         protected float obstacleAmountMod = 1;
 
-
-
         // Use this for initialization
         protected virtual void Start()
         {
+            PowerUpsManager.GoldenCoinEffectChanged += GoldenCoinEffect;
+        }
 
+        private void GoldenCoinEffect(bool active, float duration)
+        {
+            SetGoldenCoin(active);
         }
 
         // Update is called once per frame
@@ -184,5 +187,125 @@ namespace FantasyErrand
             return totalEmo / (type.Length * 100);
         }
 
-    } 
+        /// <summary>
+        /// Selects the coin pooler to use based on distance and Coin Value upgrade level
+        /// </summary>
+        /// <returns></returns>
+        public int SelectCoinPooler()
+        {
+            int val = 0;
+            float distance = gameManager.Distance;
+
+            if (distance >= silverDistance && distance < goldDistance)
+            {
+                float[] probs = { 1, 1 };
+                val = MathRand.WeightedPick(probs);
+            }
+            else if (distance >= goldDistance && distance < platinumDistance)
+            {
+                float[] probs = { 1, 1, 1 };
+                val = MathRand.WeightedPick(probs);
+            }
+            else if (distance >= platinumDistance)
+            {
+                float[] probs = { 1, 1, 1, 1 };
+                val = MathRand.WeightedPick(probs);
+            }
+            else
+            {
+                val = 0;
+            }
+
+            return val + (int)TileKey.CoinCopper;
+        }
+
+
+        public void SetGoldenCoin(bool isSwitched)
+        {
+            turnGoldenCoin = isSwitched;
+            if (isSwitched)
+            {
+                int size = spawnedObjects.Count;
+                for (int i = 0; i < size; i++)
+                {
+                    CollectibleBase collect = spawnedObjects[i].GetComponent<CollectibleBase>();
+                    if (collect != null)
+                    {
+                        if (collect.CollectibleType == CollectibleType.Monetary)
+                        {
+                            //CoinType temp = spawnedObjects[i].GetComponent<CoinCollectible>().CoinType;
+                            TileKey temps = spawnedObjects[i].GetComponent<CoinCollectible>().TileType;
+                            Vector3 currPos = spawnedObjects[i].transform.position;
+                            poolDictionary[temps].Destroy(spawnedObjects[i]);
+
+                            spawnedObjects.RemoveAt(i);
+                            GameObject go = poolDictionary[TileKey.CoinRuby].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
+                            spawnedObjects.Insert(i, go);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int size = spawnedObjects.Count;
+                for (int i = 0; i < size; i++)
+                {
+                    CollectibleBase collect = spawnedObjects[i].GetComponent<CollectibleBase>();
+                    if (collect != null)
+                    {
+                        if (collect.CollectibleType == CollectibleType.Monetary)
+                        {
+                            TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().TileType;
+                            Vector3 currPos = spawnedObjects[i].transform.position;
+                            poolDictionary[temp].Destroy(spawnedObjects[i]);
+
+                            spawnedObjects.RemoveAt(i);
+                            GameObject go = poolDictionary[(TileKey)SelectCoinPooler()].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
+                            spawnedObjects.Insert(i, go);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class TileSpawnRates
+    {
+        public AnimationCurve
+            baseTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100)),
+            obstacleTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100)),
+            coinsTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100)),
+            powerupsTile = new AnimationCurve(new Keyframe(0, 100), new Keyframe(100, 100));
+
+        public AnimationCurve this[int val]
+        {
+            get
+            {
+                if (val == 0) return baseTile;
+                else if (val == 1) return obstacleTile;
+                else if (val == 2) return coinsTile;
+                else if (val == 3) return powerupsTile;
+                else throw new System.IndexOutOfRangeException("There are only 4 rates in TileSpawnRates");
+            }
+            set
+            {
+                if (val == 0) baseTile = value;
+                else if (val == 1) obstacleTile = value;
+                else if (val == 2) coinsTile = value;
+                else if (val == 3) powerupsTile = value;
+                else throw new System.IndexOutOfRangeException("There are only 4 rates in TileSpawnRates");
+            }
+        }
+
+        public AnimationCurve[] ToArray()
+        {
+            return new AnimationCurve[] { baseTile, obstacleTile, coinsTile, powerupsTile };
+        }
+
+        public static implicit operator AnimationCurve[] (TileSpawnRates rate)
+        {
+            return rate.ToArray();
+        }
+    }
 }

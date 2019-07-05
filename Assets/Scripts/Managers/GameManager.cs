@@ -38,7 +38,7 @@ namespace FantasyErrand
         public static event BaseGameEventDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
         
-        TextMeshProUGUI scoreText, debugText;
+        TextMeshProUGUI scoreText, debugText, coinsText;
         UnityEngine.UI.Image fader;
         float startTime;
         internal LevelManagerBase levelManager;
@@ -62,13 +62,20 @@ namespace FantasyErrand
             //Setup game
             rb = player.GetComponent<Rigidbody>();
 
-            Player.coinAdded += AddCurrency;
-            Player.speedBroadcast += SetPlayerSpeed;
+            Player.OnCoinAdded += AddCurrency;
+            PowerUpsManager.BoostEffectChanged += BoostEffect;
+
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
             debugText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.DebugText);
+            coinsText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.CoinsText);
             StartGame();
+        }
+
+        private void BoostEffect(bool active, float duration, float multiplier)
+        {
+            OnBoost(active ? multiplier : 1);
         }
 
         internal void StartGame()
@@ -128,7 +135,7 @@ namespace FantasyErrand
 
             UIManager.OnRestartGame += () => {
                 fader.gameObject.SetActive(true);
-                fader.DOFade(1f, 2f).onComplete = () => SceneManager.LoadScene("SampleScene");
+                fader.DOFade(1f, 2f).onComplete = () => { SceneManager.LoadScene("SampleScene"); };
                 EndGameTruly();
             };
 
@@ -159,8 +166,14 @@ namespace FantasyErrand
                 Distance += player.speed * Time.deltaTime;
                 if (IsGameRunning) player.speed = multiplierSpeed * (speedGraph.Evaluate(Distance)+DynamicSpeedModifier);
             }
-            
-            if(scoreText != null) scoreText.text = Score.ToString("n0");
+
+            if (scoreText != null) scoreText.text = Score.ToString("n0");
+            if (coinsText != null) coinsText.text = Currency.ToString("n0");
+        }
+        public void OnBoost(float multiplier)
+        {
+            StartCoroutine(Boost(multiplier));
+            //multiplierSpeed= multiplier;
         }
 
         public IEnumerator Boost(float multiplier)
@@ -169,18 +182,14 @@ namespace FantasyErrand
             yield return tween.WaitForCompletion();
         }
 
-        public void SetPlayerSpeed(float multiplier)
-        {
-            StartCoroutine(Boost(multiplier));
-            //multiplierSpeed= multiplier;
-        }
+
 
         public float GetCurrSpeed()
         {
             return multiplierSpeed * (speedGraph.Evaluate(Distance) + DynamicSpeedModifier);
         }
 
-        public void AddCurrency(float value)
+        public void AddCurrency(int value)
         {
             Currency += value;
             Score += value * Multiplier;

@@ -13,7 +13,6 @@ namespace FantasyErrand
 
         internal static string SaveFileName { get; private set; } = "saves";
         internal static string ImagePath { get; private set; } = "img64";
-
         internal UpgradeEffects UpgradeEffects { get; private set; }
         internal GameData Data { get; private set; }
         internal bool ResearchMode { get; private set; }

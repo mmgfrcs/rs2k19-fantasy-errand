@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities;
 using FantasyErrand.Utilities;
-using UnityEngine.UI;
+using System;
+
 namespace FantasyErrand
 {
     public enum PowerUpsType {
@@ -12,176 +13,185 @@ namespace FantasyErrand
         Boost,
         GoldenCoin
     };
-    public delegate void MagnetBroadcast(bool activated);
-    
+
+    public delegate void MagnetBroadcast(bool active, float duration, float range);
+    public delegate void PhaseBroadcast(bool active, float duration);
+    public delegate void BoostBroadcast(bool active, float duration, float multiplier);
+    public delegate void GoldenCoinBroadcast(bool active, float duration);
     
     public class PowerUpsManager : MonoBehaviour
     {
-        [SerializeField]
-        private Player player;
-        public static event MagnetBroadcast magnetBroadcast;
+        [SerializeField] private Player player;
+        public static event MagnetBroadcast MagnetEffectChanged;
+        public static event PhaseBroadcast PhaseEffectChanged;
+        public static event BoostBroadcast BoostEffectChanged;
+        public static event GoldenCoinBroadcast GoldenCoinEffectChanged;
 
         private bool boostPhase = false;
         private float boostPhaseDuration = 2f;
 
-        [Header("Magnet Attribute")]
-        private float magnetRange;
-        public int magnetSpeed = 8;
-        private float magnetDuration;
-        private int magnetLevel;
-        private bool resetMagnet=false;
-        private bool magnetStarted=false;
-        private float magnetTime;
-        [Header("Phase Attribute")]
-        private int phaseLevel;
-        private float phaseDuration;
-        private bool resetPhase=false;
-        private bool phaseStarted=false;
-        [Header("Boost Attribute")]
-        private float boostDuration;
-        private bool resetBoost=false;
-        private bool boostStarted = false;
-        [Header("Golden Coin Attribute")]
-        private float goldenCoinDuration;
-        private bool resetGoldenCoin = false;
-        private bool goldenCoinStarted = false;
+        public int magnetPullSpeed = 8;
+        public float boostMultiplier = 2;
 
-        
+        public TimeSpan MagnetEndTime { get; private set; }
+        public TimeSpan PhaseEndTime { get; private set; }
+        public TimeSpan BoostEndTime { get; private set; }
+        public TimeSpan GoldenCoinEndTime { get; private set; }
 
-        public Slider magnetSlider;
-        public Slider boostSlider;
-        public Slider phaseSlider;
-        public Slider goldenCoinSlider;
-
-        private int gameManagerBroadcastCount = 0;
         // Use this for initialization
         void Start()
         {
-            //<-------------Magnet Part----------->
-            SetMagnetEffect();
-            MagnetCollectible.TurnMagnet += StartMagnetPowerUps;
 
-            //<-------------Phasing Part----------->
-            SetPhaseEffect();
-            PhaseCollectible.TurnPhasing += StartPhasePowerUps;
+        }
 
-            //<-------------Boost Part----------->
-            SetBoostEffect();
-            BoostCollectible.TurnBoost += StartBoostPowerUps;
+        private void Player_OnGetPowerUps(PowerUpsType type)
+        {
+            switch(type)
+            {
+                case PowerUpsType.Magnet:
+                    {
+                        int level = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
+                        float duration = GameDataManager.instance.UpgradeEffects.MagnetDuration[level];
+                        float range = GameDataManager.instance.UpgradeEffects.MagnetRange[level];
 
-            SetGoldenCoinEffect();
-            GoldenCoinCollectible.TurnGoldenCoin += StartGoldenCoinPowerUps;
+                        if(MagnetEndTime <= TimeSpan.Zero)
+                        {
+                            MagnetEndTime = TimeSpan.FromSeconds(duration);
+                            MagnetEffectChanged?.Invoke(true, duration, range);
+                            StartCoroutine(MagnetEffect());
+                        }
+                        else MagnetEndTime = TimeSpan.FromSeconds(duration);
+                        break;
+                    }
+                case PowerUpsType.Boost:
+                    {
+                        int level = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
+                        float duration = GameDataManager.instance.UpgradeEffects.BoostDuration[level];
 
-            Player.phaseBroadcast += StartTemporaryPhasePower;
+                        if(BoostEndTime <= TimeSpan.Zero)
+                        {
+                            BoostEndTime = TimeSpan.FromSeconds(duration + 3);
+                            StartCoroutine(BoostEffect(duration));
+                        }
+                        else BoostEndTime = TimeSpan.FromSeconds(duration + 2);
+
+                        break;
+                    }
+                case PowerUpsType.GoldenCoin:
+                    {
+                        int level = GameDataManager.instance.Data.UpgradeLevels.GoldenCoinLevel;
+                        float duration = GameDataManager.instance.UpgradeEffects.GoldenCoinDuration[level];
+
+                        if (GoldenCoinEndTime <= TimeSpan.Zero)
+                        {
+                            GoldenCoinEndTime = TimeSpan.FromSeconds(duration);
+                            StartCoroutine(GoldenCoinEffect(duration));
+                        }
+                        else GoldenCoinEndTime = TimeSpan.FromSeconds(duration);
+
+                        break;
+                    }
+                case PowerUpsType.Phase:
+                    {
+                        int level = GameDataManager.instance.Data.UpgradeLevels.PhaseLevel;
+                        float duration = GameDataManager.instance.UpgradeEffects.PhaseDuration[level];
+
+                        if (PhaseEndTime <= TimeSpan.Zero)
+                        {
+                            PhaseEndTime = TimeSpan.FromSeconds(duration);
+                            StartCoroutine(PhaseEffect(duration));
+                        }
+                        else PhaseEndTime = TimeSpan.FromSeconds(duration);
+                        break;
+                    }
+            }
+        }
+
+        private void GameManager_OnGameEnd(GameEndEventArgs args)
+        {
+
+            if (MagnetEndTime > TimeSpan.Zero) MagnetEffectChanged?.Invoke(false, 0, 0);
+            if (PhaseEndTime > TimeSpan.Zero) PhaseEffectChanged?.Invoke(false, 0);
+            if (BoostEndTime > TimeSpan.Zero) BoostEffectChanged?.Invoke(false, 0, 0);
+            if (GoldenCoinEndTime > TimeSpan.Zero) GoldenCoinEffectChanged?.Invoke(false, 0);
+
+            MagnetEndTime = TimeSpan.Zero;
+            PhaseEndTime = TimeSpan.Zero;
+            BoostEndTime = TimeSpan.Zero;
+            GoldenCoinEndTime = TimeSpan.Zero;
             
         }
 
         void Update()
         {
-            SetPowerUpsBar();
+            if (MagnetEndTime > TimeSpan.Zero) MagnetEndTime.Subtract(TimeSpan.FromSeconds(Time.deltaTime));
+            if (PhaseEndTime > TimeSpan.Zero) PhaseEndTime.Subtract(TimeSpan.FromSeconds(Time.deltaTime));
+            if (BoostEndTime > TimeSpan.Zero) BoostEndTime.Subtract(TimeSpan.FromSeconds(Time.deltaTime));
+            if (GoldenCoinEndTime > TimeSpan.Zero) GoldenCoinEndTime.Subtract(TimeSpan.FromSeconds(Time.deltaTime));
+
+            if(BoostEndTime <= TimeSpan.Zero && PhaseEndTime <= TimeSpan.Zero) 
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
-        void SetPowerUpsBar()
+        private IEnumerator MagnetEffect()
         {
-            //Magnet Power
-            if (player.magnetTime == 0)
+            while(MagnetEndTime > TimeSpan.Zero)
             {
-                magnetSlider.value = 0;
-            }
+                int magnetLevel = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
+                float magnetRange = GameDataManager.instance.UpgradeEffects.MagnetRange[magnetLevel];
 
-            else
-            {
-                magnetSlider.value = 1 - (player.magnetTime / magnetDuration);
-            }
+                RaycastHit[] hits = Physics.SphereCastAll(transform.position, magnetRange, transform.forward, magnetRange, LayerMask.GetMask("Default"), QueryTriggerInteraction.UseGlobal);
+                foreach (RaycastHit hit in hits)
+                {
+                    GameObject currObj = hit.transform.gameObject;
+                    CollectibleBase collect = currObj.GetComponent<CollectibleBase>();
+                    if (collect != null && collect.CollectibleType == CollectibleType.Monetary)
+                    {
+                        Vector3 dir = collect.transform.position - player.transform.position;
+                        collect.transform.Translate(dir.normalized * magnetPullSpeed);
+                    }
+                }
                 
-            ///Phasing power
-            if (player.phaseTime <= 0)
-            {
-                phaseSlider.value = 0;
+                yield return null;
             }
-            else if (boostPhase)
+
+            MagnetEffectChanged?.Invoke(false, 0, 0);
+        }
+
+        IEnumerator BoostEffect(float duration)
+        {
+            SoundManager.Instance.PlaySound("Boost");
+            BoostEffectChanged?.Invoke(true, duration + 3, boostMultiplier);
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+            yield return new WaitForSeconds(1f);
+            while(BoostEndTime > TimeSpan.FromSeconds(2))
             {
-                phaseSlider.value = 1 - (player.phaseTime / boostPhaseDuration);
-                //if (player.phaseTime>=1.9)
-                //{
-                //    phaseSlider.value = 0;
-                //    player.phaseTime = 0;
-                //    boostPhase = false;
-                //}
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+                yield return null;
             }
-            else
+            BoostEffectChanged?.Invoke(false, duration + 3, boostMultiplier);
+            yield return new WaitForSeconds(2f);
+        }
+
+        IEnumerator GoldenCoinEffect(float duration)
+        {
+            GoldenCoinEffectChanged?.Invoke(true, duration);
+            while (GoldenCoinEndTime > TimeSpan.Zero)
             {
-                phaseSlider.value = 1 - (player.phaseTime / phaseDuration);
-                boostPhase = false;
+                yield return null;
             }
-            //Gold coin
-            if (player.goldenCoinTime == 0)
-                goldenCoinSlider.value = 0;
-            else
-                goldenCoinSlider.value = 1 - (player.goldenCoinTime / goldenCoinDuration);
-
-            //Boost Power
-            if (player.boostTime == 0)
-                boostSlider.value = 0;
-            else
-                boostSlider.value = 1- (player.boostTime / boostDuration);
-
-
+            GoldenCoinEffectChanged?.Invoke(false, duration);
         }
 
-        public void StartMagnetPowerUps()
+        IEnumerator PhaseEffect(float duration)
         {
-            player.StartMagnetPowerUps(magnetDuration,magnetRange);
-        }
-
-        public void StartPhasePowerUps()
-        {
-            player.StartPhasePowerUps(phaseDuration);
-        }
-
-        public void StartBoostPowerUps()
-        {
-            boostPhase = true;
-            player.StartBoostPowerUps(boostDuration, boostPhaseDuration);
-        }
-
-        public void StartGoldenCoinPowerUps()
-        {
-            player.StartGoldenCoinPowerUps(goldenCoinDuration);
-        }
-
-        public void StartTemporaryPhasePower()
-        {
-            if (gameManagerBroadcastCount == 0)
+            PhaseEffectChanged?.Invoke(true, duration);
+            while (PhaseEndTime > TimeSpan.Zero)
             {
-                gameManagerBroadcastCount++;
-                return;
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
+                yield return null;
             }
-            else if(player!=null)
-                player.StartPhasePowerUps(phaseDuration);
-        }
-
-        public void SetPhaseEffect()
-        {
-            phaseLevel = GameDataManager.instance.Data.UpgradeLevels.PhaseLevel;
-            phaseDuration = GameDataManager.instance.UpgradeEffects.PhaseDuration[phaseLevel];
-        }
-        public void SetBoostEffect()
-        {
-            int boostLvl = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
-            boostDuration = GameDataManager.instance.UpgradeEffects.BoostDuration[boostLvl];
-            
-        }
-        public void SetGoldenCoinEffect()
-        {
-            int level = GameDataManager.instance.Data.UpgradeLevels.GoldenCoinLevel;
-            goldenCoinDuration = GameDataManager.instance.UpgradeEffects.GoldenCoinDuration[level];
-        }
-        public void SetMagnetEffect()
-        {
-            magnetLevel = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
-            magnetDuration= GameDataManager.instance.UpgradeEffects.MagnetDuration[magnetLevel];
-            magnetRange = GameDataManager.instance.UpgradeEffects.MagnetRange[magnetLevel];
+            PhaseEffectChanged?.Invoke(false, duration);
         }
         
         IEnumerator ActivateTemporaryPhasePower()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FantasyErrand.Entities;
-using FantasyErrand.Entities.Interfaces;
+
 using FantasyErrand;
 using FantasyErrand.Utilities;
 
@@ -23,8 +23,8 @@ namespace FantasyErrand
         }
 
         protected override void Start()
-        { 
-            Player.goldenCoinBroadcast += SetGoldenCoin;
+        {
+            base.Start();
             StartCoroutine(InitialGeneration());
         }
 
@@ -46,7 +46,7 @@ namespace FantasyErrand
                     player.transform.position.z>spawnedObjects[i].transform.position.z)
                 {
                     //Check tile type by GetComponent
-                    if (spawnedObjects[i].GetComponent<IObstacle>() != null)
+                    if (spawnedObjects[i].GetComponent<CollectibleBase>() != null)
                     {
                         if (spawnedObjects[i].CompareTag("Overhead"))
                             poolDictionary[TileKey.Overhead].Destroy(spawnedObjects[i]);
@@ -63,12 +63,12 @@ namespace FantasyErrand
                         
                     else
                     {
-                        ICollectible collect = spawnedObjects[i].GetComponent<ICollectible>();
+                        CollectibleBase collect = spawnedObjects[i].GetComponent<CollectibleBase>();
                         if (collect != null)
                         {
-                            if (collect.Type == CollectibleType.Monetary)
+                            if (collect.CollectibleType == CollectibleType.Monetary)
                             {
-                                TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
+                                TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().TileType;
                                 poolDictionary[temp].Destroy(spawnedObjects[i]);
 
                             }
@@ -431,85 +431,6 @@ namespace FantasyErrand
         }
 
 
-        /// <summary>
-        /// Selects the coin pooler to use based on distance and Coin Value upgrade level
-        /// </summary>
-        /// <returns></returns>
-        public int SelectCoinPooler()
-        {
-            int val = 0;
-            float distance = gameManager.Distance;
-
-            if (distance >= silverDistance && distance < goldDistance)
-            {
-                float[] probs = { 1, 1 };
-                val = MathRand.WeightedPick(probs);
-            }
-            else if (distance >= goldDistance && distance < platinumDistance)
-            {
-                float[] probs = { 1, 1, 1 };
-                val = MathRand.WeightedPick(probs);
-            }
-            else if (distance >= platinumDistance)
-            {
-                float[] probs = { 1, 1, 1, 1 };
-                val = MathRand.WeightedPick(probs);
-            }
-            else
-            {
-                val = 0;
-            }
-
-            return val + (int)TileKey.CoinCopper;
-        }
-
-        public void SetGoldenCoin(bool isSwitched)
-        {
-            turnGoldenCoin = isSwitched;
-            if (isSwitched)
-            {
-                int size = spawnedObjects.Count;
-                for (int i = 0; i < size; i++)
-                {
-                    ICollectible collect = spawnedObjects[i].GetComponent<ICollectible>();
-                    if (collect != null)
-                    {
-                        if (collect.Type == CollectibleType.Monetary)
-                        {
-                            CoinType temp = spawnedObjects[i].GetComponent<CoinCollectible>().coinType;
-                            TileKey temps = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
-                            Vector3 currPos = spawnedObjects[i].transform.position;
-                            poolDictionary[temps].Destroy(spawnedObjects[i]);
-
-                            spawnedObjects.RemoveAt(i);
-                            GameObject go = poolDictionary[TileKey.CoinRuby].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
-                            spawnedObjects.Insert(i, go);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                int size = spawnedObjects.Count;
-                for (int i = 0; i < size; i++)
-                {
-                    ICollectible collect = spawnedObjects[i].GetComponent<ICollectible>();
-                    if (collect != null)
-                    {
-                        if (collect.Type == CollectibleType.Monetary)
-                        {
-                            TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().tileType;
-                            Vector3 currPos = spawnedObjects[i].transform.position;
-                            poolDictionary[temp].Destroy(spawnedObjects[i]);
-
-                            spawnedObjects.RemoveAt(i);
-                            GameObject go = poolDictionary[(TileKey)SelectCoinPooler()].Instantiate(new Vector3(currPos.x, currPos.y, currPos.z));
-                            spawnedObjects.Insert(i, go);
-                        }
-                    }
-                }
-            }
-        }
     }
 
 }

@@ -1,43 +1,10 @@
-﻿using FantasyErrand.Entities.Interfaces;
+﻿
 using UnityEngine;
-namespace FantasyErrand
+namespace FantasyErrand.Entities
 {
-    public delegate void startMagnet();
-    
-
-    public class MagnetCollectible : MonoBehaviour, ICollectible
+    public class MagnetCollectible : PowerupsCollectible
     {
-        public static event startMagnet TurnMagnet;
-
-        public CollectibleType Type
-        {
-            get
-            {
-                return CollectibleType.Powerups;
-            }
-        }
-
-        public int Value
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
-        public TileKey TileType
-        {
-            get
-            {
-                return TileKey.PotionMagnet;
-            }
-        }
-
-        public void CollectibleEffect()
-        {
-            TurnMagnet?.Invoke();
-            transform.position=new Vector3(0, 0, -9999);
-        }
+        
     }
 
 }

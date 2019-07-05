@@ -1,19 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FantasyErrand.Entities.Interfaces;
 
-namespace FantasyErrand
+
+namespace FantasyErrand.Entities
 {
-    public class MovingObstacle : MonoBehaviour, IObstacleMovable
+    public class MovingObstacle : ObstacleBase
     {
 
         [SerializeField]
         float moveSpeed;
-        [SerializeField]
-        private bool isHurdling;
-        [SerializeField]
-        private float spawnRate;
         [SerializeField]
         private float minSpeed;
         public float detectionRange;
@@ -27,22 +23,6 @@ namespace FantasyErrand
             }
         }
 
-        public bool IsHurdling
-        {
-            get
-            {
-                return isHurdling;
-            }
-        }
-
-        public float SpawnRate
-        {
-            get
-            {
-                return spawnRate;
-            }
-        }
-
         public void DoMove()
         {
             transform.Translate(-Vector3.forward * minSpeed * Time.deltaTime, Space.World);
@@ -51,8 +31,9 @@ namespace FantasyErrand
         }
 
         // Use this for initialization
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             player = GameObject.FindGameObjectWithTag("Player");
             GameManager.OnGameEnd += disableMove;
             GameManager.OnGameStart += enableMove;
@@ -74,8 +55,9 @@ namespace FantasyErrand
         }
 
         // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
+            base.Update();
             if (Vector3.Distance(player.transform.position, transform.position) < detectionRange && startMove)
             {
                 transform.Translate(-Vector3.forward * minSpeed * Time.deltaTime, Space.World);

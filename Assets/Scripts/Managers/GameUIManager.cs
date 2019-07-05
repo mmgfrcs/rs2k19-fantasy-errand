@@ -8,8 +8,15 @@ namespace FantasyErrand
 {
     public class GameUIManager : MonoBehaviour
     {
-        public CanvasGroup gameOverPanel;
-        List<GameUIElement> elements;
+        [Header("General UI"), SerializeField] private TextMeshProUGUI debugText;
+        [SerializeField] private TextMeshProUGUI scoreText, coinsText;
+        [SerializeField] private Image fader, powerUpsImage;
+        [SerializeField] private Slider powerUpsSlider;
+        [SerializeField] private Button pauseBtn;
+
+        [Header("Game Over UI"), SerializeField] private TextMeshProUGUI gameOverScore;
+        [SerializeField] private TextMeshProUGUI gameOverCoins, gameOverDistance, gameOverMultiplier;
+        [SerializeField] private CanvasGroup gameOverPanel;
 
         public event BaseGameEventDelegate OnRetryGame;
         public event BaseGameEventDelegate OnRestartGame;
@@ -17,7 +24,7 @@ namespace FantasyErrand
 
         public enum UIType
         {
-            ScoreText, InfoText, DebugText, PauseBtn, PowerupSlider, PowerupImage, Fader, GameOverScore, GameOverCoins, GameOverDistance, GameOverMultiplier
+            ScoreText, DebugText, CoinsText, PauseBtn, PowerupSlider, PowerupImage, Fader, GameOverScore, GameOverCoins, GameOverDistance, GameOverMultiplier, GameOverPanel
         }
 
         // Use this for initialization
@@ -26,12 +33,81 @@ namespace FantasyErrand
             if (gameOverPanel == null) gameOverPanel = GameObject.Find("GameOver").GetComponent<CanvasGroup>();
             gameOverPanel.alpha = 0;
             gameOverPanel.blocksRaycasts = false;
-            GetAllUIElements();
         }
 
         public T GetUI<T>(UIType type) where T : MonoBehaviour
         {
-            Component text = elements.Find(x => x.type == type).obj;
+            Component text;
+
+            switch (type)
+            {
+                case UIType.CoinsText:
+                    {
+                        text = coinsText;
+                        break;
+                    }
+                case UIType.DebugText:
+                    {
+                        text = debugText;
+                        break;
+                    }
+                case UIType.Fader:
+                    {
+                        text = fader;
+                        break;
+                    }
+                case UIType.GameOverCoins:
+                    {
+                        text = gameOverCoins;
+                        break;
+                    }
+                case UIType.GameOverDistance:
+                    {
+                        text = gameOverDistance;
+                        break;
+                    }
+                case UIType.GameOverMultiplier:
+                    {
+                        text = gameOverMultiplier;
+                        break;
+                    }
+                case UIType.GameOverPanel:
+                    {
+                        text = gameOverPanel;
+                        break;
+                    }
+                case UIType.GameOverScore:
+                    {
+                        text = gameOverScore;
+                        break;
+                    }
+                case UIType.PauseBtn:
+                    {
+                        text = pauseBtn;
+                        break;
+                    }
+                case UIType.PowerupImage:
+                    {
+                        text = powerUpsImage;
+                        break;
+                    }
+                case UIType.PowerupSlider:
+                    {
+                        text = powerUpsSlider;
+                        break;
+                    }
+                case UIType.ScoreText:
+                    {
+                        text = scoreText;
+                        break;
+                    }
+                default:
+                    {
+                        text = null;
+                        break;
+                    }
+            }
+
             if (text is T) return text as T;
             else throw new System.ArgumentException("UI Type is not valid for the given generic type");
         }
@@ -48,36 +124,6 @@ namespace FantasyErrand
             gameOverPanel.alpha = 0;
         }
 
-        private void GetAllUIElements()
-        {
-            elements = new List<GameUIElement>();
-            var sceneElements = FindObjectsOfType<MonoBehaviour>();
-            foreach (var graphicElement in sceneElements)
-            {
-                if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverScore"))
-                    elements.Add(new GameUIElement(UIType.GameOverScore, graphicElement));
-                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverCoins"))
-                    elements.Add(new GameUIElement(UIType.GameOverCoins, graphicElement));
-                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverDistance"))
-                    elements.Add(new GameUIElement(UIType.GameOverDistance, graphicElement));
-                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("GameOverMultiplier"))
-                    elements.Add(new GameUIElement(UIType.GameOverMultiplier, graphicElement));
-                else if(graphicElement is TextMeshProUGUI && graphicElement.gameObject.name == "ScoreText")
-                    elements.Add(new GameUIElement(UIType.ScoreText, graphicElement));
-                else if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("Info"))
-                    elements.Add(new GameUIElement(UIType.InfoText, graphicElement));
-                else if (graphicElement is TextMeshProUGUI && graphicElement.gameObject.name.Contains("Debug"))
-                    elements.Add(new GameUIElement(UIType.DebugText, graphicElement));
-                else if (graphicElement is Image && graphicElement.gameObject.name.Contains("Fader"))
-                    elements.Add(new GameUIElement(UIType.Fader, graphicElement));
-                else if (graphicElement is Image && graphicElement.gameObject.name.Contains("Powerup"))
-                    elements.Add(new GameUIElement(UIType.PowerupImage, graphicElement));
-                else if (graphicElement is Slider && graphicElement.gameObject.name.Contains("Powerup"))
-                    elements.Add(new GameUIElement(UIType.PowerupSlider, graphicElement));
-            }
-            print($"UI Manager: {sceneElements.Length} Scripts detected, { elements.Count } UI elements detected");
-        }
-
         public void OnRetry()
         {
             OnRetryGame?.Invoke();
@@ -91,19 +137,6 @@ namespace FantasyErrand
         public void OnMainMenu()
         {
             OnBackToMainMenu?.Invoke();
-        }
-    }
-
-    [System.Serializable]
-    public class GameUIElement
-    {
-        public GameUIManager.UIType type;
-        public MonoBehaviour obj;
-
-        public GameUIElement(GameUIManager.UIType type, MonoBehaviour obj)
-        {
-            this.type = type;
-            this.obj = obj;
         }
     }
 }

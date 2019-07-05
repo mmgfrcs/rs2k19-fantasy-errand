@@ -1,8 +1,9 @@
 ﻿using DG.Tweening;
-using FantasyErrand.Entities.Interfaces;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+
 namespace FantasyErrand.Entities
 {
     public enum swipeDirection
@@ -14,16 +15,13 @@ namespace FantasyErrand.Entities
         Down,
     }
 
-    public delegate void PlayerBroadcast(float coinValue);
-    public delegate void SpeedBroadcast(float multiplier);
-    public delegate void GoldenCoinBroadcast(bool goldenCoinActive);
-    public delegate void MagnetBroadcast(bool activated);
-    public delegate void StartTemporaryPhase();
+    public delegate void CoinAddedEventDelegate(int coinValue);
+    public delegate void PowerUpsEventDelegate(PowerUpsType type);
     public class Player : MonoBehaviour
     {
-        public static event MagnetBroadcast magnetBroadcast;
-        public static event PlayerBroadcast coinAdded;
-        public static event StartTemporaryPhase phaseBroadcast;
+        public static event CoinAddedEventDelegate OnCoinAdded;
+        public event PowerUpsEventDelegate OnGetPowerUps;
+
         [Header("Non-Game")]
         public bool enableNonGameMode;
         
@@ -34,34 +32,9 @@ namespace FantasyErrand.Entities
         public float slideSpeedThreshold = 1f;
         public float turnThreshold = 4f;
 
-        EmotionManager emotionManager;
-
         internal float speed;
 
-        public delegate void TurnEventDelegate(int direction);
         public event System.Action<Collision> OnCollision;
-        public event TurnEventDelegate OnTurn;
-        public LayerMask layerMask;
-
-        //----[Magnet Attribute]
-        private float magnetRange=50;
-        public int magnetSpeed = 8;
-        private bool resetMagnet = false;
-        private bool magnetStarted = false;
-       
-        //---[Phase Attribute]
-        private bool resetPhase = false;
-        private bool phaseStarted = false;
-
-        //--[Boost Powerups Attribute]
-        private bool resetBoost = false;
-        private bool boostStarted = false;
-        public static event SpeedBroadcast speedBroadcast;
-
-        //--[GoldenCoinCollectibe Attribute]
-        private bool resetGoldenCoin = false;
-        private bool goldenCoinStarted = false;
-        public static event GoldenCoinBroadcast goldenCoinBroadcast;
 
         private bool resetAllPowerUps = false;
         /// <summary>
@@ -81,15 +54,6 @@ namespace FantasyErrand.Entities
         bool canSlide = true;
         bool canSidestep = true;
 
-        [HideInInspector]
-        public float magnetTime = 0;
-        [HideInInspector]
-        public float goldenCoinTime = 0;
-        [HideInInspector]
-        public float phaseTime = 0;
-        [HideInInspector]
-        public float boostTime = 0;
-        private bool magnetActivated = false;
         int lane = 0;
 
         //Swipe Attribute
@@ -109,8 +73,6 @@ namespace FantasyErrand.Entities
         // Use this for initialization
         void Start()
         {
-            GameManager.OnGameEnd += StartResetingPowerUps;
-            GameManager.OnGameStart += NotResetingPowerUps;
             if (enableNonGameMode)
             {
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Obstacles"), LayerMask.NameToLayer("Player"));
@@ -118,7 +80,6 @@ namespace FantasyErrand.Entities
             }
             else
             {
-                emotionManager = FindObjectOfType<EmotionManager>();
                 initialScale = transform.localScale;
             }
         }
@@ -147,20 +108,6 @@ namespace FantasyErrand.Entities
                 }    
             }
 
-            if (magnetStarted)
-            {
-                RaycastHit[] hits = Physics.SphereCastAll(transform.position, magnetRange, transform.forward, magnetRange, layerMask, QueryTriggerInteraction.UseGlobal);
-                foreach (RaycastHit hit in hits)
-                {
-                    GameObject currObj = hit.transform.gameObject;
-                    ICollectible collect = currObj.GetComponent<ICollectible>();
-                    if (collect != null)
-                    {
-                        if (collect.Type == CollectibleType.Monetary)
-                            currObj.GetComponent<CoinCollectible>().SetTarget(gameObject, magnetSpeed);
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -302,188 +249,24 @@ namespace FantasyErrand.Entities
 
         private void OnTriggerEnter(Collider other)
         {
-            ICollectible collect = other.gameObject.GetComponent<ICollectible>();
+            CollectibleBase collect = other.gameObject.GetComponent<CollectibleBase>();
             if (collect != null)
             {
 
-                if (collect.Type == CollectibleType.Powerups)
+                if (collect.CollectibleType == CollectibleType.Powerups)
                 {
                     collect.CollectibleEffect();
+                    OnGetPowerUps?.Invoke((collect as PowerupsCollectible).powerUpsType);
                     SoundManager.Instance.PlaySound("Gulp");
                 }
                 else
                 {
-                    coinAdded?.Invoke((float)collect.Value);
+                    OnCoinAdded?.Invoke((collect as CoinCollectible).CoinValue);
                     other.gameObject.transform.position = new Vector3(0, 0, -9999);
-                    other.gameObject.GetComponent<CoinCollectible>().SetMagnet(false);
                     SoundManager.Instance.PlaySound("Coin");
                 }
             }
         }
-
-
-
-
-        public void StartMagnetPowerUps(float magnetDuration,float Range)
-        {
-            StartCoroutine(MagnetPower(magnetDuration));
-            magnetRange = Range;
-        }
-
-        public void StartPhasePowerUps(float phaseDuration)
-        {
-            StartCoroutine(PhasePower(phaseDuration));
-        }
-
-        public void StartBoostPowerUps(float boostDuration,float boostPhaseDuration)
-        {
-            StartCoroutine(BoostPower(boostDuration,boostPhaseDuration));
-        }
-
-        public void StartGoldenCoinPowerUps(float goldenCoinDuration)
-        {
-            StartCoroutine(GoldenCoinPower(goldenCoinDuration));
-        }
-        IEnumerator PhasePower(float phaseDuration)
-        {
-            print("Phase Worked");
-            if (!phaseStarted)
-            {
-                phaseStarted = true;
-                float duration = phaseDuration;
-                float timeStamp = Time.time;
-                while (Time.time < timeStamp + duration)
-                {
-                    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                    phaseTime = Time.time - timeStamp;
-                    if (resetPhase)
-                    {
-                        resetPhase = false;
-                        timeStamp = Time.time;
-                    }
-                    if (resetAllPowerUps)
-                    {
-                        phaseTime = 0;
-                        break;
-                    }
-                    yield return null;
-                }
-                phaseTime = 0;
-                phaseStarted = false;
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
-            }
-            else
-            {
-                resetPhase = true;
-            }
-        }
-
-        IEnumerator MagnetPower(float magnetDuration)
-        {
-            if (!magnetStarted)
-            {
-                magnetStarted = true;
-                float duration = magnetDuration;
-                float timeStamp = Time.time;
-                while (Time.time < timeStamp + duration)
-                {
-                    magnetTime = Time.time - timeStamp;
-                    if (resetMagnet)
-                    {
-                        resetMagnet = false;
-                        timeStamp = Time.time;
-                    }
-                    if (resetAllPowerUps)
-                    {
-                        magnetTime = 0;
-                        break;
-                    }
-                    yield return null;
-                }
-                magnetStarted = false;
-                magnetBroadcast?.Invoke(false);
-            }
-            else
-            {
-                resetMagnet = true;
-            }
-        }
-
-        IEnumerator BoostPower(float boostDuration,float boostPhaseDuration)
-        {
-            print("Boost PLayer started");
-            if (!boostStarted)
-            {
-                SoundManager.Instance.PlaySound("Boost");
-                boostStarted = true;
-                speedBroadcast?.Invoke(2);
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                yield return new WaitForSeconds(1);
-                float timeStamp = Time.time;
-                while (Time.time < timeStamp + boostDuration)
-                {
-                    //SoundManager.Instance.PlaySound("Boost");
-                    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
-                    boostTime = Time.time - timeStamp;
-                    if (resetBoost)
-                    {
-                        resetBoost = false;
-                        timeStamp = Time.time;
-                    }
-                    if (resetAllPowerUps)
-                    {
-                        boostTime = 0;
-                        break;
-                    }
-                    yield return null;
-                }
-                boostStarted = false;
-                speedBroadcast?.Invoke(1);
-                yield return new WaitForSeconds(boostPhaseDuration + 1);
-                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
-                //StartCoroutine(PhasePower(boostPhaseDuration));
-            }
-            else
-            {
-                resetBoost = true;
-            }
-        }
-
-        IEnumerator GoldenCoinPower(float goldenCoinDuration)
-        {
-            print("Golden Coin Player Started");
-            if (!goldenCoinStarted)
-            {
-                goldenCoinStarted = true;
-                float duration = goldenCoinDuration;
-                float timeStamp = Time.time;
-                goldenCoinBroadcast?.Invoke(true);
-                while (Time.time < timeStamp + duration)
-                {
-                    goldenCoinTime = Time.time - timeStamp;
-                    if (resetGoldenCoin)
-                    {
-                        resetGoldenCoin = false;
-                        timeStamp = Time.time;
-                    }
-                    if (resetAllPowerUps)
-                    {
-                        goldenCoinTime = 0;
-                        break;
-                    }
-                    yield return null;
-                }
-                goldenCoinBroadcast?.Invoke(false);
-                goldenCoinStarted = false;
-            }
-            else
-            {
-                resetGoldenCoin = true;
-            }
-        }
-
-        
-
 
         public void ProcessSwipe()
         {
@@ -556,17 +339,6 @@ namespace FantasyErrand.Entities
         private float HorizontalMovementDistance()
         {
             return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
-        }
-
-        void StartResetingPowerUps(GameEndEventArgs abc)
-        {
-            resetAllPowerUps = true;
-        }
-
-        void NotResetingPowerUps()
-        {
-            resetAllPowerUps = false;
-            phaseBroadcast?.Invoke();
         }
 
     }

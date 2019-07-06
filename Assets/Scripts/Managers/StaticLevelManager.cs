@@ -46,7 +46,7 @@ namespace FantasyErrand
                     player.transform.position.z>spawnedObjects[i].transform.position.z)
                 {
                     //Check tile type by GetComponent
-                    if (spawnedObjects[i].GetComponent<CollectibleBase>() != null)
+                    if (spawnedObjects[i].GetComponent<ObstacleBase>() != null)
                     {
                         if (spawnedObjects[i].CompareTag("Overhead"))
                             poolDictionary[TileKey.Overhead].Destroy(spawnedObjects[i]);
@@ -238,6 +238,7 @@ namespace FantasyErrand
         public void GenerateStraights(Vector3 pos)
         {
             spawnedObjects.Add(poolDictionary[TileKey.Straight].Instantiate(pos));
+            print("Generate Straight at " + pos.z);
         }
 
 

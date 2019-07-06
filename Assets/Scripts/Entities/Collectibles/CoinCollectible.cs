@@ -31,5 +31,11 @@ namespace FantasyErrand
                 return value;
             }
         }
+
+        protected override void Update()
+        {
+            base.Update();
+            transform.Rotate(0, 90 * Time.deltaTime, 0);
+        }
     }
 }

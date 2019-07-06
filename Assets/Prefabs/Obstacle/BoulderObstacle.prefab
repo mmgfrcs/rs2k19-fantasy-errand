@@ -61,8 +61,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b778d61aef6c6284886908d8e989a8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRate: 70
+  tileType: 3
   isHurdling: 0
+  spawnRate: 70
   detectionRange: 90
   rotateSpeed: {x: -360, y: 0, z: 0}
   minSpeed: 5
@@ -79,9 +80,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05cd235af359cd24dae80c84a8a97e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 12
+  tileType: 3
   isHurdling: 0
   spawnRate: 0
+  moveSpeed: 12
   minSpeed: 6
   detectionRange: 15
 --- !u!54 &54758220920573356

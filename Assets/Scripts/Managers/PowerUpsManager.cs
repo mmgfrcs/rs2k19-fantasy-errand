@@ -41,7 +41,8 @@ namespace FantasyErrand
         // Use this for initialization
         void Start()
         {
-
+            player.OnGetPowerUps += Player_OnGetPowerUps;
+            GameManager.OnGameEnd += GameManager_OnGameEnd;
         }
 
         private void Player_OnGetPowerUps(PowerUpsType type)

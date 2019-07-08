@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 114312147068227886}
   - component: {fileID: 114815129130330436}
   - component: {fileID: 1049089592}
-  - component: {fileID: 1874819932351503406}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -129,7 +128,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  changer: {fileID: 1874819932351503406}
+  changer: {fileID: 1049089592}
 --- !u!114 &114166337886479578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,21 +213,6 @@ MonoBehaviour:
   gameOverMultiplier: {fileID: 0}
   gameOverPanel: {fileID: 0}
 --- !u!114 &1049089592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1491077539474944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2af0f1ecbb195cd40a0f7174c8ab2baf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fader: {fileID: 0}
-  loadingSlider: {fileID: 3474026358806195273, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
-    type: 3}
---- !u!114 &1874819932351503406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

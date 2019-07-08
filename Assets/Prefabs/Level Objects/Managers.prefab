@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 114166337886479578}
   - component: {fileID: 114261412463342658}
   - component: {fileID: 114312147068227886}
-  - component: {fileID: 114815129130330436}
   - component: {fileID: 1049089592}
   m_Layer: 0
   m_Name: Managers
@@ -49,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  UIManager: {fileID: 114815129130330436}
+  UIManager: {fileID: 0}
   emotionManager: {fileID: 114166337886479578}
   easyLevelManager: {fileID: 0}
   hardLevelManager: {fileID: 0}
@@ -180,38 +179,6 @@ MonoBehaviour:
   magnetSprite: {fileID: 21300000, guid: 1b0d59f60252804409b89f089717f097, type: 3}
   magnetPullSpeed: 8
   boostMultiplier: 2
---- !u!114 &114815129130330436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1491077539474944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00d4cef4ab558ca4f83e138212a75ec4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugText: {fileID: 0}
-  scoreText: {fileID: 0}
-  coinsText: {fileID: 0}
-  fader: {fileID: 0}
-  powerUpsImage:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  powerUpsSlider:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  pauseBtn: {fileID: 0}
-  gameOverScore: {fileID: 0}
-  gameOverCoins: {fileID: 0}
-  gameOverDistance: {fileID: 0}
-  gameOverMultiplier: {fileID: 0}
-  gameOverPanel: {fileID: 0}
 --- !u!114 &1049089592
 MonoBehaviour:
   m_ObjectHideFlags: 0

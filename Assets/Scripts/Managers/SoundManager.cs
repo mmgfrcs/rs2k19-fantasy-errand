@@ -42,7 +42,11 @@ namespace FantasyErrand
 
             if (audioSourceTarget == null) audioSourceTarget = gameObject;
             GameManager.OnGameEnd += EndPlayBackSound;
-            GameManager.OnGameStart += playBackSound;
+        }
+
+        private void Start()
+        {
+            //GameManager.OnGameStart += playBackSound;
         }
 
         private void Update()
@@ -75,6 +79,11 @@ namespace FantasyErrand
                     playingVoiceSource.RemoveAt(i);
                     break;
                 }
+            }
+
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Main")
+            {
+                isPlayBackSound = false;
             }
         }
 
@@ -159,7 +168,16 @@ namespace FantasyErrand
             isPlayBackSound = false;
         }
 
-        public  void playBackSound(bool restarted)
+        public void EndPlayBackSound()
+        {
+            isPlayBackSound = false;
+        }
+        public  void playBackSound(bool start)
+        {
+            StartCoroutine(PlayBackSound());
+        }
+
+        public void playBackSound()
         {
             StartCoroutine(PlayBackSound());
         }

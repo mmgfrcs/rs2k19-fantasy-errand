@@ -150,6 +150,7 @@ namespace FantasyErrand
         internal float GetMinObs()
         {
             float temp = minimumObstacleLane*obstacleAmountMod;
+                if (temp >= 5) temp=4;
             return temp;
         }
 
@@ -157,12 +158,14 @@ namespace FantasyErrand
         {
             float distance = gameManager.Distance;
             float temp = Mathf.Round(ObstacleLane.Evaluate(distance)*obstacleAmountMod);
+            if (temp >= 5) temp = 4;
             return temp;
         }
 
         internal float GetMinCoins()
         {
             float temp = minimumCoinLane * coinAmountMod;
+            if (temp >= 5) temp = 5;
             return temp;
         }
 
@@ -170,6 +173,7 @@ namespace FantasyErrand
         {
             float distance = gameManager.Distance;
             float temp = Mathf.Round(CoinLane.Evaluate(distance) * coinAmountMod);
+            if (temp >= 5) temp = 4;
             return temp;
         }
 

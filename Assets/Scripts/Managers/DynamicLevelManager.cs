@@ -48,7 +48,6 @@ namespace FantasyErrand
             EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
             StartCoroutine(InitialGeneration());
             StartCoroutine(SetRateByEmotion());
-            SoundManager.Instance.playBackSound(false);
             GameManager.OnGameEnd += CheckGameEnd;
             GameManager.OnGameStart += CheckGameStart;
         }
@@ -242,7 +241,6 @@ namespace FantasyErrand
                     currminTilesBeforeOverhead--;
                     int n = Random.Range(Mathf.RoundToInt(minimumObstacleLane*obstacleAmountMod), Mathf.RoundToInt(GetObstacleLane()*obstacleAmountMod));
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
-                    if (currminTilesBeforeOverhead <= 0) currminTilesBeforeOverhead = minTilesBeforeOverhead;
                 }
                 else if (opt == 2)
                 {
@@ -253,7 +251,7 @@ namespace FantasyErrand
                 }
                 else if (opt == 3)
                 {
-                    GeneratePowerUps(new Vector3(spawnPos.x, 0.5f, spawnPos.z), 1);
+                    GeneratePowerUps(new Vector3(spawnX, 0.5f, spawnPos.z), 1);
                 }
             }
             if ((opt == 1 || opt == 2) && currMinTilesBeforeNextPowerUps != 0)
@@ -285,6 +283,7 @@ namespace FantasyErrand
                     if (currminTilesBeforeOverhead <= 0)
                     {
                         generateOverhead(new Vector3(0, pos.y, pos.z));
+                        currminTilesBeforeOverhead = minTilesBeforeOverhead;
                         break;
                     }
                     else if (difficulty.Equals(Difficulty.Hard) || difficulty.Equals(Difficulty.Easy))
@@ -304,7 +303,7 @@ namespace FantasyErrand
                 //Kasih Jarak seandainya udah dekat overhead
                 if (currminTilesBeforeOverhead == 1)
                 {
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         startPosition += Vector3.forward * tileScale;
                         GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));
@@ -563,6 +562,8 @@ namespace FantasyErrand
                                 dynamicSpeedModifier -= (float)0.5 * Time.deltaTime;
                             if (coinMod < GetTileRate2(TileType.Coin) / 2)
                                 coinMod += 5 * Time.deltaTime;
+                            if (powerUpsMod < GetTileRate2(TileType.Powerups) / 2)
+                                powerUpsMod += 5 * Time.deltaTime;
                             if (coinAmountMod < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                         }
@@ -576,6 +577,8 @@ namespace FantasyErrand
                                 dynamicSpeedModifier += (float)0.5 * Time.deltaTime;
                             if (coinMod > 0)
                                 coinMod -= 5 * Time.deltaTime;
+                            if (powerUpsMod > 0)
+                                powerUpsMod -= 5 * Time.deltaTime;
                             if (coinAmountMod > 1)
                                 coinAmountMod -= (float)0.1 * Time.deltaTime;
                         }
@@ -592,6 +595,8 @@ namespace FantasyErrand
                                 dynamicSpeedModifier -= (float)0.5 * Time.deltaTime;
                             if (coinMod < GetTileRate2(TileType.Coin) / 2)
                                 coinMod += 5 * Time.deltaTime;
+                            if (powerUpsMod < GetTileRate2(TileType.Powerups) / 2)
+                                powerUpsMod += 5 * Time.deltaTime;
                             if (coinAmountMod < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
 
@@ -606,6 +611,8 @@ namespace FantasyErrand
                                 dynamicSpeedModifier += (float)0.5 * Time.deltaTime;
                             if (coinMod > 0)
                                 coinMod -= 5 * Time.deltaTime;
+                            if (powerUpsMod > 0)
+                                powerUpsMod -= 5 * Time.deltaTime;
                             if (coinAmountMod > 0.5)
                                 coinAmountMod -= (float)0.1 * Time.deltaTime;
                         }

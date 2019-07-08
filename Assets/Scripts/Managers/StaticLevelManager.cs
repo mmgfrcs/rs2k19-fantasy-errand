@@ -25,6 +25,7 @@ namespace FantasyErrand
         protected override void Start()
         {
             base.Start();
+            SoundManager.Instance.playBackSound();
             StartCoroutine(InitialGeneration());
         }
 
@@ -215,7 +216,7 @@ namespace FantasyErrand
                     currminTilesBeforeOverhead--;
                     int n = Random.Range(minimumObstacleLane, Mathf.RoundToInt(GetObstacleLane()));
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
-                    if (currminTilesBeforeOverhead <= 0) currminTilesBeforeOverhead = minTilesBeforeOverhead;
+
                 }
                 else if (opt == 2)
                 {
@@ -226,7 +227,7 @@ namespace FantasyErrand
                 }
                 else if (opt == 3)
                 {
-                    GeneratePowerUps(new Vector3(spawnPos.x, 0.5f, spawnPos.z), 1);
+                    GeneratePowerUps(new Vector3(spawnX, 0.5f, spawnPos.z), 1);
                 }
             }
             if ((opt!=3) && currMinTilesBeforeNextPowerUps != 0)
@@ -265,6 +266,7 @@ namespace FantasyErrand
                     if (currminTilesBeforeOverhead <= 0)
                     {
                         generateOverhead(new Vector3(0, pos.y, pos.z));
+                        currminTilesBeforeOverhead = minTilesBeforeOverhead;
                         break;
                     }
                     else if (difficulty.Equals(Difficulty.Hard) || difficulty.Equals(Difficulty.Easy))
@@ -282,7 +284,7 @@ namespace FantasyErrand
                 //kasih jarak ke obstacle seandainya dia mengenai overhead
                 if (currminTilesBeforeOverhead == 1)
                 {
-                    for(int i = 0; i < 3; i++)
+                    for(int i = 0; i < 2; i++)
                     {
                         startPosition += Vector3.forward * tileScale;
                         GenerateStraights(new Vector3(startPosition.x, -0.5f, startPosition.z));

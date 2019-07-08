@@ -341,7 +341,7 @@ MonoBehaviour:
     spaceCount: 18
     wordCount: 19
     linkCount: 0
-    lineCount: 2
+    lineCount: 3
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -9032,7 +9032,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Normal
+  m_text: 'Special
 
 '
   m_isRightToLeft: 0

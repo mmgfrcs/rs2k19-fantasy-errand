@@ -74,6 +74,7 @@ namespace FantasyErrand
             fader = UIManager.GetUI<UnityEngine.UI.Image>(GameUIManager.UIType.Fader);
             debugText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.DebugText);
             coinsText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.CoinsText);
+            SoundManager.Instance.playBackSound();
             StartGame();
         }
 
@@ -94,7 +95,6 @@ namespace FantasyErrand
             player.transform.position = Vector3.zero;
             player.transform.rotation = Quaternion.identity;
             player.enabled = true;
-
             StartCoroutine(RollingStart());
         }
 
@@ -222,11 +222,13 @@ namespace FantasyErrand
 
         public void RestartGame()
         {
+            SoundManager.Instance.EndPlayBackSound();
             changer.ChangeScene(SceneManager.GetActiveScene().name);
         }
 
         public void ExitGame()
         {
+            SoundManager.Instance.EndPlayBackSound();
             changer.ChangeScene("Main");
         }
 

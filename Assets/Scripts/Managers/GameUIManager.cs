@@ -156,6 +156,7 @@ namespace FantasyErrand
 
         public void OnRetry()
         {
+            SoundManager.Instance.EndPlayBackSound();
             OnRetryGame?.Invoke();
         }
         

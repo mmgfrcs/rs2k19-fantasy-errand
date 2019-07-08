@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8756002091585428903}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.98, y: 0.5, z: -3.25}
   m_LocalScale: {x: 1.5, y: 1.4, z: 1.5}
   m_Children: []
@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 505de51ba8f54bb45809cc34eb908d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSourceTarget: {fileID: 0}
   AudioClipList:
   - {fileID: 8300000, guid: ac44245b8b4a35e45ba124f379d2246e, type: 3}
   - {fileID: 8300000, guid: 5f6847d90f85fd140aabc842734e9f21, type: 3}
@@ -53,14 +54,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 437c7ff53142e0045bce751d3a66ff00, type: 3}
   - {fileID: 8300000, guid: 66c26b1f39a3a5c46909d229c8651ee3, type: 3}
   - {fileID: 8300000, guid: f10e055552302194287309bf9e2ed8cb, type: 3}
-  AudioSourceList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  EffectsSource: {fileID: 0}
-  MusicSource: {fileID: 0}
+  bgmMixer: {fileID: 243468808771620966, guid: faad99234e6ed19498e6589573ee3e0c, type: 2}
+  sfxMixer: {fileID: 243253227821054236, guid: faad99234e6ed19498e6589573ee3e0c, type: 2}
+  voiceMixer: {fileID: 243716415859447672, guid: faad99234e6ed19498e6589573ee3e0c,
+    type: 2}
   timeGapBackSound: 15
 --- !u!82 &8693882054416094519
 AudioSource:

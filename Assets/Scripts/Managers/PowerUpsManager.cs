@@ -19,7 +19,7 @@ namespace FantasyErrand
     public delegate void PhaseBroadcast(bool active, float duration);
     public delegate void BoostBroadcast(bool active, float duration, float multiplier);
     public delegate void GoldenCoinBroadcast(bool active, float duration);
-    
+
     public class PowerUpsManager : MonoBehaviour
     {
         [SerializeField] private Player player;
@@ -55,7 +55,7 @@ namespace FantasyErrand
 
         private void GameManager_OnGameStart(bool restarted)
         {
-            if(restarted)
+            if (restarted)
             {
                 restartPhase = true;
                 PhaseEndTime = TimeSpan.FromSeconds(3);
@@ -65,7 +65,7 @@ namespace FantasyErrand
 
         private void Player_OnGetPowerUps(PowerUpsType type)
         {
-            switch(type)
+            switch (type)
             {
                 case PowerUpsType.Magnet:
                     {
@@ -75,7 +75,7 @@ namespace FantasyErrand
                         float duration = GameDataManager.instance.UpgradeEffects.MagnetDuration[level];
                         float range = GameDataManager.instance.UpgradeEffects.MagnetRange[level];
 
-                        if(MagnetEndTime <= TimeSpan.Zero)
+                        if (MagnetEndTime <= TimeSpan.Zero)
                         {
                             MagnetEndTime = TimeSpan.FromSeconds(duration);
                             MagnetEffectChanged?.Invoke(true, duration, range);
@@ -91,7 +91,7 @@ namespace FantasyErrand
                         int level = GameDataManager.instance.Data.UpgradeLevels.BoostLevel;
                         float duration = GameDataManager.instance.UpgradeEffects.BoostDuration[level];
 
-                        if(BoostEndTime <= TimeSpan.FromSeconds(2))
+                        if (BoostEndTime <= TimeSpan.FromSeconds(2))
                         {
                             BoostEndTime = TimeSpan.FromSeconds(duration + 3);
                             StartCoroutine(BoostEffect(duration));
@@ -153,7 +153,7 @@ namespace FantasyErrand
             MagnetEndTime = TimeSpan.Zero;
             PhaseEndTime = TimeSpan.Zero;
             BoostEndTime = TimeSpan.Zero;
-            GoldenCoinEndTime = TimeSpan.Zero;            
+            GoldenCoinEndTime = TimeSpan.Zero;
         }
 
         void Update()
@@ -163,16 +163,16 @@ namespace FantasyErrand
             if (BoostEndTime > TimeSpan.Zero) BoostEndTime = BoostEndTime.Subtract(TimeSpan.FromSeconds(Time.deltaTime));
             if (GoldenCoinEndTime > TimeSpan.Zero) GoldenCoinEndTime = GoldenCoinEndTime.Subtract(TimeSpan.FromSeconds(Time.deltaTime));
 
-            if(BoostEndTime <= TimeSpan.Zero && PhaseEndTime <= TimeSpan.Zero) 
+            if (BoostEndTime <= TimeSpan.Zero && PhaseEndTime <= TimeSpan.Zero)
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
 
             Image[] pwImages = UIManager.GetUIArray<Image>(GameUIManager.UIType.PowerupImageArray);
             Slider[] pwSliders = UIManager.GetUIArray<Slider>(GameUIManager.UIType.PowerupSliderArray);
 
-            for(int i = 0; i<Mathf.Min(pwImages.Length, pwSliders.Length, powerUpsDisplayOrder.Count); i++)
+            for (int i = 0; i < Mathf.Min(pwImages.Length, pwSliders.Length, powerUpsDisplayOrder.Count); i++)
             {
                 pwImages[i].gameObject.SetActive(true);
-                if(powerUpsDisplayOrder[i] == PowerUpsType.Boost && BoostEndTime > TimeSpan.Zero)
+                if (powerUpsDisplayOrder[i] == PowerUpsType.Boost && BoostEndTime > TimeSpan.Zero)
                 {
                     pwImages[i].gameObject.SetActive(true);
                     pwImages[i].sprite = boostSprite;
@@ -206,7 +206,7 @@ namespace FantasyErrand
 
         private IEnumerator MagnetEffect()
         {
-            while(MagnetEndTime > TimeSpan.Zero)
+            while (MagnetEndTime > TimeSpan.Zero)
             {
                 int magnetLevel = GameDataManager.instance.Data.UpgradeLevels.MagnetLevel;
                 float magnetRange = GameDataManager.instance.UpgradeEffects.MagnetRange[magnetLevel];
@@ -222,7 +222,7 @@ namespace FantasyErrand
                         collect.transform.position = Vector3.MoveTowards(collect.transform.position, player.transform.position, magnetPullSpeed * Time.deltaTime);
                     }
                 }
-                
+
                 yield return null;
             }
 
@@ -235,7 +235,7 @@ namespace FantasyErrand
             BoostEffectChanged?.Invoke(true, duration + 3, boostMultiplier);
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
             yield return new WaitForSeconds(1f);
-            while(BoostEndTime > TimeSpan.FromSeconds(2))
+            while (BoostEndTime > TimeSpan.FromSeconds(2))
             {
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
                 yield return null;
@@ -266,7 +266,7 @@ namespace FantasyErrand
             PhaseEffectChanged?.Invoke(false, duration);
             restartPhase = false;
         }
-        
+
         IEnumerator ActivateTemporaryPhasePower()
         {
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"));
@@ -274,7 +274,13 @@ namespace FantasyErrand
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
-        
+        private void OnDestroy()
+        {
+            MagnetEffectChanged = null;
+            PhaseEffectChanged = null;
+            BoostEffectChanged = null;
+            GoldenCoinEffectChanged = null;
+        }
     }
 }
 

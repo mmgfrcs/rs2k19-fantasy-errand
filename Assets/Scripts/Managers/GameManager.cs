@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace FantasyErrand
 {
+    public delegate void GameStartDelegate(bool restarted);
     public delegate void BaseGameEventDelegate();
     public delegate void GameEndDelegate(GameEndEventArgs args);
     
@@ -31,16 +32,19 @@ namespace FantasyErrand
         public bool IsGameRunning { get; private set; }
         public bool IsRollingStart { get; private set; }
 
+        public float SpeedDistance { get { return Distance - restartDist; } }
+
         private float multiplierSpeed=1;
         private Rigidbody rb;
         
         public static event BaseGameEventDelegate OnGameRollingStart;
-        public static event BaseGameEventDelegate OnGameStart;
+        public static event GameStartDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
         
         TextMeshProUGUI scoreText, debugText, coinsText;
         UnityEngine.UI.Image fader;
         float startTime;
+        float restartDist = 0;
         internal LevelManagerBase levelManager;
         bool isPaused = false;
 
@@ -121,7 +125,7 @@ namespace FantasyErrand
             IsGameRunning = true;
             player.IsControlActive = true;
             startTime = Time.time;
-            OnGameStart?.Invoke();
+            OnGameStart?.Invoke(false);
            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
 
@@ -182,11 +186,9 @@ namespace FantasyErrand
             yield return tween.WaitForCompletion();
         }
 
-
-
         public float GetCurrSpeed()
         {
-            return multiplierSpeed * (speedGraph.Evaluate(Distance) + DynamicSpeedModifier);
+            return multiplierSpeed * (speedGraph.Evaluate(SpeedDistance) + DynamicSpeedModifier);
         }
 
         public void AddCurrency(int value)
@@ -197,9 +199,10 @@ namespace FantasyErrand
 
         public void RetryGame()
         {
+            restartDist = Distance;
             player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
-            OnGameStart?.Invoke();
+            OnGameStart?.Invoke(true);
             player.enabled = true;
             rb.constraints = RigidbodyConstraints.None;
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;

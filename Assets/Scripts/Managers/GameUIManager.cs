@@ -10,8 +10,9 @@ namespace FantasyErrand
     {
         [Header("General UI"), SerializeField] private TextMeshProUGUI debugText;
         [SerializeField] private TextMeshProUGUI scoreText, coinsText;
-        [SerializeField] private Image fader, powerUpsImage;
-        [SerializeField] private Slider powerUpsSlider;
+        [SerializeField] private Image fader;
+        [SerializeField] private Image[] powerUpsImage;
+        [SerializeField] private Slider[] powerUpsSlider;
         [SerializeField] private Button pauseBtn;
 
         [Header("Game Over UI"), SerializeField] private TextMeshProUGUI gameOverScore;
@@ -24,7 +25,7 @@ namespace FantasyErrand
 
         public enum UIType
         {
-            ScoreText, DebugText, CoinsText, PauseBtn, PowerupSlider, PowerupImage, Fader, GameOverScore, GameOverCoins, GameOverDistance, GameOverMultiplier, GameOverPanel
+            ScoreText, DebugText, CoinsText, PauseBtn, PowerupSliderArray, PowerupImageArray, Fader, GameOverScore, GameOverCoins, GameOverDistance, GameOverMultiplier, GameOverPanel
         }
 
         // Use this for initialization
@@ -35,7 +36,41 @@ namespace FantasyErrand
             gameOverPanel.blocksRaycasts = false;
         }
 
-        public T GetUI<T>(UIType type) where T : MonoBehaviour
+        public T[] GetUIArray<T>(UIType type) where T: MonoBehaviour
+        {
+            switch (type)
+            {
+                case UIType.CoinsText:
+                case UIType.DebugText:
+                case UIType.Fader:
+                case UIType.GameOverCoins:
+                case UIType.GameOverDistance:
+                case UIType.GameOverMultiplier:
+                case UIType.GameOverPanel:
+                case UIType.GameOverScore:
+                case UIType.ScoreText:
+                case UIType.PauseBtn:
+                    {
+                        throw new System.ArgumentException("Cannot get singular component through this function. Use GetUI() instead");
+                    }
+                case UIType.PowerupImageArray:
+                    {
+                        if (powerUpsImage is T[]) return powerUpsImage as T[];
+                        else throw new System.ArgumentException("UI Type is not valid for the given generic type");
+                    }
+                case UIType.PowerupSliderArray:
+                    {
+                        if (powerUpsSlider is T[]) return powerUpsSlider as T[];
+                        else throw new System.ArgumentException("UI Type is not valid for the given generic type");
+                    }
+                default:
+                    {
+                        return null;
+                    }
+            }
+        }
+
+        public T GetUI<T>(UIType type) where T: MonoBehaviour
         {
             Component text;
 
@@ -86,15 +121,10 @@ namespace FantasyErrand
                         text = pauseBtn;
                         break;
                     }
-                case UIType.PowerupImage:
+                case UIType.PowerupImageArray:
+                case UIType.PowerupSliderArray:
                     {
-                        text = powerUpsImage;
-                        break;
-                    }
-                case UIType.PowerupSlider:
-                    {
-                        text = powerUpsSlider;
-                        break;
+                        throw new System.ArgumentException("Cannot get array through this function. Use GetUIArray() instead");
                     }
                 case UIType.ScoreText:
                     {

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 114312147068227886}
   - component: {fileID: 114815129130330436}
   - component: {fileID: 1049089592}
+  - component: {fileID: 1874819932351503406}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -128,7 +129,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  changer: {fileID: 1049089592}
+  changer: {fileID: 1874819932351503406}
 --- !u!114 &114166337886479578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +174,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  UIManager: {fileID: 0}
+  boostSprite: {fileID: 21300000, guid: a8628a326da03724eb68cd5e452f53c3, type: 3}
+  goldenCoinSprite: {fileID: 21300000, guid: 6669155e954f68e4daa1c0acefa6a924, type: 3}
+  phaseSprite: {fileID: 21300000, guid: b1c245412fb41534b877409bd8d04452, type: 3}
+  magnetSprite: {fileID: 21300000, guid: 1b0d59f60252804409b89f089717f097, type: 3}
   magnetPullSpeed: 8
   boostMultiplier: 2
 --- !u!114 &114815129130330436
@@ -191,8 +197,16 @@ MonoBehaviour:
   scoreText: {fileID: 0}
   coinsText: {fileID: 0}
   fader: {fileID: 0}
-  powerUpsImage: {fileID: 0}
-  powerUpsSlider: {fileID: 0}
+  powerUpsImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  powerUpsSlider:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   pauseBtn: {fileID: 0}
   gameOverScore: {fileID: 0}
   gameOverCoins: {fileID: 0}
@@ -200,6 +214,21 @@ MonoBehaviour:
   gameOverMultiplier: {fileID: 0}
   gameOverPanel: {fileID: 0}
 --- !u!114 &1049089592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491077539474944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af0f1ecbb195cd40a0f7174c8ab2baf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fader: {fileID: 0}
+  loadingSlider: {fileID: 3474026358806195273, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
+    type: 3}
+--- !u!114 &1874819932351503406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

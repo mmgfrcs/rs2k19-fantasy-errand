@@ -63,7 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileType: 13
   collectibleType: 2
-  powerUpsType: 0
+  powerUpsType: 3
 --- !u!1 &1148585832640814
 GameObject:
   m_ObjectHideFlags: 0

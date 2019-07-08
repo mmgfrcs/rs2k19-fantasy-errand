@@ -49,7 +49,7 @@ namespace FantasyErrand.Entities
             startMove = false;   
         }
 
-        void enableMove()
+        void enableMove(bool restarted)
         {
             startMove = true;
         }

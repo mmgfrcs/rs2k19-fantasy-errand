@@ -48,7 +48,7 @@ namespace FantasyErrand
             EmotionManager.OnFaceResults += EmotionManager_OnFaceResults;
             StartCoroutine(InitialGeneration());
             StartCoroutine(SetRateByEmotion());
-            SoundManager.Instance.playBackSound();
+            SoundManager.Instance.playBackSound(false);
             GameManager.OnGameEnd += CheckGameEnd;
             GameManager.OnGameStart += CheckGameStart;
         }
@@ -495,7 +495,7 @@ namespace FantasyErrand
             isGameEnd = true;
         }
 
-        public void CheckGameStart()
+        public void CheckGameStart(bool restarted)
         {
             isGameEnd = false;
         }

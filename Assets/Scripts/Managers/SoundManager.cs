@@ -159,7 +159,7 @@ namespace FantasyErrand
             isPlayBackSound = false;
         }
 
-        public  void playBackSound()
+        public  void playBackSound(bool restarted)
         {
             StartCoroutine(PlayBackSound());
         }

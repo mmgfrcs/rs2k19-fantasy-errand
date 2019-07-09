@@ -537,6 +537,10 @@ namespace FantasyErrand
                                 dynamicSpeedModifier += (float)0.5 * Time.deltaTime;
                             if (coinAmountMod > 0.5)
                                 coinAmountMod -= (float)0.1 * Time.deltaTime;
+                            if (coinMod > -GetTileRate2(TileType.Coin) / 2)
+                                coinMod -= 5 * Time.deltaTime;
+                            if (powerUpsMod > -GetTileRate2(TileType.Powerups) / 2)
+                                powerUpsMod -= 5 * Time.deltaTime;
                         }
                         else if (totalPosEmotions > totalNegEmotions && totalPosEmotions-getNeutral(positiveEmotions)>0.1)
                         {
@@ -548,6 +552,10 @@ namespace FantasyErrand
                                 dynamicSpeedModifier -= (float)0.5 * Time.deltaTime;
                             if (coinAmountMod < 0.5)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
+                            if (coinMod < 0)
+                                coinMod += 5 * Time.deltaTime;
+                            if (powerUpsMod < 0)
+                                powerUpsMod += 5 * Time.deltaTime;
                         }
                     }
                     else if (difficulty.Equals(Difficulty.Hard))

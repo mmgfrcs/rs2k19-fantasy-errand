@@ -86,6 +86,7 @@ namespace FantasyErrand
 
         internal float coinMod = 0;
         internal float obstacleMod = 0;
+        internal float powerUpsMod = 0;
         protected float coinAmountMod = 1;
         protected float obstacleAmountMod = 1;
 
@@ -123,7 +124,7 @@ namespace FantasyErrand
 
             else if (tiles.Equals(TileType.Powerups))
             {
-                i = tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z);
+                i = tileSpawnRates.powerupsTile.Evaluate(player.transform.position.z)+powerUpsMod;
                 return i;
             }
             else

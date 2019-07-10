@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System.IO;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 namespace FantasyErrand
 {
     public sealed class GameDataManager : MonoBehaviour
@@ -47,11 +49,20 @@ namespace FantasyErrand
             if (Application.platform == RuntimePlatform.WindowsEditor)
                 print($"Game Data Manager - Save path is in {Path.Combine(Application.persistentDataPath, SaveFileName)}");
             
-            GameManager.OnGameEnd += GameManager_OnGameEnd;
+            if(Application.platform == RuntimePlatform.WindowsEditor) GameManager.OnGameEnd += GameManager_OnGameEnd;
+            SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
 
             //Load all PlayerPrefs
 
             LoadAllData();
+        }
+
+        private void SceneManager_activeSceneChanged(Scene current, Scene next)
+        {
+            if (next.name.Contains("Game"))
+            {
+                GameManager.OnGameEnd += GameManager_OnGameEnd;
+            }
         }
 
         private void GameManager_OnGameEnd(GameEndEventArgs args)
@@ -63,6 +74,7 @@ namespace FantasyErrand
                 Data.CumulativeScore += args.Score;
                 Data.CumulativeCoins += args.Currency;
                 Data.CumulativeDistance += args.Distance;
+                Data.Coins += (int)args.Currency;
                 SaveGameDataToFile();
             }
 

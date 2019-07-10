@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using FantasyErrand.Entities;
+using FantasyErrand.Utilities;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -47,6 +48,7 @@ namespace FantasyErrand
         float restartDist = 0;
         internal LevelManagerBase levelManager;
         bool isPaused = false;
+        int retryTimes = 0;
 
         internal float DynamicSpeedModifier=0;
         public SceneChanger changer;
@@ -138,24 +140,21 @@ namespace FantasyErrand
             UIManager.OnRetryGame += RetryGame;
 
             UIManager.OnRestartGame += () => {
-                fader.gameObject.SetActive(true);
-                fader.DOFade(1f, 2f).onComplete = () => { SceneManager.LoadScene("SampleScene"); };
+                SoundManager.Instance.EndPlayBackSound();
+                changer.ChangeScene(SceneManager.GetActiveScene().name);
                 EndGameTruly();
             };
 
-            UIManager.OnBackToMainMenu += () =>
-            {
-                fader.gameObject.SetActive(true);
-                fader.DOFade(1f, 2f).onComplete = () => SceneManager.LoadScene("Main");
-                EndGameTruly();
-            };
+            UIManager.OnBackToMainMenu += ExitGame;
 
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverScore).text = Score.ToString("n0");
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverDistance).text = Distance.ToString("n0");
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverCoins).text = Currency.ToString("n0");
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverMultiplier).text = "x" + Multiplier.ToString("n0");
 
-            UIManager.ActivateGameOver();
+            LivesUpgradeEffect livesUpgrade = GameDataManager.instance.UpgradeEffects.LivesUpgrades[GameDataManager.instance.Data.UpgradeLevels.LivesLevel];
+            float cost = livesUpgrade.ContinueCoinCost + (livesUpgrade.ContinueCoinCost * (livesUpgrade.ContinueCostMultiplier - 1) * retryTimes);
+            UIManager.ActivateGameOver(cost);
 
         }
 
@@ -199,6 +198,10 @@ namespace FantasyErrand
 
         public void RetryGame()
         {
+            LivesUpgradeEffect livesUpgrade = GameDataManager.instance.UpgradeEffects.LivesUpgrades[GameDataManager.instance.Data.UpgradeLevels.LivesLevel];
+            float cost = livesUpgrade.ContinueCoinCost + (livesUpgrade.ContinueCoinCost * (livesUpgrade.ContinueCostMultiplier - 1) * retryTimes++);
+            GameDataManager.instance.Data.Coins -= Mathf.RoundToInt(cost);
+
             restartDist = Distance;
             player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
@@ -220,16 +223,11 @@ namespace FantasyErrand
             OnGameRollingStart = null;
         }
 
-        public void RestartGame()
-        {
-            SoundManager.Instance.EndPlayBackSound();
-            changer.ChangeScene(SceneManager.GetActiveScene().name);
-        }
-
         public void ExitGame()
         {
             SoundManager.Instance.EndPlayBackSound();
             changer.ChangeScene("Main");
+            EndGameTruly();
         }
 
         public void PauseGame()

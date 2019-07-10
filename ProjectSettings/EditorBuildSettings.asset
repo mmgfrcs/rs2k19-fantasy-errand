@@ -17,7 +17,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StaticGame.unity
     guid: b0437a648ee8f2b4b9e736c56a3b71fe
-  - enabled: 1
-    path: Assets/Scenes/StaticSandbox.unity
-    guid: 96e51e6bacf74ff44ab975fb2d6e52a7
   m_configObjects: {}

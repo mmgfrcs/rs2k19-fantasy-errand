@@ -9,14 +9,14 @@ namespace FantasyErrand
     public class GameUIManager : MonoBehaviour
     {
         [Header("General UI"), SerializeField] private TextMeshProUGUI debugText;
-        [SerializeField] private TextMeshProUGUI scoreText, coinsText;
+        [SerializeField] private TextMeshProUGUI scoreText, coinsText, retryCostText;
         [SerializeField] private Image fader;
         [SerializeField] private Image[] powerUpsImage;
         [SerializeField] private Slider[] powerUpsSlider;
         [SerializeField] private Button pauseBtn;
 
         [Header("Game Over UI"), SerializeField] private TextMeshProUGUI gameOverScore;
-        [SerializeField] private TextMeshProUGUI gameOverCoins, gameOverDistance, gameOverMultiplier;
+        [SerializeField] private TextMeshProUGUI gameOverCoins, gameOverDistance, gameOverMultiplier, gameOverRemainingCoins;
         [SerializeField] private CanvasGroup gameOverPanel;
 
         public event BaseGameEventDelegate OnRetryGame;
@@ -142,10 +142,15 @@ namespace FantasyErrand
             else throw new System.ArgumentException("UI Type is not valid for the given generic type");
         }
 
-        public void ActivateGameOver()
+        public void ActivateGameOver(float cost = -1)
         {
-            gameOverPanel.blocksRaycasts = true;
-            gameOverPanel.DOFade(1f, 1f);
+            if (cost != -1)
+                retryCostText.text = $"Retry\n<sprite=0 tint=1> {cost.ToString("n0")}";
+            gameOverRemainingCoins.text = $"<sprite=0 tint=1> {GameDataManager.instance.Data.Coins.ToString("n0")}";
+
+            gameOverPanel.DOFade(1f, 1f).onComplete = ()=> {
+                gameOverPanel.blocksRaycasts = true;
+            };
         }
 
         public void DeactivateGameOver()

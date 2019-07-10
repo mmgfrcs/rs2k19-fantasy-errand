@@ -51,7 +51,7 @@ namespace FantasyErrand
             
             if(Application.platform == RuntimePlatform.WindowsEditor) GameManager.OnGameEnd += GameManager_OnGameEnd;
             SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
-
+            
             //Load all PlayerPrefs
 
             LoadAllData();

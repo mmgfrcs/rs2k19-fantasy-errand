@@ -30,7 +30,7 @@ public class SceneChanger : MonoBehaviour {
         while (scene.progress < 0.9f);
         loadingSlider.value = 0.9f;
         fader.gameObject.SetActive(true);
-        var tween = fader.DOFade(1f, 2f);
+        var tween = fader.DOFade(1f, 2f).SetUpdate(true);
         yield return tween.WaitForCompletion();
         OnSceneLoaded?.Invoke();
         scene.allowSceneActivation = true;

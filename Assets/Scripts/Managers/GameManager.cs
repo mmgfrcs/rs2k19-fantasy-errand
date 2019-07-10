@@ -70,6 +70,15 @@ namespace FantasyErrand
 
             Player.OnCoinAdded += AddCurrency;
             PowerUpsManager.BoostEffectChanged += BoostEffect;
+            UIManager.OnRetryGame += RetryGame;
+
+            UIManager.OnRestartGame += () => {
+                SoundManager.Instance.EndPlayBackSound();
+                changer.ChangeScene(SceneManager.GetActiveScene().name);
+                EndGameTruly();
+            };
+
+            UIManager.OnBackToMainMenu += ExitGame;
 
             Multiplier = startingMultiplier;
             scoreText = UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.ScoreText);
@@ -109,9 +118,6 @@ namespace FantasyErrand
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
-                player.enabled = false;
-                IsGameRunning = false;
-                StartCoroutine(EndGame());
             }
         }
 
@@ -136,16 +142,6 @@ namespace FantasyErrand
             SoundManager.Instance.PlaySound("Bite");
             yield return new WaitForSeconds(1.5f);
             Debug.Log("Game Over");
-
-            UIManager.OnRetryGame += RetryGame;
-
-            UIManager.OnRestartGame += () => {
-                SoundManager.Instance.EndPlayBackSound();
-                changer.ChangeScene(SceneManager.GetActiveScene().name);
-                EndGameTruly();
-            };
-
-            UIManager.OnBackToMainMenu += ExitGame;
 
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverScore).text = Score.ToString("n0");
             UIManager.GetUI<TextMeshProUGUI>(GameUIManager.UIType.GameOverDistance).text = Distance.ToString("n0");

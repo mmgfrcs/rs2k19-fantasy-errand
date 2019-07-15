@@ -4280,14 +4280,6 @@ MonoBehaviour:
   jumpSpeedThreshold: 0.6
   slideSpeedThreshold: 0.6
   turnThreshold: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  magnetSpeed: 8
-  magnetTime: 0
-  goldenCoinTime: 0
-  phaseTime: 0
-  boostTime: 0
   currSwipe: 0
   SwipeMinimumTreshold: 200
 --- !u!54 &8319358933677432828

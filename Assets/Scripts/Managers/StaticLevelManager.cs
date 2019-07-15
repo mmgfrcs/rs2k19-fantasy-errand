@@ -214,7 +214,7 @@ namespace FantasyErrand
                 if (opt == 1)
                 {
                     currminTilesBeforeOverhead--;
-                    int n = Random.Range(minimumObstacleLane, Mathf.RoundToInt(GetObstacleLane()));
+                    int n = Random.Range(minimumObstacleLane, Mathf.RoundToInt(GetObstacleLane())+1);
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
 
                 }
@@ -222,7 +222,8 @@ namespace FantasyErrand
                 {
                     SetCoinXPos();
                     int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(minimumCoinLane, Mathf.RoundToInt(GetCoinLane()));
+                    int lanenumber = Random.Range(minimumCoinLane, Mathf.RoundToInt(GetCoinLane())+1);
+                    print("Coin Lane max= " + Mathf.RoundToInt(GetCoinLane()));
                     GenerateConstantCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
                 }
                 else if (opt == 3)

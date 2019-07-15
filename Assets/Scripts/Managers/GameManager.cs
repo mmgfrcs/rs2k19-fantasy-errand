@@ -118,6 +118,9 @@ namespace FantasyErrand
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
+                player.enabled = false;
+                IsGameRunning = false;
+                StartCoroutine(EndGame());
             }
         }
 

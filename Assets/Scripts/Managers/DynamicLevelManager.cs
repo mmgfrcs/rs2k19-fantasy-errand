@@ -239,14 +239,14 @@ namespace FantasyErrand
                 if (opt == 1)
                 {
                     currminTilesBeforeOverhead--;
-                    int n = Random.Range(Mathf.RoundToInt(minimumObstacleLane*obstacleAmountMod), Mathf.RoundToInt(GetObstacleLane()*obstacleAmountMod));
+                    int n = Random.Range(Mathf.RoundToInt(minimumObstacleLane*obstacleAmountMod), Mathf.RoundToInt(GetObstacleLane()*obstacleAmountMod)+1);
                     GenerateObstacles(new Vector3(spawnX, 0.5f, spawnPos.z), n);
                 }
                 else if (opt == 2)
                 {
                     SetCoinXPos();
                     int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(Mathf.RoundToInt(coinAmountMod*minimumCoinLane), Mathf.RoundToInt(GetCoinLane()*coinAmountMod));
+                    int lanenumber = Random.Range(Mathf.RoundToInt(coinAmountMod*minimumCoinLane), Mathf.RoundToInt(GetCoinLane()*coinAmountMod)+1);
                     GenerateConstantCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
                 }
                 else if (opt == 3)
@@ -550,7 +550,7 @@ namespace FantasyErrand
                                 obstacleAmountMod -= (float)0.1 * Time.deltaTime;
                             if (dynamicSpeedModifier > 0)
                                 dynamicSpeedModifier -= (float)0.5 * Time.deltaTime;
-                            if (coinAmountMod < 0.5)
+                            if (coinAmountMod < 1)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                             if (coinMod < 0)
                                 coinMod += 5 * Time.deltaTime;

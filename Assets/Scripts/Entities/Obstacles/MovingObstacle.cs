@@ -65,6 +65,17 @@ namespace FantasyErrand.Entities
                     minSpeed++;
             }
         }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == "Player")
+            {
+                Vector3 curr = gameObject.transform.position;
+                gameObject.transform.position = new Vector3(curr.x, curr.y, curr.z + 1);
+            }
+            
+        }
+
     }
 
 }

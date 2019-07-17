@@ -87,7 +87,7 @@ namespace FantasyErrand
         internal float coinMod = 0;
         internal float obstacleMod = 0;
         internal float powerUpsMod = 0;
-        protected float coinAmountMod = 1;
+        protected float coinAmountMod = 0;
         protected float obstacleAmountMod = 1;
 
         // Use this for initialization
@@ -165,16 +165,13 @@ namespace FantasyErrand
 
         internal float GetMinCoins()
         {
-            float temp = minimumCoinLane * coinAmountMod;
-            if (temp >= 5) temp = 5;
-            return temp;
+            return minimumCoinLane;
         }
 
         internal float GetMaxCoins()
         {
             float distance = gameManager.Distance;
-            float temp = Mathf.Round(CoinLane.Evaluate(distance) * coinAmountMod);
-            if (temp >= 5) temp = 4;
+            float temp = Mathf.Round(CoinLane.Evaluate(distance) + coinAmountMod);
             return temp;
         }
 

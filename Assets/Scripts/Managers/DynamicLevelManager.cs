@@ -20,7 +20,7 @@ namespace FantasyErrand
         bool isGameEnd = false;
 
         private float tileMOd = 1;
-        private float powerUpsMod = 1;
+
 
         public static float totalPosEmotions = 0;
         public static float totalNegEmotions = 0;
@@ -246,7 +246,7 @@ namespace FantasyErrand
                 {
                     SetCoinXPos();
                     int n = Random.Range(minCoins, maxCoins + 1);
-                    int lanenumber = Random.Range(Mathf.RoundToInt(coinAmountMod*minimumCoinLane), Mathf.RoundToInt(GetCoinLane()*coinAmountMod)+1);
+                    int lanenumber = Random.Range(Mathf.RoundToInt(minimumCoinLane), Mathf.RoundToInt(GetCoinLane()+coinAmountMod)+1);
                     GenerateConstantCoins(new Vector3(coinXLastPos, 0.5f, spawnPos.z), n, lanenumber);
                 }
                 else if (opt == 3)
@@ -425,14 +425,14 @@ namespace FantasyErrand
         public override float GetCoinLane()
         {
             float distance = gameManager.Distance;
-            float temp = Mathf.Round(CoinLane.Evaluate(distance)*coinAmountMod);
+            float temp = Mathf.Round(CoinLane.Evaluate(distance));
             return temp;
         }
 
         public override float GetObstacleLane()
         {
             float distance = gameManager.Distance;
-            float temp = Mathf.Round(ObstacleLane.Evaluate(distance)*obstacleAmountMod);
+            float temp = Mathf.Round(ObstacleLane.Evaluate(distance));
             return temp;
         }
 
@@ -535,7 +535,7 @@ namespace FantasyErrand
                                 obstacleAmountMod += (float)0.1 * Time.deltaTime;
                             if (dynamicSpeedModifier < MaxSpeedModifier)
                                 dynamicSpeedModifier += (float)0.5 * Time.deltaTime;
-                            if (coinAmountMod > 0.5)
+                            if (coinAmountMod+GetCoinLane() >= 1.1)
                                 coinAmountMod -= (float)0.1 * Time.deltaTime;
                             if (coinMod > -GetTileRate2(TileType.Coin) / 2)
                                 coinMod -= 5 * Time.deltaTime;
@@ -550,7 +550,7 @@ namespace FantasyErrand
                                 obstacleAmountMod -= (float)0.1 * Time.deltaTime;
                             if (dynamicSpeedModifier > 0)
                                 dynamicSpeedModifier -= (float)0.5 * Time.deltaTime;
-                            if (coinAmountMod < 1)
+                            if (coinAmountMod < 0)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                             if (coinMod < 0)
                                 coinMod += 5 * Time.deltaTime;
@@ -572,7 +572,7 @@ namespace FantasyErrand
                                 coinMod += 5 * Time.deltaTime;
                             if (powerUpsMod < GetTileRate2(TileType.Powerups) / 2)
                                 powerUpsMod += 5 * Time.deltaTime;
-                            if (coinAmountMod < 2)
+                            if (coinAmountMod+GetCoinLane() < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
                         }
                         else if (totalPosEmotions > totalNegEmotions && totalPosEmotions - getNeutral(positiveEmotions) > 0.1)
@@ -587,7 +587,7 @@ namespace FantasyErrand
                                 coinMod -= 5 * Time.deltaTime;
                             if (powerUpsMod > 0)
                                 powerUpsMod -= 5 * Time.deltaTime;
-                            if (coinAmountMod > 1)
+                            if (coinAmountMod >= 0.1)
                                 coinAmountMod -= (float)0.1 * Time.deltaTime;
                         }
                     }
@@ -605,7 +605,7 @@ namespace FantasyErrand
                                 coinMod += 5 * Time.deltaTime;
                             if (powerUpsMod < GetTileRate2(TileType.Powerups) / 2)
                                 powerUpsMod += 5 * Time.deltaTime;
-                            if (coinAmountMod < 2)
+                            if (coinAmountMod+GetCoinLane() < 2)
                                 coinAmountMod += (float)0.1 * Time.deltaTime;
 
                         }
@@ -621,7 +621,7 @@ namespace FantasyErrand
                                 coinMod -= 5 * Time.deltaTime;
                             if (powerUpsMod > 0)
                                 powerUpsMod -= 5 * Time.deltaTime;
-                            if (coinAmountMod > 0.5)
+                            if (coinAmountMod >= 0.1)
                                 coinAmountMod -= (float)0.1 * Time.deltaTime;
                         }
                     }

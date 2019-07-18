@@ -4036,7 +4036,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Dynamic Trigger
+  m_text: Checker
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0488edf36b363e4459b789b847d4d4b8, type: 2}
   m_sharedMaterial: {fileID: 21438388629518362, guid: 0488edf36b363e4459b789b847d4d4b8,
@@ -9879,6 +9879,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3474026359892965808, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474026359892965808, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3474026358806195274, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9983,16 +9993,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474026359892965808, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474026359892965808, guid: 2519a6a4e2c683e4ca8286200cbb7d3c,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2519a6a4e2c683e4ca8286200cbb7d3c, type: 3}

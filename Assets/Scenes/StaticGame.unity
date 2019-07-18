@@ -276,7 +276,7 @@ MonoBehaviour:
   maxGeneratedTile: 10
   pooledObstacles: 20
   pooledCoins: 40
-  startTiles: 15
+  startTiles: 25
   tileSpawnRates:
     baseTile:
       serializedVersion: 2
@@ -1759,7 +1759,7 @@ MonoBehaviour:
   maxGeneratedTile: 10
   pooledObstacles: 20
   pooledCoins: 40
-  startTiles: 15
+  startTiles: 25
   tileSpawnRates:
     baseTile:
       serializedVersion: 2
@@ -2051,7 +2051,7 @@ MonoBehaviour:
   maxGeneratedTile: 10
   pooledObstacles: 20
   pooledCoins: 40
-  startTiles: 15
+  startTiles: 25
   tileSpawnRates:
     baseTile:
       serializedVersion: 2

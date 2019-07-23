@@ -26,7 +26,7 @@ namespace FantasyErrand.Entities
 
         public void DoRotate()
         {
-            transform.Rotate(rotateSpeed * Time.deltaTime);
+            transform.Rotate(rotateSpeed * Time.deltaTime,Space.World);
         }
 
 

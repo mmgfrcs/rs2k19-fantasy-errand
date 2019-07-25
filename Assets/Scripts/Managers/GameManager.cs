@@ -11,7 +11,6 @@ namespace FantasyErrand
     public delegate void GameStartDelegate(bool restarted);
     public delegate void BaseGameEventDelegate();
     public delegate void GameEndDelegate(GameEndEventArgs args);
-    
 
     public class GameManager : MonoBehaviour
     {
@@ -21,37 +20,34 @@ namespace FantasyErrand
         [SerializeField] LevelManagerBase easyLevelManager, hardLevelManager, specialLevelManager;
         [SerializeField] float startSpeed;
         [SerializeField] int startingMultiplier = 10;
-
-        AnimationCurve speedGraph;
         [SerializeField] AnimationCurve easySpeedGraph;
         [SerializeField] AnimationCurve normalSpeedGraph;
         [SerializeField] AnimationCurve hardSpeedGraph;
+        [SerializeField] SceneChanger changer;
+
         public float Score { get; private set; }
         public float Distance { get; private set; }
         public float Currency { get; private set; }
         public int Multiplier { get; private set; }
         public bool IsGameRunning { get; private set; }
         public bool IsRollingStart { get; private set; }
-
         public float SpeedDistance { get { return Distance - restartDist; } }
-
-        private float multiplierSpeed=1;
-        private Rigidbody rb;
         
         public static event BaseGameEventDelegate OnGameRollingStart;
         public static event GameStartDelegate OnGameStart;
         public static event GameEndDelegate OnGameEnd;
-        
+
+        internal float DynamicSpeedModifier=0;
+        private float multiplierSpeed = 1;
+        private Rigidbody rb;
+        AnimationCurve speedGraph;
         TextMeshProUGUI scoreText, debugText, coinsText;
         UnityEngine.UI.Image fader;
-        float startTime;
         float restartDist = 0;
         internal LevelManagerBase levelManager;
         bool isPaused = false;
         int retryTimes = 0;
 
-        internal float DynamicSpeedModifier=0;
-        public SceneChanger changer;
         public void Start()
         {
             if (MainMenuManager.mainMenuDifficulty.Equals(Difficulty.Easy))
@@ -115,6 +111,7 @@ namespace FantasyErrand
             {
                 SoundManager.Instance.PlaySound("Collision");
                 rb.constraints = RigidbodyConstraints.FreezeAll;
+                player.GetComponent<BoxCollider>().enabled = false;
                 OnGameEnd?.Invoke(new GameEndEventArgs() { IsEnded = false });
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.transform.DOPunchPosition(Vector3.up * 0.1f, 0.5f, 30);
@@ -135,7 +132,6 @@ namespace FantasyErrand
             IsRollingStart = false;
             IsGameRunning = true;
             player.IsControlActive = true;
-            startTime = Time.time;
             OnGameStart?.Invoke(false);
            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Obstacles"), false);
         }
@@ -202,6 +198,7 @@ namespace FantasyErrand
             GameDataManager.instance.Data.Coins -= Mathf.RoundToInt(cost);
 
             restartDist = Distance;
+            player.GetComponent<BoxCollider>().enabled = true;
             player.transform.rotation = Quaternion.identity;
             UIManager.DeactivateGameOver();
             OnGameStart?.Invoke(true);
@@ -252,6 +249,4 @@ namespace FantasyErrand
         public float Currency { get; set; }
         public int Multiplier { get; set; }
     }
-
-    
 }

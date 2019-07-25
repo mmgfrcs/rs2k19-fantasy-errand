@@ -19,7 +19,6 @@ namespace FantasyErrand
     {
         Coin, Powerups, Tile, Obstacle
     }
-
     public enum Difficulty
     {
         Easy, Hard, Special
@@ -220,7 +219,6 @@ namespace FantasyErrand
 
             return val + (int)TileKey.CoinCopper;
         }
-
 
         public void SetGoldenCoin(bool isSwitched)
         {

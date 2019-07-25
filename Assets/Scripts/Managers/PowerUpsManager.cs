@@ -225,7 +225,6 @@ namespace FantasyErrand
 
                 yield return null;
             }
-
             MagnetEffectChanged?.Invoke(false, 0, 0);
         }
 

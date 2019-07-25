@@ -273,7 +273,7 @@ namespace FantasyErrand.WebSockets
         {
             if(mainThreadActionQueue.Count > 0)
             {
-                    mainThreadActionQueue.Dequeue().Invoke();
+                mainThreadActionQueue.Dequeue().Invoke();
                 
             }
         }

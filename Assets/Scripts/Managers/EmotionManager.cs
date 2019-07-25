@@ -32,7 +32,6 @@ namespace FantasyErrand
 
         public override void onFaceLost(float timestamp, int faceId)
         {
-            
             //if (SceneManager.GetActiveScene().name != "Main")
             //{
             //    EmotionsList = new List<Dictionary<Emotions, float>>();
@@ -65,19 +64,6 @@ namespace FantasyErrand
                 OnFaceResults?.Invoke(EmotionsList[0], ExpressionsList[0]);
                 //if (sendData && target != null) { print($"Data sent: {EmotionsList[0].Count} emotions, {ExpressionsList[0].Count} expressions"); target.EmotionsList = EmotionsList[0]; target.ExpressionsList = ExpressionsList[0]; }
             }
-            
-        }
-        
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
     }
 }

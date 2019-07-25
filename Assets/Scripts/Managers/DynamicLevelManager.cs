@@ -11,16 +11,11 @@ namespace FantasyErrand
     public class DynamicLevelManager : LevelManagerBase {
 
         [Header("Dynamic Balancing")]
-        public Affdex.Emotions[] positiveEmotions;
-        public Affdex.Emotions[] negativeEmotions;
+        public Emotions[] positiveEmotions;
+        public Emotions[] negativeEmotions;
         public EmotionManager emotionManager;
         public float dynamicSpeedModifier = 0;
         public float emotionUpdateInterval = 0.5f;
-
-        bool isGameEnd = false;
-
-        private float tileMOd = 1;
-
 
         public static float totalPosEmotions = 0;
         public static float totalNegEmotions = 0;
@@ -28,9 +23,9 @@ namespace FantasyErrand
         public static float joy = 0;
         public static float disgust = 0;
 
-        public int MaxSpeedModifier = 0;
-
-        
+        internal int MaxSpeedModifier = 0;
+        private float tileMOd = 1;
+        bool isGameEnd = false;
         internal Dictionary<Emotions, float> EmotionsList { get; set; } = new Dictionary<Emotions, float>();
         void Awake()
         {
@@ -51,9 +46,6 @@ namespace FantasyErrand
             GameManager.OnGameEnd += CheckGameEnd;
             GameManager.OnGameStart += CheckGameStart;
         }
-
-        // Update is called once per frame
-
 
         protected override void Update()
         {
@@ -85,7 +77,6 @@ namespace FantasyErrand
                             poolDictionary[TileKey.Wall].Destroy(spawnedObjects[i]);
 
                     }
-
                     else
                     {
                         CollectibleBase collect = spawnedObjects[i].GetComponent<CollectibleBase>();
@@ -95,19 +86,15 @@ namespace FantasyErrand
                             {
                                 TileKey temp = spawnedObjects[i].GetComponent<CoinCollectible>().TileType;
                                 poolDictionary[temp].Destroy(spawnedObjects[i]);
-
                             }
-
                             else
                             {
                                 TileKey temp = collect.TileType;
                                 poolDictionary[temp].Destroy(spawnedObjects[i]);
                             }
                         }
-                        else
-                        {
-                            poolDictionary[TileKey.Straight].Destroy(spawnedObjects[i]);
-                        }
+                        else poolDictionary[TileKey.Straight].Destroy(spawnedObjects[i]);
+                        
                     }
                     spawnedObjects.RemoveAt(i);
                 }
@@ -132,7 +119,6 @@ namespace FantasyErrand
 
             if (gameMode)
             {
-
                 pooler = gameObject.AddComponent<ObjectPooler>();
                 pooler.Initialize(maxGeneratedTile * 3, potionPhasePrefabs);
                 poolDictionary.Add(TileKey.PotionPhase, pooler);
@@ -213,8 +199,6 @@ namespace FantasyErrand
             startPosition = spawnPos;
             initialized = true;
         }
-
-
 
         public void Generate(Vector3 spawnPos)
         {
@@ -501,7 +485,6 @@ namespace FantasyErrand
 
         private void EmotionManager_OnFaceResults(Dictionary<Emotions, float> emotions, Dictionary<Expressions, float> expressions)
         {
-            
             if (!isGameEnd)
             {
                 totalPosEmotions = 0; totalNegEmotions = 0;
@@ -515,7 +498,6 @@ namespace FantasyErrand
                 totalPosEmotions = totalPosEmotions / (positiveEmotions.Length * 100);
                 totalNegEmotions = totalNegEmotions / (negativeEmotions.Length * 100);
             }
-
         }
 
         IEnumerator SetRateByEmotion()

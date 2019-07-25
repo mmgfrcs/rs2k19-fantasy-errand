@@ -296,9 +296,9 @@ namespace FantasyErrand
         public void OnSwipeToggle(bool state)
         {
             if (state)
-                isSwipeModeOn = true;
-            else
                 isSwipeModeOn = false;
+            else
+                isSwipeModeOn = true;
         }
         public void CheckNameEmpty(string text)
         {

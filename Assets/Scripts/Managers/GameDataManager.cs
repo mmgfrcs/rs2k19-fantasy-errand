@@ -12,7 +12,6 @@ namespace FantasyErrand
     {
         [SerializeField]
         int targetFrameRate = 60;
-
         internal static string SaveFileName { get; private set; } = "saves";
         internal static string ImagePath { get; private set; } = "img64";
         internal UpgradeEffects UpgradeEffects { get; private set; }
@@ -30,8 +29,6 @@ namespace FantasyErrand
         string NeutralLocation { get; set; }
         string HappyLocation { get; set; }
 
-        bool NeutralModified { get; set; }
-        bool HappyModified { get; set; }
         internal static GameDataManager instance;
 
         private void Start()
@@ -48,12 +45,11 @@ namespace FantasyErrand
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
                 print($"Game Data Manager - Save path is in {Path.Combine(Application.persistentDataPath, SaveFileName)}");
-            
-            if(Application.platform == RuntimePlatform.WindowsEditor) GameManager.OnGameEnd += GameManager_OnGameEnd;
+            if(Application.platform == RuntimePlatform.WindowsEditor)
+                GameManager.OnGameEnd += GameManager_OnGameEnd;
             SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
             
             //Load all PlayerPrefs
-
             LoadAllData();
         }
 
@@ -77,7 +73,6 @@ namespace FantasyErrand
                 Data.Coins += (int)args.Currency;
                 SaveGameDataToFile();
             }
-
         }
 
         public void SaveAllDataToFile()
@@ -126,8 +121,6 @@ namespace FantasyErrand
                 path += "data";
                 File.WriteAllText(path, JsonConvert.SerializeObject(HappyData));
             }
-            NeutralModified = false;
-            HappyModified = false;
             PlayerPrefs.Save();
             print($"Game Data Manager - Saved data: {PlayerName}, Age {Age}\nResearch: {ResearchMode}, Basic Gathering: {BasicGathering}, Expression Gathering: {ExpressionGathering} Server IP: {ServerAddress}\nNeutral Picture: {NeutralLocation}, Happy Picture: {HappyLocation}");
         }
@@ -154,7 +147,6 @@ namespace FantasyErrand
                 HappyPicture = happy;
                 HappyData = happyData;
             }
-            
         }
 
         public void LoadAllData()
@@ -202,7 +194,6 @@ namespace FantasyErrand
                 NeutralLocation = neutralLocation;
                 NeutralPicture = new Texture2D(1, 1);
                 NeutralPicture.LoadImage(neutralPic);
-                //TODO: Do something
             }
             var happyLocation = PlayerPrefs.GetString("HappyPicture", string.Empty);
             if (happyLocation != string.Empty)
@@ -212,8 +203,6 @@ namespace FantasyErrand
                 HappyLocation = happyLocation;
                 HappyPicture = new Texture2D(1, 1);
                 HappyPicture.LoadImage(happyPic);
-
-                //TODO: Do something
             }
             print($"Game Data Manager - Loaded Research data: {PlayerName}, Age {Age}\nResearch: {ResearchMode}, Basic Gathering: {BasicGathering}, Expression Gathering: {ExpressionGathering} Server IP: {ServerAddress}\nNeutral Picture: {NeutralLocation}, Happy Picture: {HappyLocation}");
         }

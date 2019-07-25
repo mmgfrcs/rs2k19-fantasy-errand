@@ -22,7 +22,6 @@ namespace FantasyErrand
 
         TextMeshProUGUI btnText;
 
-        // Use this for initialization
         void Start()
         {
             fader.color = Color.black;

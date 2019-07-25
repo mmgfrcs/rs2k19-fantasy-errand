@@ -256,7 +256,7 @@ namespace FantasyErrand
                 researchToggle.isOn = GameDataManager.instance.ResearchMode;
                 basicGatherToggle.isOn = GameDataManager.instance.BasicGathering;
                 expressionToggle.isOn = GameDataManager.instance.ExpressionGathering;
-                swipeToggle.isOn = MainMenuManager.isSwipeModeOn;
+                swipeToggle.isOn = !MainMenuManager.isSwipeModeOn;
                 neutral = GameDataManager.instance.NeutralPicture;
                 if (neutral != null)
                 {

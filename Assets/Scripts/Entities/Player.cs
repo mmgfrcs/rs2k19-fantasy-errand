@@ -93,14 +93,23 @@ namespace FantasyErrand.Entities
             //speed += rate * emotionManager.HappyRatio * Time.deltaTime;
             //speed -= rate * emotionManager.DisgustRatio * Time.deltaTime;
 
+
             transform.Translate(transform.forward * speed * Time.deltaTime);
+            
             
             if (IsControlActive && !enableNonGameMode)
             {
                 if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
                     ProcessKeyControls();
+
+                }
+
                 else if (!MainMenuManager.isSwipeModeOn)
+                {
                     ProcessControls();
+
+                }
                 else
                 {
                     ProcessSwipe();
